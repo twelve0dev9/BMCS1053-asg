@@ -1,12 +1,12 @@
 CREATE TABLE Industries (
     IndustryID NUMBER PRIMARY KEY,
-    Title VARCHAR2(100) NOT NULL,
+    Title VARCHAR2(50) NOT NULL,
     Description VARCHAR2(100)
 );
 
 CREATE TABLE Person (
     PersonID CHAR(5) PRIMARY KEY,
-    Name VARCHAR2(100) NOT NULL,
+    Name VARCHAR2(40) NOT NULL,
     Age NUMBER CHECK (Age >= 0),
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
     PhoneNumber VARCHAR2(20) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
@@ -17,19 +17,19 @@ CREATE TABLE Person (
 CREATE TABLE JobPositions (
     JobPostID NUMBER PRIMARY KEY,
     IndustryID NUMBER NOT NULL,
-    Position VARCHAR2(100) NOT NULL,
+    Position CHAR(30) NOT NULL,
     CONSTRAINT fk_jobpos_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
     CONSTRAINT chk_position_values CHECK (Position IN ('Speaker', 'Panelist', 'Recruiter', 'Interviewer', 'Consultant', 'General staff', 'Planner', 'Coordinator', 'Logistics', 'Partnership management', 'F&B manager', 'F&B general staff'))
 );
 
 CREATE TABLE Organizations (
     OrgID CHAR(6) PRIMARY KEY,
-    OrgType VARCHAR2(50) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
-    OrgName VARCHAR2(100) NOT NULL,
-    Email VARCHAR2(100) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
+    OrgType VARCHAR2(30) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
+    OrgName VARCHAR2(50) NOT NULL,
+    Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     ContactNumber VARCHAR2(20) CHECK (REGEXP_LIKE(ContactNumber, '^60[0-9]+$')),
     IndustryID NUMBER,
-    Roles VARCHAR2(50) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
+    Roles VARCHAR2(30) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
     nTickets NUMBER,
     CONSTRAINT fk_org_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
     CONSTRAINT chk_org_not_null CHECK (OrgType IS NOT NULL AND OrgName IS NOT NULL)
@@ -38,21 +38,21 @@ CREATE TABLE Organizations (
 CREATE TABLE Location (
     LocationID NUMBER PRIMARY KEY,
     OrgID CHAR(6),
-    LocationName VARCHAR2(100) NOT NULL,
+    LocationName VARCHAR2(50) NOT NULL,
     Floor NUMBER,
     Section NUMBER,
-    LocationType VARCHAR2(50) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
+    LocationType VARCHAR2(30) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
     RentalPrice NUMBER,
-    Sizes VARCHAR2(20) CHECK (Sizes IN ('Small', 'Medium', 'Large')),
+    Size VARCHAR2(20) CHECK (Size IN ('Small', 'Medium', 'Large')),
     CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
 );
 
 CREATE TABLE Events (
     EventID NUMBER PRIMARY KEY,
-    Title VARCHAR2(100) NOT NULL,
-    Description VARCHAR2(500),
-    EventType VARCHAR2(50) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Speeches / Talks / Seminars', 'Career Consultation')),
+    Title VARCHAR2(50) NOT NULL,
+    Description VARCHAR2(200),
+    EventType VARCHAR2(50) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Talks', 'Seminars', 'Career Consultation')),
     EventTime DATE,
     LocationID NUMBER,
     CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
