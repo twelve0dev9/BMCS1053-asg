@@ -1,0 +1,16 @@
+INSERT INTO Industries VALUES (1, 'Food & Beverage', 'Preparation and sale of food and drinks');
+INSERT INTO Industries VALUES (2, 'Cybersecurity', NULL);
+INSERT INTO Industries VALUES (3, 'Software development', NULL);
+INSERT INTO Industries VALUES (4, 'Accounting', NULL);
+INSERT INTO Industries VALUES (5, 'Finance', NULL);
+INSERT INTO Industries VALUES (6, 'Graphic design', NULL);
+INSERT INTO Industries VALUES (7, 'Human Resource', NULL);
+INSERT INTO Industries VALUES (8, 'Technology', 'Software, hardware, and IT services');
+INSERT INTO Industries VALUES (9, 'Finance', 'Banking, investment, and insurance services');
+INSERT INTO Industries VALUES (10, 'Healthcare', 'Medical services, pharmaceuticals, and equipment');
+INSERT INTO Industries VALUES (11, 'Education', 'Schools, universities, and training providers');
+INSERT INTO Industries VALUES (12, 'Manufacturing', 'Production of goods and materials');
+INSERT INTO Industries VALUES (13, 'Retail', 'Sale of goods to consumers');
+INSERT INTO Industries VALUES (14, 'Marketing', 'Promotion of products and brands');
+INSERT INTO Industries VALUES (15, 'Consulting', 'Providing expert advice professionally');
+INSERT INTO Industries VALUES (16, 'Logistics', 'Transportation and supply chain management');
