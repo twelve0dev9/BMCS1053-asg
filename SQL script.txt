@@ -5,7 +5,7 @@ CREATE TABLE Industries (
 );
 
 CREATE TABLE Person (
-    PersonID NUMBER PRIMARY KEY,
+    PersonID CHAR(5) PRIMARY KEY,
     Name VARCHAR2(100) NOT NULL,
     Age NUMBER CHECK (Age >= 0),
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
@@ -23,7 +23,7 @@ CREATE TABLE JobPositions (
 );
 
 CREATE TABLE Organizations (
-    OrgID NUMBER PRIMARY KEY,
+    OrgID CHAR(6) PRIMARY KEY,
     OrgType VARCHAR2(50) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
     Name VARCHAR2(100) NOT NULL,
     Email VARCHAR2(100) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
@@ -37,15 +37,15 @@ CREATE TABLE Organizations (
 );
 
 CREATE TABLE Location (
-    LocationID NUMBER PRIMARY KEY,
+    LocatNUMBER PRIMARY KEY,
     OrgID NUMBER,
     LocationName VARCHAR2(100) NOT NULL,
-    Floor VARCHAR2(20),
-    Section VARCHAR2(50),
+    Floor NUMBER,
+    Section NUMBER,
     LocationType VARCHAR2(50) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
     RentalPrice NUMBER,
     Size VARCHAR2(20) CHECK (Size IN ('Small', 'Medium', 'Large')),
-    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
+    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),ionID 
     CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE Events (
     Title VARCHAR2(100) NOT NULL,
     Desc VARCHAR2(500),
     EventType VARCHAR2(50) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Speeches / Talks / Seminars', 'Career Consultation')),
-    Time TIMESTAMP,
+    Time DATE,
     LocationID NUMBER,
     CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
     CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
@@ -74,8 +74,8 @@ CREATE TABLE Applicants (
     PersonID NUMBER PRIMARY KEY,
     EducationLevel VARCHAR2(50),
     Major VARCHAR2(100),
-    Resume BLOB,
-    Portfolio BLOB,
+    Resume VARCHAR2(200),
+    Portfolio VARCHAR2(200),
     UniversityOrgID NUMBER,
     CONSTRAINT fk_applicant_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
     CONSTRAINT fk_applicant_university FOREIGN KEY (UniversityOrgID) REFERENCES Organizations(OrgID),
@@ -108,7 +108,7 @@ CREATE TABLE Applications (
     JobPostID NUMBER NOT NULL,
     EmploymentTypes VARCHAR2(50) CHECK (EmploymentTypes IN ('Internships', 'Part time', 'Full time')),
     ApplicationStatus VARCHAR2(50) DEFAULT 'Applied' CHECK (ApplicationStatus IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
-    Date TIMESTAMP,
+    Date DATE,
     CONSTRAINT pk_applications PRIMARY KEY (OrgID, PersonID, JobPostID),
     CONSTRAINT fk_application_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT fk_application_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
@@ -116,13 +116,22 @@ CREATE TABLE Applications (
     CONSTRAINT chk_application_not_null CHECK (OrgID IS NOT NULL AND PersonID IS NOT NULL AND JobPostID IS NOT NULL)
 );
 
+CREATE TABLE EventsParticipation (
+    EventID NUMBER PRIMARY KEY, 
+    PersonID CHAR(5), 
+    OrgID CHAR(6), 
+    CONSTRAINT fk_Event FOREIGN KEY (EventID) REFERENCES Events(EventID). 
+    CONSTRAINT fk_Person FOREIGN KEY (PersonID) REFERENCES Persons(PersonID), 
+    CONSTRAINT fk_Org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID)
+);
+
 CREATE TABLE Participations (
     PartID NUMBER PRIMARY KEY,
     PersonID NUMBER NOT NULL,
     OrgID NUMBER NOT NULL,
     ParticipateBy VARCHAR2(20) CHECK (ParticipateBy IN ('Applying', 'Invited')),
-    DateIA TIMESTAMP,
-    DateConfirmed TIMESTAMP,
+    DateIA DATE,
+    DateConfirmed DATE,
     Status VARCHAR2(20) CHECK (Status IN ('Invited', 'Applied', 'Declined', 'Accepted')),
     CONSTRAINT fk_participation_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
     CONSTRAINT fk_participation_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
@@ -130,8 +139,8 @@ CREATE TABLE Participations (
 );
 
 CREATE TABLE AdCampaign (
-    CampaignID NUMBER PRIMARY KEY,
-    OrgID NUMBER NOT NULL,
+    CampaignID CHAR(4) PRIMARY KEY,
+    OrgID CHAR(6) NOT NULL,
     Title VARCHAR2(100) NOT NULL,
     StartDate DATE,
     EndDate DATE,
