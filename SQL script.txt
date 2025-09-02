@@ -1,7 +1,7 @@
 CREATE TABLE Industries (
     IndustryID NUMBER PRIMARY KEY,
     Title VARCHAR2(100) NOT NULL,
-    Desc VARCHAR2(500)
+    Description VARCHAR2(100)
 );
 
 CREATE TABLE Person (
@@ -25,36 +25,35 @@ CREATE TABLE JobPositions (
 CREATE TABLE Organizations (
     OrgID CHAR(6) PRIMARY KEY,
     OrgType VARCHAR2(50) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
-    Name VARCHAR2(100) NOT NULL,
+    OrgName VARCHAR2(100) NOT NULL,
     Email VARCHAR2(100) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     ContactNumber VARCHAR2(20) CHECK (REGEXP_LIKE(ContactNumber, '^60[0-9]+$')),
     IndustryID NUMBER,
-    Role VARCHAR2(50) CHECK (Role IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
-    EventID NUMBER,
+    Roles VARCHAR2(50) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
     nTickets NUMBER,
     CONSTRAINT fk_org_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
-    CONSTRAINT chk_org_not_null CHECK (OrgID IS NOT NULL AND OrgType IS NOT NULL AND Name IS NOT NULL)
+    CONSTRAINT chk_org_not_null CHECK (OrgType IS NOT NULL AND OrgName IS NOT NULL)
 );
 
 CREATE TABLE Location (
-    LocatNUMBER PRIMARY KEY,
-    OrgID NUMBER,
+    LocationID NUMBER PRIMARY KEY,
+    OrgID CHAR(6),
     LocationName VARCHAR2(100) NOT NULL,
     Floor NUMBER,
     Section NUMBER,
     LocationType VARCHAR2(50) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
     RentalPrice NUMBER,
-    Size VARCHAR2(20) CHECK (Size IN ('Small', 'Medium', 'Large')),
-    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),ionID 
+    Sizes VARCHAR2(20) CHECK (Sizes IN ('Small', 'Medium', 'Large')),
+    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
 );
 
 CREATE TABLE Events (
     EventID NUMBER PRIMARY KEY,
     Title VARCHAR2(100) NOT NULL,
-    Desc VARCHAR2(500),
+    Description VARCHAR2(500),
     EventType VARCHAR2(50) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Speeches / Talks / Seminars', 'Career Consultation')),
-    Time DATE,
+    EventTime DATE,
     LocationID NUMBER,
     CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
     CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
@@ -62,7 +61,7 @@ CREATE TABLE Events (
 
 CREATE TABLE Speakers (
     SpeakerID NUMBER PRIMARY KEY,
-    PersonID NUMBER NOT NULL,
+    PersonID CHAR(5) NOT NULL,
     Affiliation VARCHAR2(100),
     EventID NUMBER NOT NULL,
     CONSTRAINT fk_speaker_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
@@ -71,20 +70,20 @@ CREATE TABLE Speakers (
 );
 
 CREATE TABLE Applicants (
-    PersonID NUMBER PRIMARY KEY,
+    PersonID CHAR(5) PRIMARY KEY,
     EducationLevel VARCHAR2(50),
     Major VARCHAR2(100),
-    Resume VARCHAR2(200),
+    "Resume" VARCHAR2(200),
     Portfolio VARCHAR2(200),
-    UniversityOrgID NUMBER,
+    University CHAR(6),
     CONSTRAINT fk_applicant_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
-    CONSTRAINT fk_applicant_university FOREIGN KEY (UniversityOrgID) REFERENCES Organizations(OrgID),
+    CONSTRAINT fk_applicant_university FOREIGN KEY (University) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_applicant_not_null CHECK (PersonID IS NOT NULL)
 );
 
 CREATE TABLE Employees (
-    PersonID NUMBER NOT NULL,
-    OrgID NUMBER NOT NULL,
+    PersonID CHAR(5) NOT NULL,
+    OrgID CHAR(6) NOT NULL,
     JobPostID NUMBER NOT NULL,
     CONSTRAINT pk_employees PRIMARY KEY (PersonID, OrgID, JobPostID),
     CONSTRAINT fk_employee_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
@@ -94,7 +93,7 @@ CREATE TABLE Employees (
 );
 
 CREATE TABLE Panelist (
-    PersonID NUMBER NOT NULL,
+    PersonID CHAR(5) NOT NULL,
     EventID NUMBER NOT NULL,
     CONSTRAINT pk_panelist PRIMARY KEY (PersonID, EventID),
     CONSTRAINT fk_panelist_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
@@ -103,12 +102,12 @@ CREATE TABLE Panelist (
 );
 
 CREATE TABLE Applications (
-    OrgID NUMBER NOT NULL,
-    PersonID NUMBER NOT NULL,
+    OrgID CHAR(6) NOT NULL,
+    PersonID CHAR(5) NOT NULL,
     JobPostID NUMBER NOT NULL,
     EmploymentTypes VARCHAR2(50) CHECK (EmploymentTypes IN ('Internships', 'Part time', 'Full time')),
     ApplicationStatus VARCHAR2(50) DEFAULT 'Applied' CHECK (ApplicationStatus IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
-    Date DATE,
+    DateApplied DATE,
     CONSTRAINT pk_applications PRIMARY KEY (OrgID, PersonID, JobPostID),
     CONSTRAINT fk_application_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT fk_application_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
@@ -120,15 +119,15 @@ CREATE TABLE EventsParticipation (
     EventID NUMBER PRIMARY KEY, 
     PersonID CHAR(5), 
     OrgID CHAR(6), 
-    CONSTRAINT fk_Event FOREIGN KEY (EventID) REFERENCES Events(EventID). 
-    CONSTRAINT fk_Person FOREIGN KEY (PersonID) REFERENCES Persons(PersonID), 
+    CONSTRAINT fk_Event FOREIGN KEY (EventID) REFERENCES Events(EventID), 
+    CONSTRAINT fk_Person FOREIGN KEY (PersonID) REFERENCES Person(PersonID), 
     CONSTRAINT fk_Org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID)
 );
 
 CREATE TABLE Participations (
     PartID NUMBER PRIMARY KEY,
-    PersonID NUMBER NOT NULL,
-    OrgID NUMBER NOT NULL,
+    PersonID CHAR(5) NOT NULL,
+    OrgID CHAR(6) NOT NULL,
     ParticipateBy VARCHAR2(20) CHECK (ParticipateBy IN ('Applying', 'Invited')),
     DateIA DATE,
     DateConfirmed DATE,
@@ -151,10 +150,470 @@ CREATE TABLE AdCampaign (
     CONSTRAINT chk_adcampaign_not_null CHECK (CampaignID IS NOT NULL AND OrgID IS NOT NULL AND Title IS NOT NULL)
 );
 
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (1, 'F&B industry', 'F&B provider companies invited');
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (2, 'Cybersecurity', NULL);
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (3, 'Software development', NULL);
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (4, 'Accounting', NULL);
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (5, 'Finance', NULL);
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (6, 'Graphic design', NULL);
-INSERT INTO Industries (IndustryID, Title, Desc) VALUES (7, 'Human Resource', NULL);
+INSERT INTO Industries VALUES (1, 'F&B industry', 'F&B provider companies invited');
+INSERT INTO Industries VALUES (2, 'Cybersecurity', NULL);
+INSERT INTO Industries VALUES (3, 'Software development', NULL);
+INSERT INTO Industries VALUES (4, 'Accounting', NULL);
+INSERT INTO Industries VALUES (5, 'Finance', NULL);
+INSERT INTO Industries VALUES (6, 'Graphic design', NULL);
+INSERT INTO Industries VALUES (7, 'Human Resource', NULL);
+
+INSERT INTO Industries VALUES (1, 'Technology', 'Software, hardware, and IT services');
+INSERT INTO Industries VALUES (2, 'Finance', 'Banking, investment, and insurance services');
+INSERT INTO Industries VALUES (3, 'Healthcare', 'Medical services, pharmaceuticals, and equipment');
+INSERT INTO Industries VALUES (4, 'Education', 'Schools, universities, and training providers');
+INSERT INTO Industries VALUES (5, 'Manufacturing', 'Production of goods and materials');
+INSERT INTO Industries VALUES (6, 'Retail', 'Sale of goods to consumers');
+INSERT INTO Industries VALUES (7, 'Marketing', 'Promotion of products and brands');
+INSERT INTO Industries VALUES (8, 'Food & Beverage', 'Preparation and sale of food and drinks');
+INSERT INTO Industries VALUES (9, 'Consulting', 'Providing expert advice professionally');
+INSERT INTO Industries VALUES (10, 'Logistics', 'Transportation and supply chain management');
+
+-- Person 1-10
+INSERT INTO Person VALUES ('P0001', 'Alice Chen', 28, 'F', '60123456789', 'alice.chen@email.com');
+INSERT INTO Person VALUES ('P0002', 'Ben Wong', 35, 'M', '60198765432', 'ben.wong@email.com');
+INSERT INTO Person VALUES ('P0003', 'Carol Tan', 42, 'F', '60111122333', 'carol.tan@email.com');
+INSERT INTO Person VALUES ('P0004', 'David Lee', 24, 'M', '60155566777', 'david.lee@email.com');
+INSERT INTO Person VALUES ('P0005', 'Emma Yeoh', 31, 'F', '60199988877', 'emma.yeoh@email.com');
+INSERT INTO Person VALUES ('P0006', 'Frank Lim', 29, 'M', '60122233444', 'frank.lim@email.com');
+INSERT INTO Person VALUES ('P0007', 'Grace Ng', 26, 'F', '60166677888', 'grace.ng@email.com');
+INSERT INTO Person VALUES ('P0008', 'Henry Foo', 45, 'M', '60133344555', 'henry.foo@email.com');
+INSERT INTO Person VALUES ('P0009', 'Ivy Ooi', 33, 'F', '60177788999', 'ivy.ooi@email.com');
+INSERT INTO Person VALUES ('P0010', 'Jack Koh', 39, 'M', '60144455666', 'jack.koh@email.com');
+-- Person 11-20
+INSERT INTO Person VALUES ('P0011', 'Sarah Lim', 22, 'F', '60112345670', 'sarah.lim@email.com');
+INSERT INTO Person VALUES ('P0012', 'Kevin Raj', 27, 'M', '60123456701', 'kevin.raj@email.com');
+INSERT INTO Person VALUES ('P0013', 'Nurul Hassan', 30, 'F', '60134567012', 'nurul.hassan@email.com');
+INSERT INTO Person VALUES ('P0014', 'Daniel Tan', 25, 'M', '60145670123', 'daniel.tan@email.com');
+INSERT INTO Person VALUES ('P0015', 'Mei Ling', 32, 'F', '60156701234', 'mei.ling@email.com');
+INSERT INTO Person VALUES ('P0016', 'Adam bin Ibrahim', 41, 'M', '60167012345', 'adam.ibrahim@email.com');
+INSERT INTO Person VALUES ('P0017', 'Priya Sharma', 29, 'F', '60170123456', 'priya.sharma@email.com');
+INSERT INTO Person VALUES ('P0018', 'Christopher Loh', 36, 'M', '60181234567', 'chris.loh@email.com');
+INSERT INTO Person VALUES ('P0019', 'Zhao Wei', 23, 'M', '60192345678', 'zhao.wei@email.com');
+INSERT INTO Person VALUES ('P0020', 'Amanda Roberts', 38, 'F', '60103456789', 'amanda.roberts@email.com');
+-- Person 21-30
+INSERT INTO Person VALUES ('P0021', 'Boon Keat', 44, 'M', '60109876543', 'boon.keat@email.com');
+INSERT INTO Person VALUES ('P0022', 'Chloe Lim', 21, 'F', '60198765431', 'chloe.lim@email.com');
+INSERT INTO Person VALUES ('P0023', 'Deepak Kumar', 31, 'M', '60187654321', 'deepak.kumar@email.com');
+INSERT INTO Person VALUES ('P0024', 'Fatin Ahmad', 26, 'F', '60176543210', 'fatin.ahmad@email.com');
+INSERT INTO Person VALUES ('P0025', 'George Tan', 50, 'M', '60165432109', 'george.tan@email.com');
+INSERT INTO Person VALUES ('P0026', 'Hui Ying', 28, 'F', '60154321098', 'hui.ying@email.com');
+INSERT INTO Person VALUES ('P0027', 'Ishaan Patel', 33, 'M', '60143210987', 'ishaan.patel@email.com');
+INSERT INTO Person VALUES ('P0028', 'Jennifer Teo', 27, 'F', '60132109876', 'jennifer.teo@email.com');
+INSERT INTO Person VALUES ('P0029', 'Karthik M', 35, 'M', '60121098765', 'karthik.m@email.com');
+INSERT INTO Person VALUES ('P0030', 'Lisa Chang', 24, 'F', '60110987654', 'lisa.chang@email.com');
+-- Person 31-40
+INSERT INTO Person VALUES ('P0031', 'Michael Ng', 40, 'M', '60122334455', 'michael.ng@email.com');
+INSERT INTO Person VALUES ('P0032', 'Natalie Wong', 29, 'F', '60133445566', 'natalie.wong@email.com');
+INSERT INTO Person VALUES ('P0033', 'Omar Khan', 45, 'M', '60144556677', 'omar.khan@email.com');
+INSERT INTO Person VALUES ('P0034', 'Pauline See', 32, 'F', '60155667788', 'pauline.see@email.com');
+INSERT INTO Person VALUES ('P0035', 'Qing Long', 26, 'M', '60166778899', 'qing.long@email.com');
+INSERT INTO Person VALUES ('P0036', 'Rachel Low', 37, 'F', '60177889900', 'rachel.low@email.com');
+INSERT INTO Person VALUES ('P0037', 'Samuel Ho', 28, 'M', '60188990011', 'samuel.ho@email.com');
+INSERT INTO Person VALUES ('P0038', 'Tasha Singh', 31, 'F', '60199001122', 'tasha.singh@email.com');
+INSERT INTO Person VALUES ('P0039', 'Vincent Lim', 42, 'M', '60100112233', 'vincent.lim@email.com');
+INSERT INTO Person VALUES ('P0040', 'Wendy Tan', 23, 'F', '60111223344', 'wendy.tan@email.com');
+-- Person 41-50
+INSERT INTO Person VALUES ('P0041', 'Xavier Lee', 39, 'M', '60199887766', 'xavier.lee@email.com');
+INSERT INTO Person VALUES ('P0042', 'Yasmin Ali', 34, 'F', '60188776655', 'yasmin.ali@email.com');
+INSERT INTO Person VALUES ('P0043', 'Zachary Ong', 25, 'M', '60177665544', 'zachary.ong@email.com');
+INSERT INTO Person VALUES ('P0044', 'Aina Mohd', 30, 'F', '60166554433', 'aina.mohd@email.com');
+INSERT INTO Person VALUES ('P0045', 'Bryan Chua', 27, 'M', '60155443322', 'bryan.chua@email.com');
+INSERT INTO Person VALUES ('P0046', 'Cynthia Goh', 36, 'F', '60144332211', 'cynthia.goh@email.com');
+INSERT INTO Person VALUES ('P0047', 'Derek Yap', 29, 'M', '60133221100', 'derek.yap@email.com');
+INSERT INTO Person VALUES ('P0048', 'Elaine Foo', 33, 'F', '60122110099', 'elaine.foo@email.com');
+INSERT INTO Person VALUES ('P0049', 'Faizal Rahim', 41, 'M', '60111009988', 'faizal.rahim@email.com');
+INSERT INTO Person VALUES ('P0050', 'Gina Lim', 26, 'F', '60100998877', 'gina.lim@email.com');
+-- Person 51-60
+INSERT INTO Person VALUES ('P0051', 'Hakim Jamal', 38, 'M', '60113579246', 'hakim.jamal@email.com');
+INSERT INTO Person VALUES ('P0052', 'Irene Choo', 31, 'F', '60124681357', 'irene.choo@email.com');
+INSERT INTO Person VALUES ('P0053', 'Jayden Kok', 24, 'M', '60135792468', 'jayden.kok@email.com');
+INSERT INTO Person VALUES ('P0054', 'Kavitha Devi', 35, 'F', '60146813579', 'kavitha.devi@email.com');
+INSERT INTO Person VALUES ('P0055', 'Leonard Tan', 28, 'M', '60157924680', 'leonard.tan@email.com');
+INSERT INTO Person VALUES ('P0056', 'Mandy Koh', 32, 'F', '60168035791', 'mandy.koh@email.com');
+INSERT INTO Person VALUES ('P0057', 'Nathan Teoh', 43, 'M', '60179146802', 'nathan.teoh@email.com');
+INSERT INTO Person VALUES ('P0058', 'Olivia Pang', 27, 'F', '60180257913', 'olivia.pang@email.com');
+INSERT INTO Person VALUES ('P0059', 'Peter Lim', 30, 'M', '60191368024', 'peter.lim@email.com');
+INSERT INTO Person VALUES ('P0060', 'Queenie Chan', 25, 'F', '60102479135', 'queenie.chan@email.com');
+-- Person 61-70
+INSERT INTO Person VALUES ('P0061', 'Rizwan Ahmad', 36, 'M', '60197531864', 'rizwan.ahmad@email.com');
+INSERT INTO Person VALUES ('P0062', 'Sofia Lee', 29, 'F', '60186429753', 'sofia.lee@email.com');
+INSERT INTO Person VALUES ('P0063', 'Thomas Ang', 40, 'M', '60175318642', 'thomas.ang@email.com');
+INSERT INTO Person VALUES ('P0064', 'Uma Devi', 33, 'F', '60164297531', 'uma.devi@email.com');
+INSERT INTO Person VALUES ('P0065', 'Victor Chong', 26, 'M', '60153186420', 'victor.chong@email.com');
+INSERT INTO Person VALUES ('P0066', 'Wesley Tan', 37, 'M', '60142075319', 'wesley.tan@email.com');
+INSERT INTO Person VALUES ('P0067', 'Xin Yi', 28, 'F', '60131964208', 'xin.yi@email.com');
+INSERT INTO Person VALUES ('P0068', 'Yusof Bakar', 45, 'M', '60120853197', 'yusof.bakar@email.com');
+INSERT INTO Person VALUES ('P0069', 'Zara Ismail', 31, 'F', '60119742086', 'zara.ismail@email.com');
+INSERT INTO Person VALUES ('P0070', 'Aaron Lim', 22, 'M', '60108631975', 'aaron.lim@email.com');
+-- Person 71-80
+INSERT INTO Person VALUES ('P0071', 'Bella Teo', 34, 'F', '60124680135', 'bella.teo@email.com');
+INSERT INTO Person VALUES ('P0072', 'Caleb Oh', 27, 'M', '60135791246', 'caleb.oh@email.com');
+INSERT INTO Person VALUES ('P0073', 'Diana Raja', 39, 'F', '60146802357', 'diana.raja@email.com');
+INSERT INTO Person VALUES ('P0074', 'Ethan Wong', 30, 'M', '60157913468', 'ethan.wong@email.com');
+INSERT INTO Person VALUES ('P0075', 'Faye Heng', 25, 'F', '60168024579', 'faye.heng@email.com');
+INSERT INTO Person VALUES ('P0076', 'Gavin Tan', 42, 'M', '60179135680', 'gavin.tan@email.com');
+INSERT INTO Person VALUES ('P0077', 'Hannah Yeap', 28, 'F', '60180246791', 'hannah.yeap@email.com');
+INSERT INTO Person VALUES ('P0078', 'Ian Foong', 33, 'M', '60191357802', 'ian.foong@email.com');
+INSERT INTO Person VALUES ('P0079', 'Jasmine Loo', 26, 'F', '60102468913', 'jasmine.loo@email.com');
+INSERT INTO Person VALUES ('P0080', 'Kyle Soh', 35, 'M', '60113579024', 'kyle.soh@email.com');
+-- Person 81-90
+INSERT INTO Person VALUES ('P0081', 'Lydia Chin', 29, 'F', '60108642975', 'lydia.chin@email.com');
+INSERT INTO Person VALUES ('P0082', 'Marcus Ng', 38, 'M', '60119753086', 'marcus.ng@email.com');
+INSERT INTO Person VALUES ('P0083', 'Nora Said', 32, 'F', '60120864197', 'nora.said@email.com');
+INSERT INTO Person VALUES ('P0084', 'Owen Cheah', 27, 'M', '60131975308', 'owen.cheah@email.com');
+INSERT INTO Person VALUES ('P0085', 'Phoebe Lim', 41, 'F', '60142086419', 'phoebe.lim@email.com');
+INSERT INTO Person VALUES ('P0086', 'Quentin Ho', 30, 'M', '60153197520', 'quentin.ho@email.com');
+INSERT INTO Person VALUES ('P0087', 'Rebecca Tan', 24, 'F', '60164208631', 'rebecca.tan@email.com');
+INSERT INTO Person VALUES ('P0088', 'Simon Lau', 36, 'M', '60175319742', 'simon.lau@email.com');
+INSERT INTO Person VALUES ('P0089', 'Tina Koh', 31, 'F', '60186420853', 'tina.koh@email.com');
+INSERT INTO Person VALUES ('P0090', 'Umar Hafiz', 28, 'M', '60197531964', 'umar.hafiz@email.com');
+-- Person 91-100
+INSERT INTO Person VALUES ('P0091', 'Vivian Lee', 43, 'F', '60108642075', 'vivian.lee@email.com');
+INSERT INTO Person VALUES ('P0092', 'Wayne Chan', 26, 'M', '60119753186', 'wayne.chan@email.com');
+INSERT INTO Person VALUES ('P0093', 'Xander Lim', 34, 'M', '60120864297', 'xander.lim@email.com');
+INSERT INTO Person VALUES ('P0094', 'Yvonne Teo', 29, 'F', '60131975308', 'yvonne.teo@email.com');
+INSERT INTO Person VALUES ('P0095', 'Zheng Wei', 37, 'M', '60142086419', 'zheng.wei@email.com');
+INSERT INTO Person VALUES ('P0096', 'Amirah Yusof', 25, 'F', '60153197520', 'amirah.yusof@email.com');
+INSERT INTO Person VALUES ('P0097', 'Brandon Kim', 32, 'M', '60164208631', 'brandon.kim@email.com');
+INSERT INTO Person VALUES ('P0098', 'Cassandra Tham', 28, 'F', '60175319742', 'cassandra.tham@email.com');
+INSERT INTO Person VALUES ('P0099', 'Darren Ooi', 40, 'M', '60186420853', 'darren.ooi@email.com');
+INSERT INTO Person VALUES ('P0100', 'Eileen Phua', 31, 'F', '60197531964', 'eileen.phua@email.com');
+
+-- Industry 1 (Tech)
+INSERT INTO JobPositions VALUES (1, 1, 'Consultant');
+INSERT INTO JobPositions VALUES (2, 1, 'Recruiter');
+INSERT INTO JobPositions VALUES (3, 1, 'Speaker');
+INSERT INTO JobPositions VALUES (4, 1, 'Panelist');
+INSERT INTO JobPositions VALUES (5, 1, 'Interviewer');
+-- Industry 2 (Finance)
+INSERT INTO JobPositions VALUES (6, 2, 'Consultant');
+INSERT INTO JobPositions VALUES (7, 2, 'Recruiter');
+INSERT INTO JobPositions VALUES (8, 2, 'Speaker');
+INSERT INTO JobPositions VALUES (9, 2, 'Panelist');
+INSERT INTO JobPositions VALUES (10, 2, 'Interviewer');
+-- Industry 3 (Healthcare)
+INSERT INTO JobPositions VALUES (11, 3, 'Consultant');
+INSERT INTO JobPositions VALUES (12, 3, 'Recruiter');
+INSERT INTO JobPositions VALUES (13, 3, 'Speaker');
+INSERT INTO JobPositions VALUES (14, 3, 'Panelist');
+INSERT INTO JobPositions VALUES (15, 3, 'Interviewer');
+-- Industry 4 (Education)
+INSERT INTO JobPositions VALUES (16, 4, 'Consultant');
+INSERT INTO JobPositions VALUES (17, 4, 'Recruiter');
+INSERT INTO JobPositions VALUES (18, 4, 'Speaker');
+INSERT INTO JobPositions VALUES (19, 4, 'Panelist');
+INSERT INTO JobPositions VALUES (20, 4, 'Interviewer');
+-- Industry 5 (Manufacturing)
+INSERT INTO JobPositions VALUES (21, 5, 'Consultant');
+INSERT INTO JobPositions VALUES (22, 5, 'Recruiter');
+INSERT INTO JobPositions VALUES (23, 5, 'Speaker');
+INSERT INTO JobPositions VALUES (24, 5, 'Panelist');
+INSERT INTO JobPositions VALUES (25, 5, 'Interviewer');
+-- Industry 6 (Retail)
+INSERT INTO JobPositions VALUES (26, 6, 'Consultant');
+INSERT INTO JobPositions VALUES (27, 6, 'Recruiter');
+INSERT INTO JobPositions VALUES (28, 6, 'Speaker');
+INSERT INTO JobPositions VALUES (29, 6, 'Panelist');
+INSERT INTO JobPositions VALUES (30, 6, 'Interviewer');
+
+INSERT INTO Organizations VALUES ('ORG001', 'Companies', 'Tech Solutions Sdn Bhd', 'contact@techsolutions.com', '60376543210', 1, 'Exhibitor', NULL, 10);
+INSERT INTO Organizations VALUES ('ORG002', 'Universities', 'Global University', 'info@globaluni.edu', '6031234567', 4, 'Sponsor', NULL, 5);
+INSERT INTO Organizations VALUES ('ORG003', 'Marketing Firm', 'NextGen Adverts', 'hello@nextgenads.com', '6035551234', 7, 'Sponsor', NULL, 3);
+INSERT INTO Organizations VALUES ('ORG004', 'Consultancy agent', 'Strategic Consultants', 'admin@strategic-cons.my', '6038889999', 9, 'Consultancy provider', NULL, 8);
+INSERT INTO Organizations VALUES ('ORG005', 'F&B provider', 'Tasty Catering', 'order@tastycatering.com', '6037776666', 8, NULL, NULL, 15);
+INSERT INTO Organizations VALUES ('ORG006', 'Companies', 'SecureBank', 'corporate@securebank.com', '6032221111', 2, 'Sponsor', NULL, 12);
+INSERT INTO Organizations VALUES ('ORG007', 'Universities', 'Northern College', 'enquiry@northern.edu', '6034445555', 4, 'Speech provider', NULL, 7);
+INSERT INTO Organizations VALUES ('ORG008', 'Companies', 'MediPharma', 'info@medipharma.com', '6039990000', 3, 'Exhibitor', NULL, 9);
+INSERT INTO Organizations VALUES ('ORG009', 'F&B provider', 'Cafe Delight', 'manager@cafedelight.com', '6031112222', 8, NULL, NULL, 20);
+INSERT INTO Organizations VALUES ('ORG010', 'Marketing Firm', 'Brand Buzz', 'contact@brandbuzz.my', '6036667777', 7, 'Exhibitor', NULL, 4);
+
+INSERT INTO Location VALUES (1, 'ORG001', 'Tech Hub', 1, 1, 'Main Exhibition Halls', 5000, 'Large');
+INSERT INTO Location VALUES (2, 'ORG001', 'Meeting Room A', 2, 2, 'Meeting Rooms', 800, 'Small');
+INSERT INTO Location VALUES (3, 'ORG002', 'University Pavilion', 1, 3, 'Main Exhibition Halls', 4500, 'Large');
+INSERT INTO Location VALUES (4, 'ORG003', 'Marketing Corner', 1, 4, 'Main Exhibition Halls', 3000, 'Medium');
+INSERT INTO Location VALUES (5, 'ORG004', 'Consultation Suite 1', 3, 1, 'Conference Rooms', 600, 'Small');
+INSERT INTO Location VALUES (6, 'ORG004', 'Consultation Suite 2', 3, 2, 'Conference Rooms', 600, 'Small');
+INSERT INTO Location VALUES (7, 'ORG005', 'Food Court Stall A', 1, 5, 'Main Exhibition Halls', 2000, 'Medium');
+INSERT INTO Location VALUES (8, 'ORG005', 'Food Court Stall B', 1, 6, 'Main Exhibition Halls', 2000, 'Medium');
+INSERT INTO Location VALUES (9, 'ORG006', 'Banking Hub', 1, 7, 'Main Exhibition Halls', 4000, 'Large');
+INSERT INTO Location VALUES (10, 'ORG007', 'Auditorium A', 2, 1, 'Auditoriums', 10000, 'Large');
+INSERT INTO Location VALUES (11, 'ORG007', 'Seminar Room 1', 2, 3, 'Conference Rooms', 1200, 'Medium');
+INSERT INTO Location VALUES (12, 'ORG008', 'Pharma Pavilion', 1, 8, 'Main Exhibition Halls', 3500, 'Medium');
+INSERT INTO Location VALUES (13, 'ORG009', 'Cafe Lounge', 1, 9, 'Networking Lounge', 2500, 'Medium');
+INSERT INTO Location VALUES (14, 'ORG010', 'Creative Zone', 1, 10, 'Main Exhibition Halls', 2800, 'Medium');
+INSERT INTO Location VALUES (15, 'ORG010', 'Branding Workshop Room', 3, 3, 'Meeting Rooms', 900, 'Small');
+INSERT INTO Location VALUES (16, NULL, 'General Networking Area', 1, 11, 'Networking Lounge', 1500, 'Medium');
+INSERT INTO Location VALUES (17, NULL, 'Keynote Stage', 2, 2, 'Auditoriums', 15000, 'Large');
+INSERT INTO Location VALUES (18, NULL, 'Interview Room 1', 3, 4, 'Meeting Rooms', 400, 'Small');
+INSERT INTO Location VALUES (19, NULL, 'Interview Room 2', 3, 5, 'Meeting Rooms', 400, 'Small');
+INSERT INTO Location VALUES (20, NULL, 'Panel Discussion Room', 2, 4, 'Conference Rooms', 2000, 'Medium');
+INSERT INTO Location VALUES (21, 'ORG001', 'Product Demo Area', 1, 12, 'Main Exhibition Halls', 1000, 'Small');
+INSERT INTO Location VALUES (22, 'ORG002', 'Career Advisory Booth', 1, 13, 'Main Exhibition Halls', 800, 'Small');
+INSERT INTO Location VALUES (23, 'ORG006', 'Wealth Talk Area', 2, 5, 'Conference Rooms', 1500, 'Medium');
+INSERT INTO Location VALUES (24, 'ORG008', 'Health Screening Zone', 1, 14, 'Main Exhibition Halls', 1200, 'Small');
+INSERT INTO Location VALUES (25, NULL, 'Main Hall Entrance', 1, 15, 'Main Exhibition Halls', 0, 'Small');
+INSERT INTO Location VALUES (26, NULL, 'Rest Area 1', 1, 16, 'Networking Lounge', 0, 'Small');
+INSERT INTO Location VALUES (27, NULL, 'Rest Area 2', 2, 6, 'Networking Lounge', 0, 'Small');
+INSERT INTO Location VALUES (28, 'ORG003', 'Social Media Wall', 1, 17, 'Main Exhibition Halls', 500, 'Small');
+INSERT INTO Location VALUES (29, 'ORG007', 'Lecture Hall B', 2, 7, 'Auditoriums', 7500, 'Medium');
+INSERT INTO Location VALUES (30, 'ORG004', 'Strategy Workshop Room', 3, 6, 'Conference Rooms', 1800, 'Medium');
+
+INSERT INTO Events VALUES (1, 'Tech Career Talk', 'Exploring opportunities in the tech industry', 'Speeches / Talks / Seminars', 20241015, 10);
+INSERT INTO Events VALUES (2, 'Finance Networking Mixer', 'Connect with professionals in finance', 'Networking Sessions', 20241015, 23);
+INSERT INTO Events VALUES (3, 'Resume Review Workshop', 'Get your resume reviewed by experts', 'Career Consultation', 20241016, 11);
+INSERT INTO Events VALUES (4, 'FinTech Panel Discussion', 'The future of financial technology', 'Speeches / Talks / Seminars', 20241016, 20);
+INSERT INTO Events VALUES (5, 'Banking Recruitment Drive', 'Interviews for teller and analyst roles', 'Recruitment', 20241017, 9);
+INSERT INTO Events VALUES (6, 'AI in Healthcare Seminar', 'How AI is transforming medicine', 'Speeches / Talks / Seminars', 20241017, 29);
+INSERT INTO Events VALUES (7, 'Marketing Case Study Competition', 'Solve real-world marketing challenges', 'Networking Sessions', 20241018, 4);
+INSERT INTO Events VALUES (8, 'Consulting Interview 101', 'Ace your case interviews', 'Career Consultation', 20241018, 5);
+INSERT INTO Events VALUES (9, 'University Open Day', 'Learn about postgraduate programs', 'Recruitment', 20241015, 3);
+INSERT INTO Events VALUES (10, 'Startup Founder Fireside Chat', 'Stories from successful entrepreneurs', 'Speeches / Talks / Seminars', 20241016, 17);
+INSERT INTO Events VALUES (11, 'Quick Networking for Students', 'Fast-paced networking event', 'Networking Sessions', 20241017, 16);
+INSERT INTO Events VALUES (12, 'Mock Interview Session', 'Practice your interview skills', 'Career Consultation', 20241018, 18);
+INSERT INTO Events VALUES (13, 'Pharmaceutical Sales Recruitment', 'Hiring for sales representatives', 'Recruitment', 20241015, 12);
+INSERT INTO Events VALUES (14, 'The Future of Work Keynote', 'Keynote on evolving workplace trends', 'Speeches / Talks / Seminars', 20241016, 17);
+INSERT INTO Events VALUES (15, 'Women in Leadership Panel', 'Discussing challenges and opportunities', 'Speeches / Talks / Seminars', 20241017, 20);
+INSERT INTO Events VALUES (16, 'Coffee Chat with Recruiters', 'Informal chats with hiring managers', 'Networking Sessions', 20241018, 13);
+INSERT INTO Events VALUES (17, 'Portfolio Review for Designers', 'Get feedback on your design portfolio', 'Career Consultation', 20241015, 15);
+INSERT INTO Events VALUES (18, 'IT Support Role Interviews', 'On-the-spot interviews for IT roles', 'Recruitment', 20241016, 2);
+INSERT INTO Events VALUES (19, 'Digital Marketing Trends Talk', 'Latest trends in SEO and social media', 'Speeches / Talks / Seminars', 20241017, 11);
+INSERT INTO Events VALUES (20, 'Executive Lunch Networking', 'Network with company executives', 'Networking Sessions', 20241018, 26);
+INSERT INTO Events VALUES (21, 'Career Pivot Consultation', 'Advice for changing careers', 'Career Consultation', 20241015, 6);
+INSERT INTO Events VALUES (22, 'Graduate Program Fair', 'Find the best graduate programs', 'Recruitment', 20241016, 22);
+INSERT INTO Events VALUES (23, 'Blockchain and Crypto Seminar', 'Understanding digital currencies', 'Speeches / Talks / Seminars', 20241017, 23);
+INSERT INTO Events VALUES (24, 'Speed Networking', 'Meet as many people as possible in 1 hour', 'Networking Sessions', 20241018, 27);
+INSERT INTO Events VALUES (25, 'Salary Negotiation Workshop', 'Learn how to negotiate your offer', 'Career Consultation', 20241015, 30);
+INSERT INTO Events VALUES (26, 'Engineering Job Fair', 'Meet top engineering firms', 'Recruitment', 20241016, 1);
+INSERT INTO Events VALUES (27, 'Sustainable Business Practices', 'Talk on ESG and green business', 'Speeches / Talks / Seminars', 20241017, 29);
+INSERT INTO Events VALUES (28, 'Young Professionals Meetup', 'For those with 0-5 years of experience', 'Networking Sessions', 20241018, 16);
+INSERT INTO Events VALUES (29, 'LinkedIn Profile Clinic', 'Optimize your LinkedIn profile', 'Career Consultation', 20241015, 19);
+INSERT INTO Events VALUES (30, 'Retail Management Hiring Day', 'Open interviews for store managers', 'Recruitment', 20241016, 14);
+
+INSERT INTO Speakers VALUES (1, 'P0001', 'Tech Solutions Sdn Bhd', 1);
+INSERT INTO Speakers VALUES (2, 'P0002', 'SecureBank', 2);
+INSERT INTO Speakers VALUES (3, 'P0003', 'Global University', 3);
+INSERT INTO Speakers VALUES (4, 'P0004', 'Strategic Consultants', 4);
+INSERT INTO Speakers VALUES (5, 'P0005', 'MediPharma', 5);
+INSERT INTO Speakers VALUES (6, 'P0006', 'NextGen Adverts', 6);
+INSERT INTO Speakers VALUES (7, 'P0007', 'Northern College', 7);
+INSERT INTO Speakers VALUES (8, 'P0008', 'Brand Buzz', 8);
+INSERT INTO Speakers VALUES (9, 'P0009', 'Tech Solutions Sdn Bhd', 9);
+INSERT INTO Speakers VALUES (10, 'P0010', 'SecureBank', 10);
+INSERT INTO Speakers VALUES (11, 'P0011', 'Global University', 11);
+INSERT INTO Speakers VALUES (12, 'P0012', 'Strategic Consultants', 12);
+INSERT INTO Speakers VALUES (13, 'P0013', 'MediPharma', 13);
+INSERT INTO Speakers VALUES (14, 'P0014', 'NextGen Adverts', 14);
+INSERT INTO Speakers VALUES (15, 'P0015', 'Northern College', 15);
+INSERT INTO Speakers VALUES (16, 'P0016', 'Brand Buzz', 16);
+INSERT INTO Speakers VALUES (17, 'P0017', 'Tech Solutions Sdn Bhd', 17);
+INSERT INTO Speakers VALUES (18, 'P0018', 'SecureBank', 18);
+INSERT INTO Speakers VALUES (19, 'P0019', 'Global University', 19);
+INSERT INTO Speakers VALUES (20, 'P0020', 'Strategic Consultants', 20);
+INSERT INTO Speakers VALUES (21, 'P0021', 'MediPharma', 21);
+INSERT INTO Speakers VALUES (22, 'P0022', 'NextGen Adverts', 22);
+INSERT INTO Speakers VALUES (23, 'P0023', 'Northern College', 23);
+INSERT INTO Speakers VALUES (24, 'P0024', 'Brand Buzz', 24);
+INSERT INTO Speakers VALUES (25, 'P0025', 'Tech Solutions Sdn Bhd', 25);
+INSERT INTO Speakers VALUES (26, 'P0026', 'SecureBank', 26);
+INSERT INTO Speakers VALUES (27, 'P0027', 'Global University', 27);
+INSERT INTO Speakers VALUES (28, 'P0028', 'Strategic Consultants', 28);
+INSERT INTO Speakers VALUES (29, 'P0029', 'MediPharma', 29);
+INSERT INTO Speakers VALUES (30, 'P0030', 'NextGen Adverts', 30);
+
+INSERT INTO Applicants VALUES ('P0001', 'Bachelor', 'Computer Science', 'resume_p1.pdf', 'portfolio_p1.zip', 'ORG002');
+INSERT INTO Applicants VALUES ('P0002', 'Master', 'Finance', 'resume_p2.pdf', NULL, 'ORG007');
+INSERT INTO Applicants VALUES ('P0003', 'PhD', 'Biotechnology', 'resume_p3.pdf', 'portfolio_p3.zip', 'ORG002');
+INSERT INTO Applicants VALUES ('P0004', 'Bachelor', 'Marketing', 'resume_p4.pdf', NULL, 'ORG007');
+INSERT INTO Applicants VALUES ('P0005', 'Diploma', 'Culinary Arts', 'resume_p5.pdf', 'portfolio_p5.zip', 'ORG007');
+INSERT INTO Applicants VALUES ('P0006', 'Bachelor', 'Business Administration', 'resume_p6.pdf', NULL, 'ORG002');
+INSERT INTO Applicants VALUES ('P0007', 'Master', 'Data Science', 'resume_p7.pdf', 'portfolio_p7.zip', 'ORG002');
+INSERT INTO Applicants VALUES ('P0008', 'Bachelor', 'Graphic Design', 'resume_p8.pdf', 'portfolio_p8.zip', 'ORG007');
+INSERT INTO Applicants VALUES ('P0009', 'PhD', 'Economics', 'resume_p9.pdf', NULL, 'ORG002');
+INSERT INTO Applicants VALUES ('P0010', 'Bachelor', 'Logistics', 'resume_p10.pdf', NULL, 'ORG007');
+
+INSERT INTO Employees VALUES ('P0001', 'ORG001', 1);
+INSERT INTO Employees VALUES ('P0002', 'ORG001', 2);
+INSERT INTO Employees VALUES ('P0003', 'ORG001', 3);
+INSERT INTO Employees VALUES ('P0004', 'ORG002', 16);
+INSERT INTO Employees VALUES ('P0005', 'ORG002', 17);
+INSERT INTO Employees VALUES ('P0006', 'ORG003', 26);
+INSERT INTO Employees VALUES ('P0007', 'ORG003', 27);
+INSERT INTO Employees VALUES ('P0008', 'ORG004', 16);
+INSERT INTO Employees VALUES ('P0009', 'ORG004', 17);
+INSERT INTO Employees VALUES ('P0010', 'ORG005', 28);
+INSERT INTO Employees VALUES ('P0001', 'ORG006', 6);
+INSERT INTO Employees VALUES ('P0002', 'ORG006', 7);
+INSERT INTO Employees VALUES ('P0003', 'ORG007', 16);
+INSERT INTO Employees VALUES ('P0004', 'ORG007', 17);
+INSERT INTO Employees VALUES ('P0005', 'ORG008', 11);
+INSERT INTO Employees VALUES ('P0006', 'ORG008', 12);
+INSERT INTO Employees VALUES ('P0007', 'ORG009', 28);
+INSERT INTO Employees VALUES ('P0008', 'ORG009', 29);
+INSERT INTO Employees VALUES ('P0009', 'ORG010', 26);
+INSERT INTO Employees VALUES ('P0010', 'ORG010', 27);
+INSERT INTO Employees VALUES ('P0001', 'ORG006', 8);
+INSERT INTO Employees VALUES ('P0002', 'ORG001', 4);
+INSERT INTO Employees VALUES ('P0003', 'ORG002', 18);
+INSERT INTO Employees VALUES ('P0004', 'ORG003', 28);
+INSERT INTO Employees VALUES ('P0005', 'ORG004', 19);
+INSERT INTO Employees VALUES ('P0006', 'ORG005', 29);
+INSERT INTO Employees VALUES ('P0007', 'ORG008', 13);
+INSERT INTO Employees VALUES ('P0008', 'ORG009', 30);
+INSERT INTO Employees VALUES ('P0009', 'ORG010', 28);
+INSERT INTO Employees VALUES ('P0010', 'ORG001', 5);
+
+INSERT INTO Panelist VALUES ('P0001', 4);
+INSERT INTO Panelist VALUES ('P0002', 4);
+INSERT INTO Panelist VALUES ('P0003', 4);
+INSERT INTO Panelist VALUES ('P0004', 15);
+INSERT INTO Panelist VALUES ('P0005', 15);
+INSERT INTO Panelist VALUES ('P0006', 15);
+INSERT INTO Panelist VALUES ('P0007', 23);
+INSERT INTO Panelist VALUES ('P0008', 23);
+INSERT INTO Panelist VALUES ('P0009', 27);
+INSERT INTO Panelist VALUES ('P0010', 27);
+INSERT INTO Panelist VALUES ('P0001', 10);
+INSERT INTO Panelist VALUES ('P0002', 10);
+INSERT INTO Panelist VALUES ('P0003', 14);
+INSERT INTO Panelist VALUES ('P0004', 14);
+INSERT INTO Panelist VALUES ('P0005', 19);
+INSERT INTO Panelist VALUES ('P0006', 19);
+INSERT INTO Panelist VALUES ('P0007', 1);
+INSERT INTO Panelist VALUES ('P0008', 1);
+INSERT INTO Panelist VALUES ('P0009', 6);
+INSERT INTO Panelist VALUES ('P0010', 6);
+INSERT INTO Panelist VALUES ('P0001', 27);
+INSERT INTO Panelist VALUES ('P0002', 27);
+INSERT INTO Panelist VALUES ('P0003', 23);
+INSERT INTO Panelist VALUES ('P0004', 23);
+INSERT INTO Panelist VALUES ('P0005', 15);
+INSERT INTO Panelist VALUES ('P0006', 15);
+INSERT INTO Panelist VALUES ('P0007', 4);
+INSERT INTO Panelist VALUES ('P0008', 4);
+INSERT INTO Panelist VALUES ('P0009', 10);
+INSERT INTO Panelist VALUES ('P0010', 10);
+
+INSERT INTO Applications VALUES ('ORG001', 'P0001', 1, 'Full time', 'Applied', 20241001);
+INSERT INTO Applications VALUES ('ORG001', 'P0002', 2, 'Internships', 'Interview scheduled', 20241002);
+INSERT INTO Applications VALUES ('ORG002', 'P0003', 16, 'Full time', 'Resume Submitted', 20241003);
+INSERT INTO Applications VALUES ('ORG002', 'P0004', 17, 'Part time', 'Rejected', 20241004);
+INSERT INTO Applications VALUES ('ORG003', 'P0005', 26, 'Full time', 'Interview done', 20241005);
+INSERT INTO Applications VALUES ('ORG003', 'P0006', 27, 'Internships', 'Applied', 20241001);
+INSERT INTO Applications VALUES ('ORG004', 'P0007', 16, 'Full time', 'Interview scheduled', 20241002);
+INSERT INTO Applications VALUES ('ORG004', 'P0008', 17, 'Part time', 'Resume Submitted', 20241003);
+INSERT INTO Applications VALUES ('ORG005', 'P0009', 28, 'Full time', 'Rejected', 20241004);
+INSERT INTO Applications VALUES ('ORG005', 'P0010', 29, 'Internships', 'Interview done', 20241005);
+INSERT INTO Applications VALUES ('ORG006', 'P0001', 6, 'Full time', 'Applied', 20241001);
+INSERT INTO Applications VALUES ('ORG006', 'P0002', 7, 'Part time', 'Interview scheduled', 20241002);
+INSERT INTO Applications VALUES ('ORG007', 'P0003', 16, 'Internships', 'Resume Submitted', 20241003);
+INSERT INTO Applications VALUES ('ORG007', 'P0004', 17, 'Full time', 'Rejected', 20241004);
+INSERT INTO Applications VALUES ('ORG008', 'P0005', 11, 'Part time', 'Interview done', 20241005);
+INSERT INTO Applications VALUES ('ORG008', 'P0006', 12, 'Full time', 'Applied', 20241001);
+INSERT INTO Applications VALUES ('ORG009', 'P0007', 28, 'Internships', 'Interview scheduled', 20241002);
+INSERT INTO Applications VALUES ('ORG009', 'P0008', 29, 'Full time', 'Resume Submitted', 20241003);
+INSERT INTO Applications VALUES ('ORG010', 'P0009', 26, 'Part time', 'Rejected', 20241004);
+INSERT INTO Applications VALUES ('ORG010', 'P0010', 27, 'Full time', 'Interview done', 20241005);
+INSERT INTO Applications VALUES ('ORG001', 'P0003', 3, 'Internships', 'Applied', 20241006);
+INSERT INTO Applications VALUES ('ORG002', 'P0004', 18, 'Full time', 'Interview scheduled', 20241007);
+INSERT INTO Applications VALUES ('ORG003', 'P0005', 28, 'Part time', 'Resume Submitted', 20241008);
+INSERT INTO Applications VALUES ('ORG004', 'P0006', 19, 'Internships', 'Rejected', 20241009);
+INSERT INTO Applications VALUES ('ORG005', 'P0007', 30, 'Full time', 'Interview done', 20241010);
+INSERT INTO Applications VALUES ('ORG006', 'P0008', 8, 'Part time', 'Applied', 20241006);
+INSERT INTO Applications VALUES ('ORG007', 'P0009', 18, 'Full time', 'Interview scheduled', 20241007);
+INSERT INTO Applications VALUES ('ORG008', 'P0010', 13, 'Internships', 'Resume Submitted', 20241008);
+INSERT INTO Applications VALUES ('ORG009', 'P0001', 30, 'Part time', 'Rejected', 20241009);
+INSERT INTO Applications VALUES ('ORG010', 'P0002', 28, 'Full time', 'Interview done', 20241010);
+
+INSERT INTO EventsParticipation VALUES (1, 'P0001', 'ORG001');
+INSERT INTO EventsParticipation VALUES (2, 'P0002', 'ORG006');
+INSERT INTO EventsParticipation VALUES (3, 'P0003', 'ORG002');
+INSERT INTO EventsParticipation VALUES (4, 'P0004', 'ORG004');
+INSERT INTO EventsParticipation VALUES (5, 'P0005', 'ORG008');
+INSERT INTO EventsParticipation VALUES (6, 'P0006', 'ORG003');
+INSERT INTO EventsParticipation VALUES (7, 'P0007', 'ORG007');
+INSERT INTO EventsParticipation VALUES (8, 'P0008', 'ORG010');
+INSERT INTO EventsParticipation VALUES (9, 'P0009', 'ORG001');
+INSERT INTO EventsParticipation VALUES (10, 'P0010', 'ORG006');
+INSERT INTO EventsParticipation VALUES (11, 'P0001', 'ORG002');
+INSERT INTO EventsParticipation VALUES (12, 'P0002', 'ORG004');
+INSERT INTO EventsParticipation VALUES (13, 'P0003', 'ORG008');
+INSERT INTO EventsParticipation VALUES (14, 'P0004', 'ORG003');
+INSERT INTO EventsParticipation VALUES (15, 'P0005', 'ORG007');
+INSERT INTO EventsParticipation VALUES (16, 'P0006', 'ORG010');
+INSERT INTO EventsParticipation VALUES (17, 'P0007', 'ORG001');
+INSERT INTO EventsParticipation VALUES (18, 'P0008', 'ORG006');
+INSERT INTO EventsParticipation VALUES (19, 'P0009', 'ORG002');
+INSERT INTO EventsParticipation VALUES (20, 'P0010', 'ORG004');
+INSERT INTO EventsParticipation VALUES (21, 'P0001', 'ORG008');
+INSERT INTO EventsParticipation VALUES (22, 'P0002', 'ORG003');
+INSERT INTO EventsParticipation VALUES (23, 'P0003', 'ORG007');
+INSERT INTO EventsParticipation VALUES (24, 'P0004', 'ORG010');
+INSERT INTO EventsParticipation VALUES (25, 'P0005', 'ORG001');
+INSERT INTO EventsParticipation VALUES (26, 'P0006', 'ORG006');
+INSERT INTO EventsParticipation VALUES (27, 'P0007', 'ORG002');
+INSERT INTO EventsParticipation VALUES (28, 'P0008', 'ORG004');
+INSERT INTO EventsParticipation VALUES (29, 'P0009', 'ORG008');
+INSERT INTO EventsParticipation VALUES (30, 'P0010', 'ORG003');
+
+INSERT INTO Participations VALUES (1, 'P0001', 'ORG001', 'Applying', 20241001, 20241002, 'Accepted');
+INSERT INTO Participations VALUES (2, 'P0002', 'ORG001', 'Invited', 20241001, 20241003, 'Accepted');
+INSERT INTO Participations VALUES (3, 'P0003', 'ORG002', 'Applying', 20241002, NULL, 'Applied');
+INSERT INTO Participations VALUES (4, 'P0004', 'ORG002', 'Invited', 20241002, 20241004, 'Declined');
+INSERT INTO Participations VALUES (5, 'P0005', 'ORG003', 'Applying', 20241003, 20241005, 'Accepted');
+INSERT INTO Participations VALUES (6, 'P0006', 'ORG003', 'Invited', 20241003, NULL, 'Invited');
+INSERT INTO Participations VALUES (7, 'P0007', 'ORG004', 'Applying', 20241004, 20241006, 'Accepted');
+INSERT INTO Participations VALUES (8, 'P0008', 'ORG004', 'Invited', 20241004, NULL, 'Invited');
+INSERT INTO Participations VALUES (9, 'P0009', 'ORG005', 'Applying', 20241005, NULL, 'Applied');
+INSERT INTO Participations VALUES (10, 'P0010', 'ORG005', 'Invited', 20241005, 20241007, 'Declined');
+INSERT INTO Participations VALUES (11, 'P0001', 'ORG006', 'Applying', 20241006, 20241008, 'Accepted');
+INSERT INTO Participations VALUES (12, 'P0002', 'ORG006', 'Invited', 20241006, NULL, 'Invited');
+INSERT INTO Participations VALUES (13, 'P0003', 'ORG007', 'Applying', 20241007, NULL, 'Applied');
+INSERT INTO Participations VALUES (14, 'P0004', 'ORG007', 'Invited', 20241007, 20241009, 'Accepted');
+INSERT INTO Participations VALUES (15, 'P0005', 'ORG008', 'Applying', 20241008, 20241010, 'Accepted');
+INSERT INTO Participations VALUES (16, 'P0006', 'ORG008', 'Invited', 20241008, NULL, 'Invited');
+INSERT INTO Participations VALUES (17, 'P0007', 'ORG009', 'Applying', 20241009, NULL, 'Applied');
+INSERT INTO Participations VALUES (18, 'P0008', 'ORG009', 'Invited', 20241009, 20241011, 'Declined');
+INSERT INTO Participations VALUES (19, 'P0009', 'ORG010', 'Applying', 20241010, 20241012, 'Accepted');
+INSERT INTO Participations VALUES (20, 'P0010', 'ORG010', 'Invited', 20241010, NULL, 'Invited');
+INSERT INTO Participations VALUES (21, 'P0001', 'ORG003', 'Applying', 20241011, NULL, 'Applied');
+INSERT INTO Participations VALUES (22, 'P0002', 'ORG004', 'Invited', 20241011, 20241013, 'Accepted');
+INSERT INTO Participations VALUES (23, 'P0003', 'ORG005', 'Applying', 20241012, 20241014, 'Accepted');
+INSERT INTO Participations VALUES (24, 'P0004', 'ORG006', 'Invited', 20241012, NULL, 'Invited');
+INSERT INTO Participations VALUES (25, 'P0005', 'ORG007', 'Applying', 20241013, NULL, 'Applied');
+INSERT INTO Participations VALUES (26, 'P0006', 'ORG008', 'Invited', 20241013, 20241015, 'Declined');
+INSERT INTO Participations VALUES (27, 'P0007', 'ORG009', 'Applying', 20241014, 20241016, 'Accepted');
+INSERT INTO Participations VALUES (28, 'P0008', 'ORG010', 'Invited', 20241014, NULL, 'Invited');
+INSERT INTO Participations VALUES (29, 'P0009', 'ORG001', 'Applying', 20241015, NULL, 'Applied');
+INSERT INTO Participations VALUES (30, 'P0010', 'ORG002', 'Invited', 20241015, 20241017, 'Accepted');
+
+INSERT INTO AdCampaign VALUES ('C001', 'ORG001', 'Tech Talent Drive', 20240901, 20241015, 'Social media marketing', 5000, 'IT Graduates');
+INSERT INTO AdCampaign VALUES ('C002', 'ORG001', 'Future Innovators', 20240915, 20241020, 'Event branding on e-hailing vehicles', 3000, 'Young Professionals');
+INSERT INTO AdCampaign VALUES ('C003', 'ORG002', 'Shape Your Future', 20240905, 20241010, 'Social media marketing', 4000, 'Students');
+INSERT INTO AdCampaign VALUES ('C004', 'ORG003', 'Creative Minds Wanted', 20240910, 20241018, 'Outdoor advertising', 6000, 'Designers');
+INSERT INTO AdCampaign VALUES ('C005', 'ORG004', 'Consulting Careers', 20240920, 20241025, 'Broadcast ads', 8000, 'Business Graduates');
+INSERT INTO AdCampaign VALUES ('C006', 'ORG005', 'Taste of Success', 20240901, 20241015, 'Social media marketing', 2500, 'Culinary Students');
+INSERT INTO AdCampaign VALUES ('C007', 'ORG006', 'Secure Your Career', 20240912, 20241022, 'Outdoor advertising', 5500, 'Finance Majors');
+INSERT INTO AdCampaign VALUES ('C008', 'ORG007', 'Learn and Grow', 20240908, 20241012, 'Social media marketing', 3500, 'Postgraduates');
+INSERT INTO AdCampaign VALUES ('C009', 'ORG008', 'Healthcare Heroes', 20240925, 20241030, 'Broadcast ads', 7000, 'Medical Students');
+INSERT INTO AdCampaign VALUES ('C010', 'ORG009', 'Join Our Cafe Team', 20240903, 20241017, 'Social media marketing', 2000, 'Service Staff');
+INSERT INTO AdCampaign VALUES ('C011', 'ORG010', 'Buzz Your Career', 20240918, 20241028, 'Event branding on e-hailing vehicles', 4500, 'Marketing Students');
+INSERT INTO AdCampaign VALUES ('C012', 'ORG001', 'Code for Success', 20241001, 20241030, 'Social media marketing', 4000, 'Developers');
+INSERT INTO AdCampaign VALUES ('C013', 'ORG002', 'Global Education Fair', 20240922, 20241019, 'Outdoor advertising', 5000, 'International Students');
+INSERT INTO AdCampaign VALUES ('C014', 'ORG003', 'NextGen Marketing', 20240907, 20241014, 'Social media marketing', 3000, 'Marketing Graduates');
+INSERT INTO AdCampaign VALUES ('C015', 'ORG004', 'Strategy Summit', 20240928, 20241031, 'Broadcast ads', 7500, 'Experienced Hires');
+INSERT INTO AdCampaign VALUES ('C016', 'ORG005', 'Food Festival Promo', 20240905, 20241020, 'Social media marketing', 2800, 'General Public');
+INSERT INTO AdCampaign VALUES ('C017', 'ORG006', 'Banking Career Week', 20240914, 20241024, 'Outdoor advertising', 6000, 'Finance Professionals');
+INSERT INTO AdCampaign VALUES ('C018', 'ORG007', 'Research Symposium', 20240909, 20241016, 'Social media marketing', 3200, 'Academics');
+INSERT INTO AdCampaign VALUES ('C019', 'ORG008', 'Pharma Innovation', 20240930, 20241105, 'Broadcast ads', 8500, 'Science Graduates');
+INSERT INTO AdCampaign VALUES ('C020', 'ORG009', 'Barista Championship', 20240904, 20241018, 'Social media marketing', 2200, 'Baristas');
+INSERT INTO AdCampaign VALUES ('C021', 'ORG010', 'Branding Workshop', 20240917, 20241026, 'Event branding on e-hailing vehicles', 4000, 'Brand Managers');
+INSERT INTO AdCampaign VALUES ('C022', 'ORG001', 'Women in Tech', 20241005, 20241110, 'Social media marketing', 4500, 'Female Engineers');
+INSERT INTO AdCampaign VALUES ('C023', 'ORG002', 'Scholarship Drive', 20240924, 20241021, 'Outdoor advertising', 4800, 'High Achievers');
+INSERT INTO AdCampaign VALUES ('C024', 'ORG003', 'Digital Ads Conference', 20240911, 20241019, 'Social media marketing', 3500, 'Ad Professionals');
+INSERT INTO AdCampaign VALUES ('C025', 'ORG004', 'Case Competition', 20241002, 20241101, 'Broadcast ads', 7000, 'MBA Students');
+INSERT INTO AdCampaign VALUES ('C026', 'ORG005', 'Catering Specials', 20240906, 20241021, 'Social media marketing', 2600, 'Event Planners');
+INSERT INTO AdCampaign VALUES ('C027', 'ORG006', 'Wealth Management Expo', 20240916, 20241026, 'Outdoor advertising', 6500, 'Affluent Clients');
+INSERT INTO AdCampaign VALUES ('C028', 'ORG007', 'Alumni Homecoming', 20240910, 20241017, 'Social media marketing', 3800, 'Alumni');
+INSERT INTO AdCampaign VALUES ('C029', 'ORG008', 'Medical Conference', 20241003, 20241108, 'Broadcast ads', 9000, 'Doctors');
+INSERT INTO AdCampaign VALUES ('C030', 'ORG009', 'Coffee Masterclass', 20240905, 20241019, 'Social media marketing', 2400, 'Coffee Enthusiasts');
