@@ -4,6 +4,43 @@ CREATE TABLE Industries (
     Description VARCHAR2(50)
 );
 
+CREATE TABLE Organizations (
+    OrgID CHAR(6) PRIMARY KEY,
+    OrgType VARCHAR2(20) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
+    OrgName VARCHAR2(20) NOT NULL,
+    Email VARCHAR2(25) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
+    ContactNumber VARCHAR2(15) CHECK (REGEXP_LIKE(ContactNumber, '^60[0-9]+$')),
+    IndustryID NUMBER,
+    Roles VARCHAR2(25) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
+    nTickets NUMBER,
+    CONSTRAINT fk_org_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
+    CONSTRAINT chk_org_not_null CHECK (OrgType IS NOT NULL AND OrgName IS NOT NULL)
+);
+
+CREATE TABLE Location (
+    LocationID NUMBER PRIMARY KEY,
+    OrgID CHAR(6),
+    LocationName VARCHAR2(25) NOT NULL,
+    Floor NUMBER,
+    Section NUMBER,
+    LocationType VARCHAR2(20) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
+    RentalPrice NUMBER,
+    "SIZE" VARCHAR2(6) CHECK ("SIZE" IN ('Small', 'Medium', 'Large')),
+    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
+    CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
+);
+
+CREATE TABLE Events (
+    EventID NUMBER PRIMARY KEY,
+    Title VARCHAR2(35) NOT NULL,
+    Description VARCHAR2(50),
+    EventType VARCHAR2(30) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Talks', 'Seminars', 'Career Consultation')),
+    EventTime DATE,
+    LocationID NUMBER,
+    CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
+    CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
+);
+
 CREATE TABLE Speakers (
     SpeakerID NUMBER PRIMARY KEY,
     Name VARCHAR2(20) NOT NULL,
@@ -29,7 +66,15 @@ CREATE TABLE Applicants (
     University CHAR(6),
     "Resume" VARCHAR2(20),
     Portfolio VARCHAR2(20),
-    CONSTRAINT fk_applicant_university FOREIGN KEY (University) REFERENCES Organizations(OrgID),
+    CONSTRAINT fk_applicant_university FOREIGN KEY (University) REFERENCES Organizations(OrgID)
+);
+
+CREATE TABLE JobPositions (
+    JobPostID NUMBER PRIMARY KEY,
+    IndustryID NUMBER NOT NULL,
+    Position CHAR(25) NOT NULL,
+    CONSTRAINT fk_jobpos_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
+    CONSTRAINT chk_position_values CHECK (Position IN ('Speaker', 'Panelist', 'Recruiter', 'Interviewer', 'Consultant', 'General staff', 'Planner', 'Coordinator', 'Logistics', 'Partnership management', 'F&B manager', 'F&B general staff'))
 );
 
 CREATE TABLE Employees (
@@ -43,51 +88,6 @@ CREATE TABLE Employees (
     JobPostID NUMBER NOT NULL,
     CONSTRAINT fk_employee_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT fk_employee_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID)
-);
-
-CREATE TABLE JobPositions (
-    JobPostID NUMBER PRIMARY KEY,
-    IndustryID NUMBER NOT NULL,
-    Position CHAR(25) NOT NULL,
-    CONSTRAINT fk_jobpos_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
-    CONSTRAINT chk_position_values CHECK (Position IN ('Speaker', 'Panelist', 'Recruiter', 'Interviewer', 'Consultant', 'General staff', 'Planner', 'Coordinator', 'Logistics', 'Partnership management', 'F&B manager', 'F&B general staff'))
-);
-
-CREATE TABLE Organizations (
-    OrgID CHAR(6) PRIMARY KEY,
-    OrgType VARCHAR2(20) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
-    OrgName VARCHAR2(20) NOT NULL,
-    Email VARCHAR2(25) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
-    ContactNumber VARCHAR2(15) CHECK (REGEXP_LIKE(ContactNumber, '^60[0-9]+$')),
-    IndustryID NUMBER,
-    Roles VARCHAR2(25) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
-    nTickets NUMBER,
-    CONSTRAINT fk_org_industry FOREIGN KEY (IndustryID) REFERENCES Industries(IndustryID),
-    CONSTRAINT chk_org_not_null CHECK (OrgType IS NOT NULL AND OrgName IS NOT NULL)
-);
-
-CREATE TABLE Location (
-    LocationID NUMBER PRIMARY KEY,
-    OrgID CHAR(6),
-    LocationName VARCHAR2(25) NOT NULL,
-    Floor NUMBER,
-    Section NUMBER,
-    LocationType VARCHAR2(20) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
-    RentalPrice NUMBER,
-    Size VARCHAR2(6) CHECK (Size IN ('Small', 'Medium', 'Large')),
-    CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
-);
-
-CREATE TABLE Events (
-    EventID NUMBER PRIMARY KEY,
-    Title VARCHAR2(35) NOT NULL,
-    Description VARCHAR2(50),
-    EventType VARCHAR2(30) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Talks', 'Seminars', 'Career Consultation')),
-    EventTime DATE,
-    LocationID NUMBER,
-    CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
-    CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
 );
 
 CREATE TABLE Applications (
