@@ -11,7 +11,6 @@ CREATE TABLE Speakers (
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
     PhoneNumber VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
-    "Identity" CHAR(8) CHECK (UPPER(Identity) IN ('Speaker', 'Panelist')), 
     Affiliation VARCHAR2(25),
     EventID NUMBER NOT NULL,
     CONSTRAINT fk_speaker_event FOREIGN KEY (EventID) REFERENCES Events(EventID),
