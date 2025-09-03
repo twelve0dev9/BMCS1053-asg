@@ -4,14 +4,46 @@ CREATE TABLE Industries (
     Description VARCHAR2(50)
 );
 
-CREATE TABLE Person (
-    PersonID CHAR(5) PRIMARY KEY,
+CREATE TABLE Speakers (
+    SpeakerID NUMBER PRIMARY KEY,
     Name VARCHAR2(20) NOT NULL,
     Age NUMBER CHECK (Age >= 0),
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
     PhoneNumber VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
-    CONSTRAINT chk_person_not_null CHECK (PersonID IS NOT NULL AND Name IS NOT NULL)
+    "Identity" CHAR(8) CHECK (UPPER(Identity) IN ('Speaker', 'Panelist')), 
+    Affiliation VARCHAR2(25),
+    EventID NUMBER NOT NULL,
+    CONSTRAINT fk_speaker_event FOREIGN KEY (EventID) REFERENCES Events(EventID),
+    CONSTRAINT chk_speaker_not_null CHECK (EventID IS NOT NULL)
+);
+
+CREATE TABLE Applicants (
+    ApplicantID CHAR(5) PRIMARY KEY,
+    Name VARCHAR2(20) NOT NULL,
+    Age NUMBER CHECK (Age >= 0),
+    Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
+    PhoneNumber VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
+    Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
+    EducationLevel VARCHAR2(10),
+    Major VARCHAR2(25),
+    University CHAR(6),
+    "Resume" VARCHAR2(20),
+    Portfolio VARCHAR2(20),
+    CONSTRAINT fk_applicant_university FOREIGN KEY (University) REFERENCES Organizations(OrgID),
+);
+
+CREATE TABLE Employees (
+    EmployeeID CHAR(5) PRIMARY KEY,
+    Name VARCHAR2(20) NOT NULL,
+    Age NUMBER CHECK (Age >= 0),
+    Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
+    PhoneNumber VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
+    Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
+    OrgID CHAR(6) NOT NULL,
+    JobPostID NUMBER NOT NULL,
+    CONSTRAINT fk_employee_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
+    CONSTRAINT fk_employee_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID)
 );
 
 CREATE TABLE JobPositions (
@@ -59,82 +91,40 @@ CREATE TABLE Events (
     CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
 );
 
-CREATE TABLE Speakers (
-    SpeakerID NUMBER PRIMARY KEY,
-    PersonID CHAR(5) NOT NULL,
-    Affiliation VARCHAR2(25),
-    EventID NUMBER NOT NULL,
-    CONSTRAINT fk_speaker_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
-    CONSTRAINT fk_speaker_event FOREIGN KEY (EventID) REFERENCES Events(EventID),
-    CONSTRAINT chk_speaker_not_null CHECK (SpeakerID IS NOT NULL AND PersonID IS NOT NULL AND EventID IS NOT NULL)
-);
-
-CREATE TABLE Applicants (
-    PersonID CHAR(5) PRIMARY KEY,
-    EducationLevel VARCHAR2(10),
-    Major VARCHAR2(25),
-    "Resume" VARCHAR2(20),
-    Portfolio VARCHAR2(20),
-    University CHAR(6),
-    CONSTRAINT fk_applicant_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
-    CONSTRAINT fk_applicant_university FOREIGN KEY (University) REFERENCES Organizations(OrgID),
-    CONSTRAINT chk_applicant_not_null CHECK (PersonID IS NOT NULL)
-);
-
-CREATE TABLE Employees (
-    PersonID CHAR(5) NOT NULL,
-    OrgID CHAR(6) NOT NULL,
-    JobPostID NUMBER NOT NULL,
-    CONSTRAINT pk_employees PRIMARY KEY (PersonID, OrgID, JobPostID),
-    CONSTRAINT fk_employee_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
-    CONSTRAINT fk_employee_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT fk_employee_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID),
-    CONSTRAINT chk_employee_not_null CHECK (PersonID IS NOT NULL AND OrgID IS NOT NULL AND JobPostID IS NOT NULL)
-);
-
-CREATE TABLE Panelist (
-    PersonID CHAR(5) NOT NULL,
-    EventID NUMBER NOT NULL,
-    CONSTRAINT pk_panelist PRIMARY KEY (PersonID, EventID),
-    CONSTRAINT fk_panelist_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
-    CONSTRAINT fk_panelist_event FOREIGN KEY (EventID) REFERENCES Events(EventID),
-    CONSTRAINT chk_panelist_not_null CHECK (PersonID IS NOT NULL AND EventID IS NOT NULL)
-);
-
 CREATE TABLE Applications (
     OrgID CHAR(6) NOT NULL,
-    PersonID CHAR(5) NOT NULL,
+    ApplicantID CHAR(5) NOT NULL,
     JobPostID NUMBER NOT NULL,
     EmploymentTypes VARCHAR2(15) CHECK (EmploymentTypes IN ('Internships', 'Part time', 'Full time')),
     ApplicationStatus VARCHAR2(20) DEFAULT 'Applied' CHECK (ApplicationStatus IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
     DateApplied DATE,
-    CONSTRAINT pk_applications PRIMARY KEY (OrgID, PersonID, JobPostID),
+    CONSTRAINT pk_applications PRIMARY KEY (OrgID, ApplicantID, JobPostID),
     CONSTRAINT fk_application_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT fk_application_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
+    CONSTRAINT fk_applicants FOREIGN KEY (ApplicantID) REFERENCES Applicants(ApplicantID),
     CONSTRAINT fk_application_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID),
-    CONSTRAINT chk_application_not_null CHECK (OrgID IS NOT NULL AND PersonID IS NOT NULL AND JobPostID IS NOT NULL)
+    CONSTRAINT chk_application_not_null CHECK (OrgID IS NOT NULL AND ApplicantID IS NOT NULL AND JobPostID IS NOT NULL)
 );
 
 CREATE TABLE EventsParticipation (
     EventID NUMBER PRIMARY KEY, 
-    PersonID CHAR(5), 
+    SpeakerID NUMBER, 
     OrgID CHAR(6), 
     CONSTRAINT fk_Event FOREIGN KEY (EventID) REFERENCES Events(EventID), 
-    CONSTRAINT fk_Person FOREIGN KEY (PersonID) REFERENCES Person(PersonID), 
+    CONSTRAINT fk_Speaker FOREIGN KEY (SpeakerID) REFERENCES Speakers(SpeakerID), 
     CONSTRAINT fk_Org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID)
 );
 
 CREATE TABLE Participations (
     PartID NUMBER PRIMARY KEY,
-    PersonID CHAR(5) NOT NULL,
+    SpeakerID NUMBER NOT NULL,
     OrgID CHAR(6) NOT NULL,
     ParticipateBy VARCHAR2(8) CHECK (ParticipateBy IN ('Applying', 'Invited')),
     DateIA DATE,
     DateConfirmed DATE,
     Status VARCHAR2(10) CHECK (Status IN ('Invited', 'Applied', 'Declined', 'Accepted')),
-    CONSTRAINT fk_participation_person FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
+    CONSTRAINT fk_participation_speaker FOREIGN KEY (SpeakerID) REFERENCES Speakers(SpeakerID),
     CONSTRAINT fk_participation_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT chk_participation_not_null CHECK (PartID IS NOT NULL AND PersonID IS NOT NULL AND OrgID IS NOT NULL)
+    CONSTRAINT chk_participation_not_null CHECK (PartID IS NOT NULL AND OrgID IS NOT NULL)
 );
 
 CREATE TABLE AdCampaign (
