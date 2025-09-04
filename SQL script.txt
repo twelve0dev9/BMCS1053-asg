@@ -165,11 +165,11 @@ INSERT INTO Organizations VALUES ('U002', 'Tech Institute', 'admin@techinstitute
 INSERT INTO Organizations VALUES ('M002', 'Digital Promoters', 'info@digitalpromo.com', '60890123456', 'Marketing Firm', 3, 'Sponsor', 20);
 INSERT INTO Organizations VALUES ('F002', 'Quick Bites Cafe', 'catering@quickbites.com', '60901234567', 'F&B provider', 5, 'Exhibitor', 10);
 INSERT INTO Organizations VALUES ('CA002', 'Career Advisors', 'contact@careeradvisors.com', '60111223344', 'Consultancy agent', 4, 'Consultancy provider', 35);
-INSERT INTO Organizations VALUES ('U002', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 'Universities', 4, NULL, 8);
 INSERT INTO Organizations VALUES ('U003', 'Universiti Teknologi Malaysia (UTM)', 'contact@utm.edu.my', '6033333444', 'Universities', 4, NULL, 12);
 INSERT INTO Organizations VALUES ('U004', 'Taylor''s University', 'enquiry@taylors.edu.my', '6034444555', 'Universities', 4, NULL, 7);
 INSERT INTO Organizations VALUES ('U005', 'Sunway University', 'info@sunway.edu.my', '6035555666', 'Universities', 4, NULL, 9);
 INSERT INTO Organizations VALUES ('U006', 'Universiti Malaya (UM)', 'info@um.edu.my', '6031111222', 'Universities', 4, NULL, 10);
+INSERT INTO Organizations VALUES ('U007', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 'Universities', 4, NULL, 8);
 
 INSERT INTO Location VALUES (1, 'E001', 'Tech Pavilion', 1, 1, 'Main Exhibition Halls', 5000, 'Large');
 INSERT INTO Location VALUES (2, 'U001', 'Auditorium A', 2, 2, 'Auditoriums', 3000, 'Large');
