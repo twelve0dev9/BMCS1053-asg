@@ -27,22 +27,22 @@ CREATE TABLE Location (
     Location_Name VARCHAR2(25) NOT NULL,
     Floor NUMBER,
     Section NUMBER,
-    Location_Type VARCHAR2(30) NOT NULL CHECK (LocationType IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
+    Location_Type VARCHAR2(30) NOT NULL CHECK (Location_Type IN ('Main Exhibition Halls', 'Auditoriums', 'Meeting Rooms', 'Networking Lounge', 'Conference Rooms')),
     Rental_Price NUMBER,
     "SIZE" VARCHAR2(6) CHECK ("SIZE" IN ('Small', 'Medium', 'Large')),
     CONSTRAINT fk_location_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT chk_location_not_null CHECK (LocationID IS NOT NULL AND LocationName IS NOT NULL AND LocationType IS NOT NULL)
+    CONSTRAINT chk_location_not_null CHECK (Location_ID IS NOT NULL AND Location_Name IS NOT NULL AND Location_Type IS NOT NULL)
 );
 
 CREATE TABLE Events ( 
     Event_ID NUMBER PRIMARY KEY,
     Title VARCHAR2(35) NOT NULL,
     Description VARCHAR2(50),
-    Event_Type VARCHAR2(30) NOT NULL CHECK (EventType IN ('Recruitment', 'Networking Sessions', 'Talks', 'Seminars', 'Career Consultation')),
+    Event_Type VARCHAR2(30) NOT NULL CHECK (Event_Type IN ('Recruitment', 'Networking Sessions', 'Talks', 'Seminars', 'Career Consultation')),
     Event_Time DATE,
     Location_ID NUMBER,
-    CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(Location_ID),
-    CONSTRAINT chk_event_not_null CHECK (Event_ID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
+    CONSTRAINT fk_event_location FOREIGN KEY (Location_ID) REFERENCES Location(Location_ID),
+    CONSTRAINT chk_event_not_null CHECK (Event_ID IS NOT NULL AND Title IS NOT NULL AND Event_Type IS NOT NULL)
 );
 
 CREATE TABLE Speakers (
@@ -63,7 +63,7 @@ CREATE TABLE Applicants (
     Name VARCHAR2(20) NOT NULL,
     Age NUMBER CHECK (Age >= 0),
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
-    Phone_Number VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
+    Phone_Number VARCHAR2(15) CHECK (REGEXP_LIKE(Phone_Number, '^60[0-9]+$')),
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     Education_Level VARCHAR2(10),
     Major VARCHAR2(25),
@@ -98,8 +98,8 @@ CREATE TABLE Applications (
     OrgID CHAR(6) NOT NULL,
     Applicant_ID CHAR(5) NOT NULL,
     JobPost_ID NUMBER NOT NULL,
-    EmploymentTypes VARCHAR2(15) CHECK (EmploymentTypes IN ('Internships', 'Part time', 'Full time')),
-    ApplicationStatus VARCHAR2(20) DEFAULT 'Applied' CHECK (ApplicationStatus IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
+    Employment_Types VARCHAR2(15) CHECK (Employment_Types IN ('Internships', 'Part time', 'Full time')),
+    Application_Status VARCHAR2(20) DEFAULT 'Applied' CHECK (Application_Status IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
     DateApplied DATE,
     CONSTRAINT pk_applications PRIMARY KEY (OrgID, Applicant_ID, JobPost_ID),
     CONSTRAINT fk_application_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
@@ -123,8 +123,8 @@ CREATE TABLE Participations (
     Speaker_ID NUMBER NOT NULL,
     OrgID CHAR(6) NOT NULL,
     ParticipateBy VARCHAR2(8) CHECK (ParticipateBy IN ('Applying', 'Invited')),
-    DateIA DATE,
-    DateConfirmed DATE,
+    Date_IA DATE,
+    Date_Confirmed DATE,
     Status VARCHAR2(10) CHECK (Status IN ('Invited', 'Applied', 'Declined', 'Accepted')),
     CONSTRAINT fk_participation_speaker FOREIGN KEY (Speaker_ID) REFERENCES Speakers(Speaker_ID),
     CONSTRAINT fk_participation_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
