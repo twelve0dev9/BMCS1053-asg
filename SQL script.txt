@@ -7,7 +7,7 @@ CREATE TABLE Industries (
 CREATE TABLE Organizations (
     OrgID CHAR(6) PRIMARY KEY,
     OrgType VARCHAR2(20) NOT NULL CHECK (OrgType IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
-    OrgName VARCHAR2(20) NOT NULL,
+    OrgName VARCHAR2(35) NOT NULL,
     Email VARCHAR2(25) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     ContactNumber VARCHAR2(15) CHECK (REGEXP_LIKE(ContactNumber, '^60[0-9]+$')),
     IndustryID NUMBER,
@@ -156,116 +156,32 @@ INSERT INTO Industries VALUES (14, 'Marketing', 'Promotion of products and brand
 INSERT INTO Industries VALUES (15, 'Consulting', 'Providing expert advice professionally');
 INSERT INTO Industries VALUES (16, 'Logistics', 'Transportation and supply chain management');
 
--- Person 1-10
-INSERT INTO Person VALUES ('P0001', 'Alice Chen', 28, 'F', '60123456789', 'alice.chen@email.com');
-INSERT INTO Person VALUES ('P0002', 'Ben Wong', 35, 'M', '60198765432', 'ben.wong@email.com');
-INSERT INTO Person VALUES ('P0003', 'Carol Tan', 42, 'F', '60111122333', 'carol.tan@email.com');
-INSERT INTO Person VALUES ('P0004', 'David Lee', 24, 'M', '60155566777', 'david.lee@email.com');
-INSERT INTO Person VALUES ('P0005', 'Emma Yeoh', 31, 'F', '60199988877', 'emma.yeoh@email.com');
-INSERT INTO Person VALUES ('P0006', 'Frank Lim', 29, 'M', '60122233444', 'frank.lim@email.com');
-INSERT INTO Person VALUES ('P0007', 'Grace Ng', 26, 'F', '60166677888', 'grace.ng@email.com');
-INSERT INTO Person VALUES ('P0008', 'Henry Foo', 45, 'M', '60133344555', 'henry.foo@email.com');
-INSERT INTO Person VALUES ('P0009', 'Ivy Ooi', 33, 'F', '60177788999', 'ivy.ooi@email.com');
-INSERT INTO Person VALUES ('P0010', 'Jack Koh', 39, 'M', '60144455666', 'jack.koh@email.com');
--- Person 11-20
-INSERT INTO Person VALUES ('P0011', 'Sarah Lim', 22, 'F', '60112345670', 'sarah.lim@email.com');
-INSERT INTO Person VALUES ('P0012', 'Kevin Raj', 27, 'M', '60123456701', 'kevin.raj@email.com');
-INSERT INTO Person VALUES ('P0013', 'Nurul Hassan', 30, 'F', '60134567012', 'nurul.hassan@email.com');
-INSERT INTO Person VALUES ('P0014', 'Daniel Tan', 25, 'M', '60145670123', 'daniel.tan@email.com');
-INSERT INTO Person VALUES ('P0015', 'Mei Ling', 32, 'F', '60156701234', 'mei.ling@email.com');
-INSERT INTO Person VALUES ('P0016', 'Adam bin Ibrahim', 41, 'M', '60167012345', 'adam.ibrahim@email.com');
-INSERT INTO Person VALUES ('P0017', 'Priya Sharma', 29, 'F', '60170123456', 'priya.sharma@email.com');
-INSERT INTO Person VALUES ('P0018', 'Christopher Loh', 36, 'M', '60181234567', 'chris.loh@email.com');
-INSERT INTO Person VALUES ('P0019', 'Zhao Wei', 23, 'M', '60192345678', 'zhao.wei@email.com');
-INSERT INTO Person VALUES ('P0020', 'Amanda Roberts', 38, 'F', '60103456789', 'amanda.roberts@email.com');
--- Person 21-30
-INSERT INTO Person VALUES ('P0021', 'Boon Keat', 44, 'M', '60109876543', 'boon.keat@email.com');
-INSERT INTO Person VALUES ('P0022', 'Chloe Lim', 21, 'F', '60198765431', 'chloe.lim@email.com');
-INSERT INTO Person VALUES ('P0023', 'Deepak Kumar', 31, 'M', '60187654321', 'deepak.kumar@email.com');
-INSERT INTO Person VALUES ('P0024', 'Fatin Ahmad', 26, 'F', '60176543210', 'fatin.ahmad@email.com');
-INSERT INTO Person VALUES ('P0025', 'George Tan', 50, 'M', '60165432109', 'george.tan@email.com');
-INSERT INTO Person VALUES ('P0026', 'Hui Ying', 28, 'F', '60154321098', 'hui.ying@email.com');
-INSERT INTO Person VALUES ('P0027', 'Ishaan Patel', 33, 'M', '60143210987', 'ishaan.patel@email.com');
-INSERT INTO Person VALUES ('P0028', 'Jennifer Teo', 27, 'F', '60132109876', 'jennifer.teo@email.com');
-INSERT INTO Person VALUES ('P0029', 'Karthik M', 35, 'M', '60121098765', 'karthik.m@email.com');
-INSERT INTO Person VALUES ('P0030', 'Lisa Chang', 24, 'F', '60110987654', 'lisa.chang@email.com');
--- Person 31-40
-INSERT INTO Person VALUES ('P0031', 'Michael Ng', 40, 'M', '60122334455', 'michael.ng@email.com');
-INSERT INTO Person VALUES ('P0032', 'Natalie Wong', 29, 'F', '60133445566', 'natalie.wong@email.com');
-INSERT INTO Person VALUES ('P0033', 'Omar Khan', 45, 'M', '60144556677', 'omar.khan@email.com');
-INSERT INTO Person VALUES ('P0034', 'Pauline See', 32, 'F', '60155667788', 'pauline.see@email.com');
-INSERT INTO Person VALUES ('P0035', 'Qing Long', 26, 'M', '60166778899', 'qing.long@email.com');
-INSERT INTO Person VALUES ('P0036', 'Rachel Low', 37, 'F', '60177889900', 'rachel.low@email.com');
-INSERT INTO Person VALUES ('P0037', 'Samuel Ho', 28, 'M', '60188990011', 'samuel.ho@email.com');
-INSERT INTO Person VALUES ('P0038', 'Tasha Singh', 31, 'F', '60199001122', 'tasha.singh@email.com');
-INSERT INTO Person VALUES ('P0039', 'Vincent Lim', 42, 'M', '60100112233', 'vincent.lim@email.com');
-INSERT INTO Person VALUES ('P0040', 'Wendy Tan', 23, 'F', '60111223344', 'wendy.tan@email.com');
--- Person 41-50
-INSERT INTO Person VALUES ('P0041', 'Xavier Lee', 39, 'M', '60199887766', 'xavier.lee@email.com');
-INSERT INTO Person VALUES ('P0042', 'Yasmin Ali', 34, 'F', '60188776655', 'yasmin.ali@email.com');
-INSERT INTO Person VALUES ('P0043', 'Zachary Ong', 25, 'M', '60177665544', 'zachary.ong@email.com');
-INSERT INTO Person VALUES ('P0044', 'Aina Mohd', 30, 'F', '60166554433', 'aina.mohd@email.com');
-INSERT INTO Person VALUES ('P0045', 'Bryan Chua', 27, 'M', '60155443322', 'bryan.chua@email.com');
-INSERT INTO Person VALUES ('P0046', 'Cynthia Goh', 36, 'F', '60144332211', 'cynthia.goh@email.com');
-INSERT INTO Person VALUES ('P0047', 'Derek Yap', 29, 'M', '60133221100', 'derek.yap@email.com');
-INSERT INTO Person VALUES ('P0048', 'Elaine Foo', 33, 'F', '60122110099', 'elaine.foo@email.com');
-INSERT INTO Person VALUES ('P0049', 'Faizal Rahim', 41, 'M', '60111009988', 'faizal.rahim@email.com');
-INSERT INTO Person VALUES ('P0050', 'Gina Lim', 26, 'F', '60100998877', 'gina.lim@email.com');
--- Person 51-60
-INSERT INTO Person VALUES ('P0051', 'Hakim Jamal', 38, 'M', '60113579246', 'hakim.jamal@email.com');
-INSERT INTO Person VALUES ('P0052', 'Irene Choo', 31, 'F', '60124681357', 'irene.choo@email.com');
-INSERT INTO Person VALUES ('P0053', 'Jayden Kok', 24, 'M', '60135792468', 'jayden.kok@email.com');
-INSERT INTO Person VALUES ('P0054', 'Kavitha Devi', 35, 'F', '60146813579', 'kavitha.devi@email.com');
-INSERT INTO Person VALUES ('P0055', 'Leonard Tan', 28, 'M', '60157924680', 'leonard.tan@email.com');
-INSERT INTO Person VALUES ('P0056', 'Mandy Koh', 32, 'F', '60168035791', 'mandy.koh@email.com');
-INSERT INTO Person VALUES ('P0057', 'Nathan Teoh', 43, 'M', '60179146802', 'nathan.teoh@email.com');
-INSERT INTO Person VALUES ('P0058', 'Olivia Pang', 27, 'F', '60180257913', 'olivia.pang@email.com');
-INSERT INTO Person VALUES ('P0059', 'Peter Lim', 30, 'M', '60191368024', 'peter.lim@email.com');
-INSERT INTO Person VALUES ('P0060', 'Queenie Chan', 25, 'F', '60102479135', 'queenie.chan@email.com');
--- Person 61-70
-INSERT INTO Person VALUES ('P0061', 'Rizwan Ahmad', 36, 'M', '60197531864', 'rizwan.ahmad@email.com');
-INSERT INTO Person VALUES ('P0062', 'Sofia Lee', 29, 'F', '60186429753', 'sofia.lee@email.com');
-INSERT INTO Person VALUES ('P0063', 'Thomas Ang', 40, 'M', '60175318642', 'thomas.ang@email.com');
-INSERT INTO Person VALUES ('P0064', 'Uma Devi', 33, 'F', '60164297531', 'uma.devi@email.com');
-INSERT INTO Person VALUES ('P0065', 'Victor Chong', 26, 'M', '60153186420', 'victor.chong@email.com');
-INSERT INTO Person VALUES ('P0066', 'Wesley Tan', 37, 'M', '60142075319', 'wesley.tan@email.com');
-INSERT INTO Person VALUES ('P0067', 'Xin Yi', 28, 'F', '60131964208', 'xin.yi@email.com');
-INSERT INTO Person VALUES ('P0068', 'Yusof Bakar', 45, 'M', '60120853197', 'yusof.bakar@email.com');
-INSERT INTO Person VALUES ('P0069', 'Zara Ismail', 31, 'F', '60119742086', 'zara.ismail@email.com');
-INSERT INTO Person VALUES ('P0070', 'Aaron Lim', 22, 'M', '60108631975', 'aaron.lim@email.com');
--- Person 71-80
-INSERT INTO Person VALUES ('P0071', 'Bella Teo', 34, 'F', '60124680135', 'bella.teo@email.com');
-INSERT INTO Person VALUES ('P0072', 'Caleb Oh', 27, 'M', '60135791246', 'caleb.oh@email.com');
-INSERT INTO Person VALUES ('P0073', 'Diana Raja', 39, 'F', '60146802357', 'diana.raja@email.com');
-INSERT INTO Person VALUES ('P0074', 'Ethan Wong', 30, 'M', '60157913468', 'ethan.wong@email.com');
-INSERT INTO Person VALUES ('P0075', 'Faye Heng', 25, 'F', '60168024579', 'faye.heng@email.com');
-INSERT INTO Person VALUES ('P0076', 'Gavin Tan', 42, 'M', '60179135680', 'gavin.tan@email.com');
-INSERT INTO Person VALUES ('P0077', 'Hannah Yeap', 28, 'F', '60180246791', 'hannah.yeap@email.com');
-INSERT INTO Person VALUES ('P0078', 'Ian Foong', 33, 'M', '60191357802', 'ian.foong@email.com');
-INSERT INTO Person VALUES ('P0079', 'Jasmine Loo', 26, 'F', '60102468913', 'jasmine.loo@email.com');
-INSERT INTO Person VALUES ('P0080', 'Kyle Soh', 35, 'M', '60113579024', 'kyle.soh@email.com');
--- Person 81-90
-INSERT INTO Person VALUES ('P0081', 'Lydia Chin', 29, 'F', '60108642975', 'lydia.chin@email.com');
-INSERT INTO Person VALUES ('P0082', 'Marcus Ng', 38, 'M', '60119753086', 'marcus.ng@email.com');
-INSERT INTO Person VALUES ('P0083', 'Nora Said', 32, 'F', '60120864197', 'nora.said@email.com');
-INSERT INTO Person VALUES ('P0084', 'Owen Cheah', 27, 'M', '60131975308', 'owen.cheah@email.com');
-INSERT INTO Person VALUES ('P0085', 'Phoebe Lim', 41, 'F', '60142086419', 'phoebe.lim@email.com');
-INSERT INTO Person VALUES ('P0086', 'Quentin Ho', 30, 'M', '60153197520', 'quentin.ho@email.com');
-INSERT INTO Person VALUES ('P0087', 'Rebecca Tan', 24, 'F', '60164208631', 'rebecca.tan@email.com');
-INSERT INTO Person VALUES ('P0088', 'Simon Lau', 36, 'M', '60175319742', 'simon.lau@email.com');
-INSERT INTO Person VALUES ('P0089', 'Tina Koh', 31, 'F', '60186420853', 'tina.koh@email.com');
-INSERT INTO Person VALUES ('P0090', 'Umar Hafiz', 28, 'M', '60197531964', 'umar.hafiz@email.com');
--- Person 91-100
-INSERT INTO Person VALUES ('P0091', 'Vivian Lee', 43, 'F', '60108642075', 'vivian.lee@email.com');
-INSERT INTO Person VALUES ('P0092', 'Wayne Chan', 26, 'M', '60119753186', 'wayne.chan@email.com');
-INSERT INTO Person VALUES ('P0093', 'Xander Lim', 34, 'M', '60120864297', 'xander.lim@email.com');
-INSERT INTO Person VALUES ('P0094', 'Yvonne Teo', 29, 'F', '60131975308', 'yvonne.teo@email.com');
-INSERT INTO Person VALUES ('P0095', 'Zheng Wei', 37, 'M', '60142086419', 'zheng.wei@email.com');
-INSERT INTO Person VALUES ('P0096', 'Amirah Yusof', 25, 'F', '60153197520', 'amirah.yusof@email.com');
-INSERT INTO Person VALUES ('P0097', 'Brandon Kim', 32, 'M', '60164208631', 'brandon.kim@email.com');
-INSERT INTO Person VALUES ('P0098', 'Cassandra Tham', 28, 'F', '60175319742', 'cassandra.tham@email.com');
-INSERT INTO Person VALUES ('P0099', 'Darren Ooi', 40, 'M', '60186420853', 'darren.ooi@email.com');
-INSERT INTO Person VALUES ('P0100', 'Eileen Phua', 31, 'F', '60197531964', 'eileen.phua@email.com');
+INSERT INTO Organizations VALUES ('E101', 'Companies', 'Tech Solutions Sdn Bhd', 'contact@techsolutions.com', '60376543210', 1, 'Exhibitor', 10);
+INSERT INTO Organizations VALUES ('U002', 'Universities', 'Global University', 'info@globaluni.edu', '6031234567', 4, 'Sponsor', 5);
+INSERT INTO Organizations VALUES ('M101', 'Marketing Firm', 'NextGen Adverts', 'hello@nextgenads.com', '6035551234', 7, 'Sponsor', 3);
+INSERT INTO Organizations VALUES ('CA101', 'Consultancy agent', 'Strategic Consultants', 'admin@strategic-cons.my', '6038889999', 9, 'Consultancy provider', 8);
+INSERT INTO Organizations VALUES ('F101', 'F&B provider', 'Tasty Catering', 'order@tastycatering.com', '6037776666', 8, NULL, 15);
+INSERT INTO Organizations VALUES ('S101', 'Companies', 'SecureBank', 'corporate@securebank.com', '6032221111', 2, 'Sponsor', 12);
+INSERT INTO Organizations VALUES ('U001', 'Universities', 'Northern College', 'enquiry@northern.edu', '6034445555', 4, 'Speech provider', 7);
+INSERT INTO Organizations VALUES ('E102', 'Companies', 'MediPharma', 'info@medipharma.com', '6039990000', 3, 'Exhibitor', 9);
+INSERT INTO Organizations VALUES ('F102', 'F&B provider', 'Cafe Delight', 'manager@cafedelight.com', '6031112222', 8, NULL, 20);
+INSERT INTO Organizations VALUES ('M102', 'Marketing Firm', 'Brand Buzz', 'contact@brandbuzz.my', '6036667777', 7, 'Exhibitor', 4);
+INSERT INTO Organizations VALUES ('U003', 'Universities', 'Universiti Malaya (UM)', 'um.edu.my', '6031111222', 4, NULL, 10);
+INSERT INTO Organizations VALUES ('U004', 'Universities', 'Universiti Putra Malaysia (UPM)', 'upm.edu.my', '6032222333', 4, NULL, 8);
+INSERT INTO Organizations VALUES ('U005', 'Universities', 'Universiti Teknologi Malaysia (UTM)', 'utm.my', '6033333444', 4, NULL, 12);
+INSERT INTO Organizations VALUES ('U006', 'Universities', 'Taylor''s University', 'taylors.edu.my', '6034444555', 4, NULL, 7);
+INSERT INTO Organizations VALUES ('U007', 'Universities', 'Sunway University', 'sunway.edu.my', '6035555666', 4, NULL, 9);
+
+INSERT INTO Applicants VALUES ('A001', 'Nur Aisyah Binti Ahmad', 22, 'Female', '012-3456789', 'aisyah.ahmad@gmail.com', 'Degree', 'Computer Science', 'aisyah_resume.pdf', 'github.com/aisyah-portfolio');
+INSERT INTO Applicants VALUES ('A002', 'John Tan Wei Ming', 24, 'Male', '013-9988776', 'john.tan24@yahoo.com', 'Master', 'Mechanical Engineering', 'john_tan_resume.pdf', 'linkedin.com/in/johntan');
+INSERT INTO Applicants VALUES ('A003', 'Priya Raj', 21, 'Female', '011-4455667', 'priya.raj@gmail.com', 'Diploma', 'Business Administration', 'priya_resume.docx', 'behance.net/priyaraj');
+INSERT INTO Applicants VALUES ('A004', 'Adam Lee Zhi Hao', 23, 'Male', '019-2233445', 'adamlee23@hotmail.com', 'Degree', 'Graphic Design', 'adamlee_resume.pdf', 'dribbble.com/adamlee');
+INSERT INTO Applicants VALUES ('A005', 'Farhan Bin Yusuf', 20, 'Male', '010-7766554', 'farhan.yusuf@student.upm.edu.my', 'Foundation', 'Accounting', 'farhan_resume.pdf', NULL);
+INSERT INTO Applicants VALUES ('A006', 'Melissa Chong Li Xuan', 22, 'Female', '018-3344556', 'melissa.chong22@gmail.com', 'Degree', 'Marketing', 'melissa_resume.pdf', 'linkedin.com/in/melissachong');
+INSERT INTO Applicants VALUES ('A007', 'Ariff Hakim Bin Roslan', 25, 'Male', '017-7788990', 'ariff.hakim@gmail.com', 'Master', 'Civil Engineering', 'ariff_resume.pdf', NULL);
+INSERT INTO Applicants VALUES ('A008', 'Chloe Lim Hui Wen', 21, 'Female', '012-9988775', 'chloe.lim21@yahoo.com', 'Diploma', 'Hospitality Management', 'chloe_resume.docx', NULL);
+INSERT INTO Applicants VALUES ('A009', 'Suresh Kumar', 23, 'Male', '016-5544332', 'suresh.kumar@gmail.com', 'Degree', 'Information Technology', 'suresh_resume.pdf', 'github.com/sureshkumar');
+INSERT INTO Applicants VALUES ('A010', 'Hannah Ong Mei Yi', 24, 'Female', '011-6677889', 'hannah.ong24@gmail.com', 'Degree', 'Finance', 'hannah_resume.pdf', 'linkedin.com/in/hannahong');
 
 -- Industry 1 (Tech)
 INSERT INTO JobPositions VALUES (1, 1, 'Consultant');
@@ -303,17 +219,6 @@ INSERT INTO JobPositions VALUES (27, 6, 'Recruiter');
 INSERT INTO JobPositions VALUES (28, 6, 'Speaker');
 INSERT INTO JobPositions VALUES (29, 6, 'Panelist');
 INSERT INTO JobPositions VALUES (30, 6, 'Interviewer');
-
-INSERT INTO Organizations VALUES ('ORG001', 'Companies', 'Tech Solutions Sdn Bhd', 'contact@techsolutions.com', '60376543210', 1, 'Exhibitor', NULL, 10);
-INSERT INTO Organizations VALUES ('ORG002', 'Universities', 'Global University', 'info@globaluni.edu', '6031234567', 4, 'Sponsor', NULL, 5);
-INSERT INTO Organizations VALUES ('ORG003', 'Marketing Firm', 'NextGen Adverts', 'hello@nextgenads.com', '6035551234', 7, 'Sponsor', NULL, 3);
-INSERT INTO Organizations VALUES ('ORG004', 'Consultancy agent', 'Strategic Consultants', 'admin@strategic-cons.my', '6038889999', 9, 'Consultancy provider', NULL, 8);
-INSERT INTO Organizations VALUES ('ORG005', 'F&B provider', 'Tasty Catering', 'order@tastycatering.com', '6037776666', 8, NULL, NULL, 15);
-INSERT INTO Organizations VALUES ('ORG006', 'Companies', 'SecureBank', 'corporate@securebank.com', '6032221111', 2, 'Sponsor', NULL, 12);
-INSERT INTO Organizations VALUES ('ORG007', 'Universities', 'Northern College', 'enquiry@northern.edu', '6034445555', 4, 'Speech provider', NULL, 7);
-INSERT INTO Organizations VALUES ('ORG008', 'Companies', 'MediPharma', 'info@medipharma.com', '6039990000', 3, 'Exhibitor', NULL, 9);
-INSERT INTO Organizations VALUES ('ORG009', 'F&B provider', 'Cafe Delight', 'manager@cafedelight.com', '6031112222', 8, NULL, NULL, 20);
-INSERT INTO Organizations VALUES ('ORG010', 'Marketing Firm', 'Brand Buzz', 'contact@brandbuzz.my', '6036667777', 7, 'Exhibitor', NULL, 4);
 
 INSERT INTO Location VALUES (1, 'ORG001', 'Tech Hub', 1, 1, 'Main Exhibition Halls', 5000, 'Large');
 INSERT INTO Location VALUES (2, 'ORG001', 'Meeting Room A', 2, 2, 'Meeting Rooms', 800, 'Small');
