@@ -50,7 +50,7 @@ CREATE TABLE Speakers (
     Name VARCHAR2(20) NOT NULL,
     Age NUMBER CHECK (Age >= 0),
     Gender CHAR(1) CHECK (UPPER(Gender) IN ('M', 'F')),
-    Phone_Number VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
+    Phone_Number VARCHAR2(15) CHECK (REGEXP_LIKE(Phone_Number, '^60[0-9]+$')),
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     Affiliation VARCHAR2(25),
     Event_ID NUMBER NOT NULL,
