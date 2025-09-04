@@ -1,7 +1,6 @@
-    SET DEFINE OFF
+SET DEFINE OFF;
 SET PAGESIZE 5000
 SET LINESIZE 1000
-
 
 CREATE TABLE Industries (
     Industry_ID NUMBER PRIMARY KEY,
@@ -43,7 +42,7 @@ CREATE TABLE Events (
     Event_Time DATE,
     Location_ID NUMBER,
     CONSTRAINT fk_event_location FOREIGN KEY (LocationID) REFERENCES Location(Location_ID),
-    CONSTRAINT chk_event_not_null CHECK (EventID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
+    CONSTRAINT chk_event_not_null CHECK (Event_ID IS NOT NULL AND Title IS NOT NULL AND EventType IS NOT NULL)
 );
 
 CREATE TABLE Speakers (
@@ -55,8 +54,8 @@ CREATE TABLE Speakers (
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     Affiliation VARCHAR2(25),
     Event_ID NUMBER NOT NULL,
-    CONSTRAINT fk_speaker_event FOREIGN KEY (EventID) REFERENCES Events(EventID),
-    CONSTRAINT chk_speaker_not_null CHECK (EventID IS NOT NULL)
+    CONSTRAINT fk_speaker_event FOREIGN KEY (Event_ID) REFERENCES Events(Event_ID),
+    CONSTRAINT chk_speaker_not_null CHECK (Event_ID IS NOT NULL)
 );
 
 CREATE TABLE Applicants (
@@ -75,7 +74,7 @@ CREATE TABLE Applicants (
 );
 
 CREATE TABLE Job_Positions (
-    JobPostID NUMBER PRIMARY KEY,
+    JobPost_ID NUMBER PRIMARY KEY,
     Industry_ID NUMBER NOT NULL,
     Position CHAR(25) NOT NULL,
     CONSTRAINT fk_jobpos_industry FOREIGN KEY (Industry_ID) REFERENCES Industries(Industry_ID),
@@ -90,44 +89,44 @@ CREATE TABLE Employees (
     PhoneNumber VARCHAR2(15) CHECK (REGEXP_LIKE(PhoneNumber, '^60[0-9]+$')),
     Email VARCHAR2(30) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     OrgID CHAR(6) NOT NULL,
-    JobPostID NUMBER NOT NULL,
+    JobPost_ID NUMBER NOT NULL,
     CONSTRAINT fk_employee_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT fk_employee_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID)
+    CONSTRAINT fk_employee_jobpost FOREIGN KEY (JobPost_ID) REFERENCES Job_Positions(JobPost_ID)
 );
 
 CREATE TABLE Applications (
     OrgID CHAR(6) NOT NULL,
     Applicant_ID CHAR(5) NOT NULL,
-    JobPostID NUMBER NOT NULL,
+    JobPost_ID NUMBER NOT NULL,
     EmploymentTypes VARCHAR2(15) CHECK (EmploymentTypes IN ('Internships', 'Part time', 'Full time')),
     ApplicationStatus VARCHAR2(20) DEFAULT 'Applied' CHECK (ApplicationStatus IN ('Applied', 'Resume Submitted', 'Interview scheduled', 'Rejected', 'Interview done')),
     DateApplied DATE,
-    CONSTRAINT pk_applications PRIMARY KEY (OrgID, Applicant_ID, JobPostID),
+    CONSTRAINT pk_applications PRIMARY KEY (OrgID, Applicant_ID, JobPost_ID),
     CONSTRAINT fk_application_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT fk_applicants FOREIGN KEY (Applicant_ID) REFERENCES Applicants(Applicant_ID),
-    CONSTRAINT fk_application_jobpost FOREIGN KEY (JobPostID) REFERENCES JobPositions(JobPostID),
-    CONSTRAINT chk_application_not_null CHECK (OrgID IS NOT NULL AND Applicant_ID IS NOT NULL AND JobPostID IS NOT NULL)
+    CONSTRAINT fk_application_jobpost FOREIGN KEY (JobPost_ID) REFERENCES Job_Positions(JobPost_ID),
+    CONSTRAINT chk_application_not_null CHECK (OrgID IS NOT NULL AND Applicant_ID IS NOT NULL AND JobPost_ID IS NOT NULL)
 );
 
 CREATE TABLE Events_Participation (
     Event_ID NUMBER, 
     Speaker_ID NUMBER, 
     OrgID CHAR(6), 
-    CONSTRAINT fk_Event FOREIGN KEY (EventID) REFERENCES Events(EventID), 
-    CONSTRAINT fk_Speaker FOREIGN KEY (SpeakerID) REFERENCES Speakers(SpeakerID), 
+    CONSTRAINT fk_Event FOREIGN KEY (Event_ID) REFERENCES Events(Event_ID), 
+    CONSTRAINT fk_Speaker FOREIGN KEY (Speaker_ID) REFERENCES Speakers(Speaker_ID), 
     CONSTRAINT fk_Org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
-    CONSTRAINT pk_events_participation PRIMARY KEY (EventID, SpeakerID, OrgID)
+    CONSTRAINT pk_events_participation PRIMARY KEY (Event_ID, Speaker_ID, OrgID)
 );
 
 CREATE TABLE Participations (
     PartID NUMBER PRIMARY KEY,
-    SpeakerID NUMBER NOT NULL,
+    Speaker_ID NUMBER NOT NULL,
     OrgID CHAR(6) NOT NULL,
     ParticipateBy VARCHAR2(8) CHECK (ParticipateBy IN ('Applying', 'Invited')),
     DateIA DATE,
     DateConfirmed DATE,
     Status VARCHAR2(10) CHECK (Status IN ('Invited', 'Applied', 'Declined', 'Accepted')),
-    CONSTRAINT fk_participation_speaker FOREIGN KEY (SpeakerID) REFERENCES Speakers(SpeakerID),
+    CONSTRAINT fk_participation_speaker FOREIGN KEY (Speaker_ID) REFERENCES Speakers(Speaker_ID),
     CONSTRAINT fk_participation_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_participation_not_null CHECK (PartID IS NOT NULL AND OrgID IS NOT NULL)
 );
@@ -144,8 +143,6 @@ CREATE TABLE AdCampaign (
     CONSTRAINT fk_adcampaign_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_adcampaign_not_null CHECK (CampaignID IS NOT NULL AND OrgID IS NOT NULL AND Title IS NOT NULL)
 );
-
-SET DEFINE OFF;
 
 INSERT INTO Industries VALUES (1, 'Technology', 'Software and hardware development');
 INSERT INTO Industries VALUES (2, 'Education', 'Academic institutions and training');
@@ -218,36 +215,36 @@ INSERT INTO Applicants VALUES ('A0008', 'Michelle Ng', 23, 'F', '60899001122', '
 INSERT INTO Applicants VALUES ('A0009', 'Ryan Park', 22, 'M', '60900112233', 'ryan@email.com', 'Bachelor', 'IT', 'U001', 'resume9.pdf', 'portfolio9.pdf');
 INSERT INTO Applicants VALUES ('A0010', 'Jessica Ho', 25, 'F', '60111223344', 'jessica@email.com', 'Master', 'Communications', 'U002', 'resume10.pdf', 'portfolio10.pdf');
 
-INSERT INTO JobPositions VALUES (1, 1, 'Speaker');
-INSERT INTO JobPositions VALUES (2, 1, 'Recruiter');
-INSERT INTO JobPositions VALUES (3, 1, 'Interviewer');
-INSERT INTO JobPositions VALUES (4, 2, 'Panelist');
-INSERT INTO JobPositions VALUES (5, 2, 'Consultant');
-INSERT INTO JobPositions VALUES (6, 2, 'General staff');
-INSERT INTO JobPositions VALUES (7, 3, 'Planner');
-INSERT INTO JobPositions VALUES (8, 3, 'Coordinator');
-INSERT INTO JobPositions VALUES (9, 3, 'Logistics');
-INSERT INTO JobPositions VALUES (10, 4, 'Partnership management');
-INSERT INTO JobPositions VALUES (11, 4, 'F&B manager');
-INSERT INTO JobPositions VALUES (12, 4, 'F&B general staff');
-INSERT INTO JobPositions VALUES (13, 5, 'Speaker');
-INSERT INTO JobPositions VALUES (14, 5, 'Recruiter');
-INSERT INTO JobPositions VALUES (15, 5, 'Interviewer');
-INSERT INTO JobPositions VALUES (16, 6, 'Panelist');
-INSERT INTO JobPositions VALUES (17, 6, 'Consultant');
-INSERT INTO JobPositions VALUES (18, 6, 'General staff');
-INSERT INTO JobPositions VALUES (19, 7, 'Planner');
-INSERT INTO JobPositions VALUES (20, 7, 'Coordinator');
-INSERT INTO JobPositions VALUES (21, 7, 'Logistics');
-INSERT INTO JobPositions VALUES (22, 8, 'Partnership management');
-INSERT INTO JobPositions VALUES (23, 8, 'F&B manager');
-INSERT INTO JobPositions VALUES (24, 8, 'F&B general staff');
-INSERT INTO JobPositions VALUES (25, 9, 'Speaker');
-INSERT INTO JobPositions VALUES (26, 9, 'Recruiter');
-INSERT INTO JobPositions VALUES (27, 9, 'Interviewer');
-INSERT INTO JobPositions VALUES (28, 10, 'Panelist');
-INSERT INTO JobPositions VALUES (29, 10, 'Consultant');
-INSERT INTO JobPositions VALUES (30, 10, 'General staff');
+INSERT INTO Job_Positions VALUES (1, 1, 'Speaker');
+INSERT INTO Job_Positions VALUES (2, 1, 'Recruiter');
+INSERT INTO Job_Positions VALUES (3, 1, 'Interviewer');
+INSERT INTO Job_Positions VALUES (4, 2, 'Panelist');
+INSERT INTO Job_Positions VALUES (5, 2, 'Consultant');
+INSERT INTO Job_Positions VALUES (6, 2, 'General staff');
+INSERT INTO Job_Positions VALUES (7, 3, 'Planner');
+INSERT INTO Job_Positions VALUES (8, 3, 'Coordinator');
+INSERT INTO Job_Positions VALUES (9, 3, 'Logistics');
+INSERT INTO Job_Positions VALUES (10, 4, 'Partnership management');
+INSERT INTO Job_Positions VALUES (11, 4, 'F&B manager');
+INSERT INTO Job_Positions VALUES (12, 4, 'F&B general staff');
+INSERT INTO Job_Positions VALUES (13, 5, 'Speaker');
+INSERT INTO Job_Positions VALUES (14, 5, 'Recruiter');
+INSERT INTO Job_Positions VALUES (15, 5, 'Interviewer');
+INSERT INTO Job_Positions VALUES (16, 6, 'Panelist');
+INSERT INTO Job_Positions VALUES (17, 6, 'Consultant');
+INSERT INTO Job_Positions VALUES (18, 6, 'General staff');
+INSERT INTO Job_Positions VALUES (19, 7, 'Planner');
+INSERT INTO Job_Positions VALUES (20, 7, 'Coordinator');
+INSERT INTO Job_Positions VALUES (21, 7, 'Logistics');
+INSERT INTO Job_Positions VALUES (22, 8, 'Partnership management');
+INSERT INTO Job_Positions VALUES (23, 8, 'F&B manager');
+INSERT INTO Job_Positions VALUES (24, 8, 'F&B general staff');
+INSERT INTO Job_Positions VALUES (25, 9, 'Speaker');
+INSERT INTO Job_Positions VALUES (26, 9, 'Recruiter');
+INSERT INTO Job_Positions VALUES (27, 9, 'Interviewer');
+INSERT INTO Job_Positions VALUES (28, 10, 'Panelist');
+INSERT INTO Job_Positions VALUES (29, 10, 'Consultant');
+INSERT INTO Job_Positions VALUES (30, 10, 'General staff');
 
 INSERT INTO Employees VALUES ('E0001', 'Robert Zhang', 32, 'M', '60199887766', 'robert@techsolutions.com', 'E001', 1);
 INSERT INTO Employees VALUES ('E0002', 'Amanda Lim', 28, 'F', '60288776655', 'amanda@nationaluni.edu', 'U001', 2);
@@ -313,33 +310,33 @@ INSERT INTO Applications VALUES ('CA002', 'A0008', 28, 'Full time', 'Interview s
 INSERT INTO Applications VALUES ('CA002', 'A0009', 29, 'Internships', 'Rejected', TO_DATE('29/05/2024', 'DD/MM/YYYY'));
 INSERT INTO Applications VALUES ('CA002', 'A0010', 30, 'Part time', 'Interview done', TO_DATE('30/05/2024', 'DD/MM/YYYY'));
 
-INSERT INTO Event_Participation VALUES (1, 1, 'E001');
-INSERT INTO Event_Participation VALUES (1, 2, 'M001');
-INSERT INTO Event_Participation VALUES (1, 3, 'U001');
-INSERT INTO Event_Participation VALUES (2, 4, 'F001');
-INSERT INTO Event_Participation VALUES (2, 5, 'CA001');
-INSERT INTO Event_Participation VALUES (2, 6, 'E002');
-INSERT INTO Event_Participation VALUES (3, 7, 'U002');
-INSERT INTO Event_Participation VALUES (3, 8, 'M002');
-INSERT INTO Event_Participation VALUES (3, 9, 'CA002');
-INSERT INTO Event_Participation VALUES (4, 10, 'F002');
-INSERT INTO Event_Participation VALUES (4, 1, 'E001');
-INSERT INTO Event_Participation VALUES (4, 2, 'M001');
-INSERT INTO Event_Participation VALUES (5, 3, 'U001');
-INSERT INTO Event_Participation VALUES (5, 4, 'F001');
-INSERT INTO Event_Participation VALUES (5, 5, 'CA001');
-INSERT INTO Event_Participation VALUES (6, 6, 'E002');
-INSERT INTO Event_Participation VALUES (6, 7, 'U002');
-INSERT INTO Event_Participation VALUES (6, 8, 'M002');
-INSERT INTO Event_Participation VALUES (7, 9, 'CA002');
-INSERT INTO Event_Participation VALUES (7, 10, 'F002');
-INSERT INTO Event_Participation VALUES (7, 1, 'E001');
-INSERT INTO Event_Participation VALUES (8, 2, 'M001');
-INSERT INTO Event_Participation VALUES (8, 3, 'U001');
-INSERT INTO Event_Participation VALUES (8, 4, 'F001');
-INSERT INTO Event_Participation VALUES (9, 5, 'CA001');
-INSERT INTO Event_Participation VALUES (9, 6, 'E002');
-INSERT INTO Event_Participation VALUES (9, 7, 'U002');
-INSERT INTO Event_Participation VALUES (10, 8, 'M002');
-INSERT INTO Event_Participation VALUES (10, 9, 'CA002');
-INSERT INTO Event_Participation VALUES (10, 10, 'F002');
+INSERT INTO Events_Participation VALUES (1, 1, 'E001');
+INSERT INTO Events_Participation VALUES (1, 2, 'M001');
+INSERT INTO Events_Participation VALUES (1, 3, 'U001');
+INSERT INTO Events_Participation VALUES (2, 4, 'F001');
+INSERT INTO Events_Participation VALUES (2, 5, 'CA001');
+INSERT INTO Events_Participation VALUES (2, 6, 'E002');
+INSERT INTO Events_Participation VALUES (3, 7, 'U002');
+INSERT INTO Events_Participation VALUES (3, 8, 'M002');
+INSERT INTO Events_Participation VALUES (3, 9, 'CA002');
+INSERT INTO Events_Participation VALUES (4, 10, 'F002');
+INSERT INTO Events_Participation VALUES (4, 1, 'E001');
+INSERT INTO Events_Participation VALUES (4, 2, 'M001');
+INSERT INTO Events_Participation VALUES (5, 3, 'U001');
+INSERT INTO Events_Participation VALUES (5, 4, 'F001');
+INSERT INTO Events_Participation VALUES (5, 5, 'CA001');
+INSERT INTO Events_Participation VALUES (6, 6, 'E002');
+INSERT INTO Events_Participation VALUES (6, 7, 'U002');
+INSERT INTO Events_Participation VALUES (6, 8, 'M002');
+INSERT INTO Events_Participation VALUES (7, 9, 'CA002');
+INSERT INTO Events_Participation VALUES (7, 10, 'F002');
+INSERT INTO Events_Participation VALUES (7, 1, 'E001');
+INSERT INTO Events_Participation VALUES (8, 2, 'M001');
+INSERT INTO Events_Participation VALUES (8, 3, 'U001');
+INSERT INTO Events_Participation VALUES (8, 4, 'F001');
+INSERT INTO Events_Participation VALUES (9, 5, 'CA001');
+INSERT INTO Events_Participation VALUES (9, 6, 'E002');
+INSERT INTO Events_Participation VALUES (9, 7, 'U002');
+INSERT INTO Events_Participation VALUES (10, 8, 'M002');
+INSERT INTO Events_Participation VALUES (10, 9, 'CA002');
+INSERT INTO Events_Participation VALUES (10, 10, 'F002');
