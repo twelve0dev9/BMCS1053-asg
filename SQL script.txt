@@ -13,12 +13,11 @@ CREATE TABLE Organizations (
     Org_Name VARCHAR2(35) NOT NULL,
     Email VARCHAR2(45) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     Contact_Number VARCHAR2(15) CHECK (REGEXP_LIKE(Contact_Number, '^60[0-9]+$')),
-    Org_Type VARCHAR2(20) NOT NULL CHECK (Org_Type IN ('Companies', 'Marketing Firm', 'Universities', 'Consultancy agent', 'F&B provider')),
     Industry_ID NUMBER,
     Roles VARCHAR2(25) CHECK (Roles IN ('Exhibitor', 'Sponsor', 'Speech provider', 'Consultancy provider')),
     nTickets NUMBER,
     CONSTRAINT fk_org_industry FOREIGN KEY (Industry_ID) REFERENCES Industries(Industry_ID),
-    CONSTRAINT chk_org_not_null CHECK (Org_Type IS NOT NULL AND Org_Name IS NOT NULL)
+    CONSTRAINT chk_org_not_null CHECK (Org_Name IS NOT NULL)
 );
 
 CREATE TABLE Location (
@@ -155,21 +154,22 @@ INSERT INTO Industries VALUES (8, 'Manufacturing', 'Production and assembly');
 INSERT INTO Industries VALUES (9, 'Retail', 'Consumer goods sales');
 INSERT INTO Industries VALUES (10, 'Telecommunications', 'Communication services');
 
-INSERT INTO Organizations VALUES ('E001', 'Tech Solutions Inc', 'info@techsolutions.com', '60123456789', 'Companies', 1, 'Exhibitor', 50);
-INSERT INTO Organizations VALUES ('U001', 'National University', 'admin@nationaluni.edu', '60345678901', 'Universities', 2, 'Sponsor', 200);
-INSERT INTO Organizations VALUES ('M001', 'Creative Ads Agency', 'contact@creativeads.com', '60198765432', 'Marketing Firm', 3, 'Sponsor', 30);
-INSERT INTO Organizations VALUES ('F001', 'Gourmet Catering', 'orders@gourmet.com', '60456789012', 'F&B provider', 5, 'Consultancy provider', 15);
-INSERT INTO Organizations VALUES ('CA001', 'Business Consultants Ltd', 'info@bizconsult.com', '60234567890', 'Consultancy agent', 4, 'Consultancy provider', 25);
-INSERT INTO Organizations VALUES ('E002', 'Finance Corp', 'hr@financecorp.com', '60567890123', 'Companies', 6, 'Exhibitor', 40);
-INSERT INTO Organizations VALUES ('U002', 'Tech Institute', 'admin@techinstitute.edu', '60789012345', 'Universities', 1, 'Speech provider', 150);
-INSERT INTO Organizations VALUES ('M002', 'Digital Promoters', 'info@digitalpromo.com', '60890123456', 'Marketing Firm', 3, 'Sponsor', 20);
-INSERT INTO Organizations VALUES ('F002', 'Quick Bites Cafe', 'catering@quickbites.com', '60901234567', 'F&B provider', 5, 'Exhibitor', 10);
-INSERT INTO Organizations VALUES ('CA002', 'Career Advisors', 'contact@careeradvisors.com', '60111223344', 'Consultancy agent', 4, 'Consultancy provider', 35);
-INSERT INTO Organizations VALUES ('U003', 'Universiti Teknologi Malaysia (UTM)', 'contact@utm.edu.my', '6033333444', 'Universities', 4, NULL, 12);
-INSERT INTO Organizations VALUES ('U004', 'Taylor''s University', 'enquiry@taylors.edu.my', '6034444555', 'Universities', 4, NULL, 7);
-INSERT INTO Organizations VALUES ('U005', 'Sunway University', 'info@sunway.edu.my', '6035555666', 'Universities', 4, NULL, 9);
-INSERT INTO Organizations VALUES ('U006', 'Universiti Malaya (UM)', 'info@um.edu.my', '6031111222', 'Universities', 4, NULL, 10);
-INSERT INTO Organizations VALUES ('U007', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 'Universities', 4, NULL, 8);
+INSERT INTO Organizations VALUES ('E001', 'Tech Solutions Inc', 'info@techsolutions.com', '60123456789', 1, 'Exhibitor', 50);
+INSERT INTO Organizations VALUES ('U001', 'National University', 'admin@nationaluni.edu', '60345678901', 2, 'Sponsor', 200);
+INSERT INTO Organizations VALUES ('M001', 'Creative Ads Agency', 'contact@creativeads.com', '60198765432', 3, 'Sponsor', 30);
+INSERT INTO Organizations VALUES ('F001', 'Gourmet Catering', 'orders@gourmet.com', '60456789012', 5, 'Consultancy provider', 15);
+INSERT INTO Organizations VALUES ('CA001', 'Business Consultants Ltd', 'info@bizconsult.com', '60234567890', 4, 'Consultancy provider', 25);
+INSERT INTO Organizations VALUES ('E002', 'Finance Corp', 'hr@financecorp.com', '60567890123', 6, 'Exhibitor', 40);
+INSERT INTO Organizations VALUES ('U002', 'Tech Institute', 'admin@techinstitute.edu', '60789012345', 1, 'Speech provider', 150);
+INSERT INTO Organizations VALUES ('M002', 'Digital Promoters', 'info@digitalpromo.com', '60890123456', 3, 'Sponsor', 20);
+INSERT INTO Organizations VALUES ('F002', 'Quick Bites Cafe', 'catering@quickbites.com', '60901234567', 5, 'Exhibitor', 10);
+INSERT INTO Organizations VALUES ('CA002', 'Career Advisors', 'contact@careeradvisors.com', '60111223344', 4, 'Consultancy provider', 35);
+INSERT INTO Organizations VALUES ('U003', 'Universiti Teknologi Malaysia (UTM)', 'contact@utm.edu.my', '6033333444', 4, NULL, 12);
+INSERT INTO Organizations VALUES ('U004', 'Taylor''s University', 'enquiry@taylors.edu.my', '6034444555', 4, NULL, 7);
+INSERT INTO Organizations VALUES ('U005', 'Sunway University', 'info@sunway.edu.my', '6035555666', 4, NULL, 9);
+INSERT INTO Organizations VALUES ('U006', 'Universiti Malaya (UM)', 'info@um.edu.my', '6031111222', 4, NULL, 10);
+INSERT INTO Organizations VALUES ('U007', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 4, NULL, 8);
+
 
 INSERT INTO Location VALUES (1, 'E001', 'Tech Pavilion', 1, 1, 'Main Exhibition Halls', 5000, 'Large');
 INSERT INTO Location VALUES (2, 'U001', 'Auditorium A', 2, 2, 'Auditoriums', 3000, 'Large');
