@@ -8,8 +8,9 @@ SET pagesize 35
 -- Set Malaysia date format
 ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
--- Accept status filter prompt with numbers
+-- Accept multiple filters
 ACCEPT v_status NUMBER PROMPT 'Enter status (1=Invited, 2=Applied, 3=Declined, 4=Accepted, 0=ALL): '
+ACCEPT v_org_type NUMBER PROMPT 'Enter org type (0=ALL, 1=Company, 2=University, 3=Government): '
 
 -- Define column formatting
 COL OrgID FORMAT A6 HEADING "Org ID"
@@ -28,11 +29,7 @@ RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
 CLEAR BREAKS
 CLEAR COMPUTES
 
--- Only set breaks and computes if NOT showing ALL statuses
-BREAK ON REPORT
-COMPUTE COUNT LABEL 'Total Organizations: ' OF OrgID ON REPORT
-
--- Query to list organizations grouped by status (BOTH Invited and Applying)
+-- Query to list organizations with organization type filtering only
 SELECT 
     p.Status,
     o.OrgID,
@@ -54,12 +51,18 @@ WHERE
         OR (&v_status = 3 AND p.Status = 'Declined')
         OR (&v_status = 4 AND p.Status = 'Accepted')
     )
+    -- Organization type filter (based on OrgID prefix)
+    AND (
+        (&v_org_type = 0)
+        OR (&v_org_type = 1 AND o.OrgID LIKE 'C%')  -- Companies
+        OR (&v_org_type = 2 AND o.OrgID LIKE 'U%')  -- Universities
+        OR (&v_org_type = 3 AND o.OrgID LIKE 'G%')  -- Government
+    )
 ORDER BY 
-    CASE WHEN &v_status = 0 THEN p.ParticipateBy END,  
-    p.Status,
-    o.Org_Name;
+    o.Org_Name,
+    p.Status;
 
--- Reset settings at end of script
+-- Reset settings
 CLEAR BREAKS
 CLEAR COMPUTES
 CLEAR COLUMNS
