@@ -8,11 +8,13 @@ SET pagesize 35
 -- Set Malaysia date format
 ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
--- Accept role filter prompt
-ACCEPT v_role CHAR PROMPT 'Enter role (1=Sponsor, 2=Exhibitor, 3=Speech, 4=Consultancy, 0=ALL): '
+-- Accept multiple filters
+ACCEPT v_role NUMBER PROMPT 'Enter role (1=Sponsor, 2=Exhibitor, 3=Speech, 4=Consultancy, 0=ALL): '
+ACCEPT v_industry NUMBER PROMPT 'Enter industry (0=ALL, 1=Software, 2=Cybersecurity, 3=Finance, 4=Education): '
+ACCEPT v_sort NUMBER PROMPT 'Sort by (1=Role, 2=Name, 3=Industry): '
 
 -- Define column formatting
-COL OrgID FORMAT A6 HEADING "Org ID"
+COL OrgID FORMAT A16 HEADING "Org ID"
 COL Org_Name FORMAT A30 HEADING "Organization Name"
 COL Email FORMAT A30 HEADING "Email"
 COL Contact_Number FORMAT A15 HEADING "Contact No"
@@ -20,18 +22,19 @@ COL Industry FORMAT A20 HEADING "Industry"
 COL Roles FORMAT A25 HEADING "Role"
 COL nTickets FORMAT 999 HEADING "Tickets"
 
--- Simple title
-TTITLE LEFT 'Organizations by Role' -
+-- Dynamic title
+TTITLE LEFT 'Filtered Organizations Report' -
 RIGHT 'Page No: ' FORMAT 999 SQL.PNO
 
 -- Clear previous breaks and computes
 CLEAR BREAKS
 CLEAR COMPUTES
 
--- Set break first
+-- Set break and compute BEFORE the SELECT statement
 BREAK ON REPORT
+COMPUTE COUNT LABEL 'Total Organizations: ' OF OrgID ON REPORT
 
--- Main query to list organizations by role
+-- Main query with multiple filters
 SELECT 
     o.OrgID,
     o.Org_Name,
@@ -44,18 +47,31 @@ FROM
     Organizations o
     INNER JOIN Industries i ON o.Industry_ID = i.Industry_ID
 WHERE 
-    (&v_role = 0 AND o.Roles IN ('Sponsor', 'Exhibitor', 'Speech provider', 'Consultancy provider'))
-    OR (&v_role = 1 AND o.Roles = 'Sponsor')
-    OR (&v_role = 2 AND o.Roles = 'Exhibitor')
-    OR (&v_role = 3 AND o.Roles = 'Speech provider')
-    OR (&v_role = 4 AND o.Roles = 'Consultancy provider')
+    -- Role filter
+    (
+        (&v_role = 0 AND o.Roles IN ('Sponsor', 'Exhibitor', 'Speech provider', 'Consultancy provider'))
+        OR (&v_role = 1 AND o.Roles = 'Sponsor')
+        OR (&v_role = 2 AND o.Roles = 'Exhibitor')
+        OR (&v_role = 3 AND o.Roles = 'Speech provider')
+        OR (&v_role = 4 AND o.Roles = 'Consultancy provider')
+    )
+    -- Industry filter
+    AND (
+        (&v_industry = 0)
+        OR (&v_industry = 1 AND i.Title = 'Software development')
+        OR (&v_industry = 2 AND i.Title = 'Cybersecurity')
+        OR (&v_industry = 3 AND i.Title = 'Finance')
+        OR (&v_industry = 4 AND i.Title = 'Education')
+    )
 ORDER BY 
-    o.Roles,
-    o.Org_Name;
+    CASE &v_sort
+        WHEN 1 THEN o.Roles
+        WHEN 2 THEN o.Org_Name
+        WHEN 3 THEN i.Title
+    END;
 
--- Reset settings at end of script
+-- Reset settings
 CLEAR BREAKS
 CLEAR COMPUTES
 CLEAR COLUMNS
 TTITLE OFF
-

@@ -40,13 +40,18 @@ SELECT DISTINCT
     o.Org_Name, 
     p.ParticipateBy, 
     p.Status
-    p.
 FROM Organizations o
 JOIN Participations p 
     ON p.OrgID = o.OrgID
 WHERE 
-    ('&p_type' = 1 AND p.ParticipateBy = 'Invited')
-    OR ('&p_type' = 2 AND p.ParticipateBy = 'Applying')
+    (
+        ('&p_type' = 1 AND p.ParticipateBy = 'Invited') AND 
+        ('&P_status' = 1 AND p.Status = 'Accepted')
+    ) OR 
+    (
+        ('&p_type' = 2 AND p.ParticipateBy = 'Applying') AND
+        ('&P_status' = 2 AND p.Status = 'Declined')
+    )
     AND REGEXP_LIKE(o.OrgID, '^U');
 
 -- Reset settings at end of script
