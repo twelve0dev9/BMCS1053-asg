@@ -156,6 +156,15 @@ INSERT INTO Industries VALUES (10, 'Telecommunications', 'Communication services
 INSERT INTO Industries VALUES (11, 'Human Resource', NULL);
 INSERT INTO Industries VALUES (12, 'Consultation', NULL);
 INSERT INTO Industries VALUES (13, 'Events Management', NULL);
+INSERT INTO Industries VALUES (14, 'Entertainment', 'Media and entertainment services');
+INSERT INTO Industries VALUES (15, 'Real Estate', 'Property development and management');
+INSERT INTO Industries VALUES (16, 'Transportation', 'Logistics and transportation services');
+INSERT INTO Industries VALUES (17, 'Energy', 'Renewable and conventional energy');
+INSERT INTO Industries VALUES (18, 'E-commerce', 'Online retail and marketplace');
+INSERT INTO Industries VALUES (19, 'Biotechnology', 'Biological research and development');
+INSERT INTO Industries VALUES (20, 'Hospitality', 'Hotels and accommodation services');
+
+
 
 INSERT INTO Organizations VALUES ('E001', 'Tech Solutions Inc', 'info@techsolutions.com', '60123456789', 1, 'Exhibitor', 50);
 INSERT INTO Organizations VALUES ('U001', 'National University', 'admin@nationaluni.edu', '60345678901', 2, 'Sponsor', 200);
@@ -178,6 +187,19 @@ INSERT INTO Organizations VALUES ('U008', 'International Islamic University Mala
 INSERT INTO Organizations VALUES ('U009', 'SEGi University (KL Campus)', 'contact@segi.edu.my', '60361458777', 4, NULL, 60);
 INSERT INTO Organizations VALUES ('U010', 'HELP University (KL)', 'admissions@help.edu.my', '60327162000', 4, NULL, 50);
 INSERT INTO Organizations VALUES ('U011', 'Asia Pacific University of Technology & Innovation (APU KL)', 'info@apu.edu.my', '60389961000', 4, 'Sponsor', 95);
+-- Add more organizations with diverse industries
+INSERT INTO Organizations VALUES ('G001', 'Google Malaysia', 'careers@google.com.my', '60322848888', 1, 'Sponsor', 75);
+INSERT INTO Organizations VALUES ('M003', 'Grab Malaysia', 'talent@grab.com', '60321628888', 16, 'Exhibitor', 60);
+INSERT INTO Organizations VALUES ('H001', 'IHH Healthcare', 'recruitment@ihhhealthcare.com', '60326808888', 7, 'Exhibitor', 45);
+INSERT INTO Organizations VALUES ('S001', 'Shopee Malaysia', 'university@shopee.com', '60322867888', 18, 'Sponsor', 80);
+INSERT INTO Organizations VALUES ('P001', 'Petronas', 'gradprogram@petronas.com', '60320515555', 17, 'Speech provider', 120);
+INSERT INTO Organizations VALUES ('A001', 'AirAsia', 'careers@airasia.com', '60378469333', 16, 'Exhibitor', 55);
+INSERT INTO Organizations VALUES ('M004', 'Maxis Berhad', 'talent.acquisition@maxis.com.my', '60323318888', 10, 'Sponsor', 65);
+INSERT INTO Organizations VALUES ('M005', 'Maybank', 'grad.recruit@maybank.com', '60320747333', 6, 'Exhibitor', 90);
+INSERT INTO Organizations VALUES ('T001', 'Touch n Go Digital', 'hr@tngdigital.com.my', '60327748899', 1, 'Consultancy provider', 40);
+INSERT INTO Organizations VALUES ('L001', 'Lazada Malaysia', 'campus.recruitment@lazada.com', '60327238888', 18, 'Exhibitor', 70);
+
+
 
 INSERT INTO Location VALUES (1, 'E001', 'Tech Pavilion', 1, 1, 'Main Exhibition Halls', 5000, 'Large');
 INSERT INTO Location VALUES (2, 'U001', 'Auditorium A', 2, 2, 'Auditoriums', 3000, 'Large');
@@ -189,6 +211,19 @@ INSERT INTO Location VALUES (7, 'U002', 'Seminar Room A', 2, 3, 'Conference Room
 INSERT INTO Location VALUES (8, 'M002', 'Digital Corner', 1, 6, 'Main Exhibition Halls', 2200, 'Small');
 INSERT INTO Location VALUES (9, 'F002', 'Cafe Lounge', 1, 7, 'Networking Lounge', 1200, 'Small');
 INSERT INTO Location VALUES (10, 'CA002', 'Career Center', 3, 2, 'Meeting Rooms', 1700, 'Medium');
+-- Add more locations
+INSERT INTO Location VALUES (11, 'G001', 'Google Innovation Hub', 1, 8, 'Main Exhibition Halls', 6000, 'Large');
+INSERT INTO Location VALUES (12, 'M003', 'Grab Mobility Zone', 1, 9, 'Main Exhibition Halls', 3500, 'Medium');
+INSERT INTO Location VALUES (13, 'H001', 'Healthcare Pavilion', 1, 10, 'Main Exhibition Halls', 4000, 'Medium');
+INSERT INTO Location VALUES (14, 'S001', 'E-commerce Corner', 1, 11, 'Main Exhibition Halls', 3200, 'Medium');
+INSERT INTO Location VALUES (15, 'P001', 'Energy Innovation Center', 2, 4, 'Conference Rooms', 2800, 'Medium');
+INSERT INTO Location VALUES (16, 'A001', 'Aviation Lounge', 3, 3, 'Networking Lounge', 2200, 'Small');
+INSERT INTO Location VALUES (17, 'M004', 'Telecom Hub', 1, 12, 'Main Exhibition Halls', 3800, 'Medium');
+INSERT INTO Location VALUES (18, 'M005', 'Finance Plaza', 1, 13, 'Main Exhibition Halls', 5200, 'Large');
+INSERT INTO Location VALUES (19, 'T001', 'Fintech Innovation', 2, 5, 'Conference Rooms', 2400, 'Small');
+INSERT INTO Location VALUES (20, 'L001', 'Digital Marketplace', 1, 14, 'Main Exhibition Halls', 3400, 'Medium');
+
+
 
 INSERT INTO Events VALUES (1, 'Tech Career Fair', 'Technology industry career opportunities', 'Recruitment', TO_DATE('15/06/2024 10:00', 'DD/MM/YYYY HH24:MI'), 1);
 INSERT INTO Events VALUES (2, 'Digital Marketing Trends', 'Latest trends in digital marketing', 'Talks', TO_DATE('15/06/2024 14:00', 'DD/MM/YYYY HH24:MI'), 2);
@@ -203,6 +238,19 @@ INSERT INTO Events VALUES (10, 'Startup Networking', 'Connect with startup found
 INSERT INTO Events VALUES (11, 'Future of Tech Panel', 'Discussing emerging trends in technology careers', 'Panels', DATE '2025-09-15', 1);
 INSERT INTO Events VALUES (12, 'Entrepreneurship Insights Panel', 'Sharing experiences and advice from successful entrepreneurs', 'Panels', DATE '2025-09-16', 2);
 INSERT INTO Events VALUES (13, 'Sustainability & Careers Panel', 'Panel discussion on sustainable practices and green job opportunities', 'Panels', DATE '2025-09-17', 3);
+-- Add more events
+INSERT INTO Events VALUES (14, 'Tech Innovation Summit', 'Cutting-edge technology innovations', 'Talks', TO_DATE('20/06/2024 09:30', 'DD/MM/YYYY HH24:MI'), 11);
+INSERT INTO Events VALUES (15, 'Digital Transformation Panel', 'Digital transformation strategies', 'Panels', TO_DATE('20/06/2024 14:00', 'DD/MM/YYYY HH24:MI'), 15);
+INSERT INTO Events VALUES (16, 'Healthcare Careers Day', 'Opportunities in healthcare sector', 'Recruitment', TO_DATE('21/06/2024 10:00', 'DD/MM/YYYY HH24:MI'), 13);
+INSERT INTO Events VALUES (17, 'E-commerce Workshop', 'Building successful online businesses', 'Seminars', TO_DATE('21/06/2024 15:30', 'DD/MM/YYYY HH24:MI'), 14);
+INSERT INTO Events VALUES (18, 'Energy Sector Forum', 'Future of energy industry', 'Talks', TO_DATE('22/06/2024 11:00', 'DD/MM/YYYY HH24:MI'), 15);
+INSERT INTO Events VALUES (19, 'Aviation Careers', 'Careers in aviation industry', 'Recruitment', TO_DATE('22/06/2024 14:00', 'DD/MM/YYYY HH24:MI'), 16);
+INSERT INTO Events VALUES (20, 'Telecom Innovation', '5G and future technologies', 'Talks', TO_DATE('23/06/2024 10:30', 'DD/MM/YYYY HH24:MI'), 17);
+INSERT INTO Events VALUES (21, 'Banking & Finance Careers', 'Opportunities in banking sector', 'Recruitment', TO_DATE('23/06/2024 13:00', 'DD/MM/YYYY HH24:MI'), 18);
+INSERT INTO Events VALUES (22, 'Fintech Revolution', 'Financial technology innovations', 'Talks', TO_DATE('24/06/2024 09:00', 'DD/MM/YYYY HH24:MI'), 19);
+INSERT INTO Events VALUES (23, 'Digital Economy Summit', 'Future of digital economy', 'Panels', TO_DATE('24/06/2024 16:00', 'DD/MM/YYYY HH24:MI'), 20);
+
+
 
 INSERT INTO Speakers VALUES (1, 'John Smith', 35, 'M', '60123456789', 'john@techsolutions.com', 'Tech Solutions Inc', 1);
 INSERT INTO Speakers VALUES (2, 'Sarah Chen', 28, 'F', '60234567890', 'sarah@creativeads.com', 'Creative Ads Agency', 2);
@@ -214,6 +262,18 @@ INSERT INTO Speakers VALUES (7, 'Prof. Ahmad', 50, 'M', '60789012345', 'ahmad@te
 INSERT INTO Speakers VALUES (8, 'Emma Davis', 31, 'F', '60890123456', 'emma@digitalpromo.com', 'Digital Promoters', 2);
 INSERT INTO Speakers VALUES (9, 'James Wilson', 38, 'M', '60901234567', 'james@careeradvisors.com', 'Career Advisors', 5);
 INSERT INTO Speakers VALUES (10, 'Sophia Kim', 27, 'F', '60111223344', 'sophia@quickbites.com', 'Quick Bites Cafe', 9);
+INSERT INTO Speakers VALUES (11, 'Tan Sri Tony Fernandes', 60, 'M', '60378469000', 'tony@airasia.com', 'AirAsia', 19);
+INSERT INTO Speakers VALUES (12, 'Dr. Chen Chaw Min', 45, 'F', '60326808899', 'chen@ihhhealthcare.com', 'IHH Healthcare', 16);
+INSERT INTO Speakers VALUES (13, 'Raja Hamzah', 38, 'M', '60322848899', 'raja@google.com.my', 'Google Malaysia', 14);
+INSERT INTO Speakers VALUES (14, 'Anthony Tan', 42, 'M', '60321628899', 'anthony@grab.com', 'Grab Malaysia', 15);
+INSERT INTO Speakers VALUES (15, 'Chris Feng', 40, 'M', '60322867899', 'chris@shopee.com', 'Shopee Malaysia', 17);
+INSERT INTO Speakers VALUES (16, 'Datuk Tengku Muhammad', 55, 'M', '60320515599', 'tengku@petronas.com', 'Petronas', 18);
+INSERT INTO Speakers VALUES (17, 'Gokul Nayak', 37, 'M', '60323318899', 'gokul@maxis.com.my', 'Maxis Berhad', 20);
+INSERT INTO Speakers VALUES (18, 'Dato Khairussaleh', 52, 'M', '60320747399', 'khairussaleh@maybank.com', 'Maybank', 21);
+INSERT INTO Speakers VALUES (19, 'Effendy Shahul', 44, 'M', '60327748800', 'effendy@tngdigital.com.my', 'Touch n Go Digital', 22);
+INSERT INTO Speakers VALUES (20, 'Jessica Liu', 36, 'F', '60327238899', 'jessica@lazada.com', 'Lazada Malaysia', 23);
+
+
 
 INSERT INTO Applicants VALUES ('A0001', 'Michael Brown', 22, 'M', '60122334455', 'michael@email.com', 'Bachelor', 'Computer Science', 'U001', 'resume1.pdf', 'portfolio1.pdf');
 INSERT INTO Applicants VALUES ('A0002', 'Jennifer Lee', 24, 'F', '60233445566', 'jennifer@email.com', 'Master', 'Marketing', 'U002', 'resume2.pdf', 'portfolio2.pdf');
@@ -225,6 +285,18 @@ INSERT INTO Applicants VALUES ('A0007', 'Kevin Tan', 24, 'M', '60788990011', 'ke
 INSERT INTO Applicants VALUES ('A0008', 'Michelle Ng', 23, 'F', '60899001122', 'michelle@email.com', 'Master', 'HR Management', 'U002', 'resume8.pdf', 'portfolio8.pdf');
 INSERT INTO Applicants VALUES ('A0009', 'Ryan Park', 22, 'M', '60900112233', 'ryan@email.com', 'Bachelor', 'IT', 'U001', 'resume9.pdf', 'portfolio9.pdf');
 INSERT INTO Applicants VALUES ('A0010', 'Jessica Ho', 25, 'F', '60111223344', 'jessica@email.com', 'Master', 'Communications', 'U002', 'resume10.pdf', 'portfolio10.pdf');
+INSERT INTO Applicants VALUES ('A0011', 'Ahmad Firdaus', 23, 'M', '60112233445', 'ahmad@email.com', 'Bachelor', 'Aerospace Engineering', 'U001', 'resume11.pdf', 'portfolio11.pdf');
+INSERT INTO Applicants VALUES ('A0012', 'Siti Nurhaliza', 24, 'F', '60123344556', 'siti@email.com', 'Master', 'Public Health', 'U002', 'resume12.pdf', 'portfolio12.pdf');
+INSERT INTO Applicants VALUES ('A0013', 'Rajesh Kumar', 22, 'M', '60134455667', 'rajesh@email.com', 'Bachelor', 'Data Science', 'U001', 'resume13.pdf', 'portfolio13.pdf');
+INSERT INTO Applicants VALUES ('A0014', 'Mei Ling', 25, 'F', '60145566778', 'meiling@email.com', 'Master', 'Digital Marketing', 'U002', 'resume14.pdf', 'portfolio14.pdf');
+INSERT INTO Applicants VALUES ('A0015', 'Ali bin Hassan', 21, 'M', '60156677889', 'ali@email.com', 'Bachelor', 'Petroleum Engineering', 'U001', 'resume15.pdf', 'portfolio15.pdf');
+INSERT INTO Applicants VALUES ('A0016', 'Priya Sharma', 24, 'F', '60167788990', 'priya@email.com', 'Master', 'Finance', 'U002', 'resume16.pdf', 'portfolio16.pdf');
+INSERT INTO Applicants VALUES ('A0017', 'Wei Chen', 23, 'M', '60178899001', 'wei@email.com', 'Bachelor', 'Computer Engineering', 'U001', 'resume17.pdf', 'portfolio17.pdf');
+INSERT INTO Applicants VALUES ('A0018', 'Aina Sofiya', 22, 'F', '60189900112', 'aina@email.com', 'Bachelor', 'Business Analytics', 'U002', 'resume18.pdf', 'portfolio18.pdf');
+INSERT INTO Applicants VALUES ('A0019', 'Kumar Raj', 25, 'M', '60190011223', 'kumar@email.com', 'Master', 'Telecommunications', 'U001', 'resume19.pdf', 'portfolio19.pdf');
+INSERT INTO Applicants VALUES ('A0020', 'Sarah Johnson', 24, 'F', '60101122334', 'sarahj@email.com', 'Bachelor', 'Economics', 'U002', 'resume20.pdf', 'portfolio20.pdf');
+
+
 
 INSERT INTO Job_Positions VALUES (1, NULL, 'Speaker');
 INSERT INTO Job_Positions VALUES (2, NULL, 'Recruiter');
@@ -247,7 +319,6 @@ INSERT INTO Job_Positions VALUES (17, 1, 'Network Engineer');
 INSERT INTO Job_Positions VALUES (18, 1, 'Project Manager');
 INSERT INTO Job_Positions VALUES (19, 1, 'QA Tester');
 INSERT INTO Job_Positions VALUES (20, 1, 'IT Support Specialist');
-
 -- Education (Industry_ID = 2)
 INSERT INTO Job_Positions VALUES (21, 2, 'Lecturer');
 INSERT INTO Job_Positions VALUES (22, 2, 'Research Assistant');
@@ -256,7 +327,6 @@ INSERT INTO Job_Positions VALUES (24, 2, 'Curriculum Developer');
 INSERT INTO Job_Positions VALUES (25, 2, 'Tutor');
 INSERT INTO Job_Positions VALUES (26, 2, 'Dean');
 INSERT INTO Job_Positions VALUES (27, 2, 'Training Coordinator');
-
 -- Marketing (Industry_ID = 3)
 INSERT INTO Job_Positions VALUES (28, 3, 'Marketing Executive');
 INSERT INTO Job_Positions VALUES (29, 3, 'Brand Manager');
@@ -265,7 +335,6 @@ INSERT INTO Job_Positions VALUES (31, 3, 'Market Research Analyst');
 INSERT INTO Job_Positions VALUES (32, 3, 'Copywriter');
 INSERT INTO Job_Positions VALUES (33, 3, 'Graphic Designer');
 INSERT INTO Job_Positions VALUES (34, 3, 'Event Coordinator');
-
 -- Consulting (Industry_ID = 4)
 INSERT INTO Job_Positions VALUES (35, 4, 'Management Consultant');
 INSERT INTO Job_Positions VALUES (36, 4, 'Business Analyst');
@@ -273,7 +342,6 @@ INSERT INTO Job_Positions VALUES (37, 4, 'Strategy Advisor');
 INSERT INTO Job_Positions VALUES (38, 4, 'Risk Consultant');
 INSERT INTO Job_Positions VALUES (39, 4, 'HR Consultant');
 INSERT INTO Job_Positions VALUES (40, 4, 'Operations Specialist');
-
 -- Food & Beverage (Industry_ID = 5)
 INSERT INTO Job_Positions VALUES (41, 5, 'Chef');
 INSERT INTO Job_Positions VALUES (42, 5, 'Sous Chef');
@@ -282,7 +350,6 @@ INSERT INTO Job_Positions VALUES (44, 5, 'Waiter/Waitress');
 INSERT INTO Job_Positions VALUES (45, 5, 'F&B Manager');
 INSERT INTO Job_Positions VALUES (46, 5, 'Catering Coordinator');
 INSERT INTO Job_Positions VALUES (47, 5, 'Kitchen Assistant');
-
 -- Finance (Industry_ID = 6)
 INSERT INTO Job_Positions VALUES (48, 6, 'Financial Analyst');
 INSERT INTO Job_Positions VALUES (49, 6, 'Accountant');
@@ -291,7 +358,6 @@ INSERT INTO Job_Positions VALUES (51, 6, 'Investment Banker');
 INSERT INTO Job_Positions VALUES (52, 6, 'Loan Officer');
 INSERT INTO Job_Positions VALUES (53, 6, 'Risk Manager');
 INSERT INTO Job_Positions VALUES (54, 6, 'Tax Consultant');
-
 -- Healthcare (Industry_ID = 7)
 INSERT INTO Job_Positions VALUES (55, 7, 'Doctor');
 INSERT INTO Job_Positions VALUES (56, 7, 'Nurse');
@@ -300,7 +366,6 @@ INSERT INTO Job_Positions VALUES (58, 7, 'Lab Technician');
 INSERT INTO Job_Positions VALUES (59, 7, 'Physiotherapist');
 INSERT INTO Job_Positions VALUES (60, 7, 'Nutritionist');
 INSERT INTO Job_Positions VALUES (61, 7, 'Healthcare Administrator');
-
 -- Manufacturing (Industry_ID = 8)
 INSERT INTO Job_Positions VALUES (62, 8, 'Production Supervisor');
 INSERT INTO Job_Positions VALUES (63, 8, 'Quality Control Inspector');
@@ -309,7 +374,6 @@ INSERT INTO Job_Positions VALUES (65, 8, 'Mechanical Engineer');
 INSERT INTO Job_Positions VALUES (66, 8, 'Maintenance Technician');
 INSERT INTO Job_Positions VALUES (67, 8, 'Supply Chain Coordinator');
 INSERT INTO Job_Positions VALUES (68, 8, 'Safety Officer');
-
 -- Retail (Industry_ID = 9)
 INSERT INTO Job_Positions VALUES (69, 9, 'Sales Associate');
 INSERT INTO Job_Positions VALUES (70, 9, 'Store Manager');
@@ -318,7 +382,6 @@ INSERT INTO Job_Positions VALUES (72, 9, 'Visual Merchandiser');
 INSERT INTO Job_Positions VALUES (73, 9, 'Inventory Specialist');
 INSERT INTO Job_Positions VALUES (74, 9, 'Customer Service Representative');
 INSERT INTO Job_Positions VALUES (75, 9, 'Retail Buyer');
-
 -- Telecommunications (Industry_ID = 10)
 INSERT INTO Job_Positions VALUES (76, 10, 'Network Administrator');
 INSERT INTO Job_Positions VALUES (77, 10, 'Telecom Engineer');
@@ -326,7 +389,6 @@ INSERT INTO Job_Positions VALUES (78, 10, 'Technical Support Specialist');
 INSERT INTO Job_Positions VALUES (79, 10, 'Customer Support Agent');
 INSERT INTO Job_Positions VALUES (80, 10, 'Field Technician');
 INSERT INTO Job_Positions VALUES (81, 10, 'Systems Architect');
-
 -- Human Resource (Industry_ID = 11)
 INSERT INTO Job_Positions VALUES (82, 11, 'HR Manager');
 INSERT INTO Job_Positions VALUES (83, 11, 'Recruitment Specialist');
@@ -334,7 +396,6 @@ INSERT INTO Job_Positions VALUES (84, 11, 'Training & Development Officer');
 INSERT INTO Job_Positions VALUES (85, 11, 'Compensation & Benefits Analyst');
 INSERT INTO Job_Positions VALUES (86, 11, 'Employee Relations Officer');
 INSERT INTO Job_Positions VALUES (87, 11, 'HR Assistant');
-
 -- Consultation (Industry_ID = 12)
 INSERT INTO Job_Positions VALUES (88, 12, 'Legal Consultant');
 INSERT INTO Job_Positions VALUES (89, 12, 'Career Consultant');
@@ -342,7 +403,6 @@ INSERT INTO Job_Positions VALUES (90, 12, 'Financial Advisor');
 INSERT INTO Job_Positions VALUES (91, 12, 'IT Consultant');
 INSERT INTO Job_Positions VALUES (92, 12, 'Compliance Consultant');
 INSERT INTO Job_Positions VALUES (93, 12, 'Sustainability Consultant');
-
 -- Events Management (Industry_ID = 13)
 INSERT INTO Job_Positions VALUES (94, 13, 'Event Planner');
 INSERT INTO Job_Positions VALUES (95, 13, 'Event Coordinator');
@@ -351,6 +411,50 @@ INSERT INTO Job_Positions VALUES (97, 13, 'Logistics Manager');
 INSERT INTO Job_Positions VALUES (98, 13, 'Sponsorship Manager');
 INSERT INTO Job_Positions VALUES (99, 13, 'Marketing & PR Officer');
 INSERT INTO Job_Positions VALUES (100, 13, 'Volunteer Coordinator');
+-- Entertainment (Industry_ID = 14)
+INSERT INTO Job_Positions VALUES (101, 14, 'Content Producer');
+INSERT INTO Job_Positions VALUES (102, 14, 'Video Editor');
+INSERT INTO Job_Positions VALUES (103, 14, 'Social Media Manager');
+INSERT INTO Job_Positions VALUES (104, 14, 'Event Coordinator');
+INSERT INTO Job_Positions VALUES (105, 14, 'Talent Manager');
+-- Real Estate (Industry_ID = 15)
+INSERT INTO Job_Positions VALUES (106, 15, 'Real Estate Agent');
+INSERT INTO Job_Positions VALUES (107, 15, 'Property Manager');
+INSERT INTO Job_Positions VALUES (108, 15, 'Valuation Specialist');
+INSERT INTO Job_Positions VALUES (109, 15, 'Development Manager');
+INSERT INTO Job_Positions VALUES (110, 15, 'Facilities Manager');
+-- Transportation (Industry_ID = 16)
+INSERT INTO Job_Positions VALUES (111, 16, 'Logistics Coordinator');
+INSERT INTO Job_Positions VALUES (112, 16, 'Supply Chain Manager');
+INSERT INTO Job_Positions VALUES (113, 16, 'Fleet Manager');
+INSERT INTO Job_Positions VALUES (114, 16, 'Transport Planner');
+INSERT INTO Job_Positions VALUES (115, 16, 'Operations Manager');
+-- Energy (Industry_ID = 17)
+INSERT INTO Job_Positions VALUES (116, 17, 'Renewable Energy Engineer');
+INSERT INTO Job_Positions VALUES (117, 17, 'Petroleum Engineer');
+INSERT INTO Job_Positions VALUES (118, 17, 'Energy Analyst');
+INSERT INTO Job_Positions VALUES (119, 17, 'Sustainability Manager');
+INSERT INTO Job_Positions VALUES (120, 17, 'Project Engineer');
+-- E-commerce (Industry_ID = 18)
+INSERT INTO Job_Positions VALUES (121, 18, 'E-commerce Manager');
+INSERT INTO Job_Positions VALUES (122, 18, 'Digital Marketing Specialist');
+INSERT INTO Job_Positions VALUES (123, 18, 'UX/UI Designer');
+INSERT INTO Job_Positions VALUES (124, 18, 'Supply Chain Analyst');
+INSERT INTO Job_Positions VALUES (125, 18, 'Data Analyst');
+-- Biotechnology (Industry_ID = 19)
+INSERT INTO Job_Positions VALUES (126, 19, 'Research Scientist');
+INSERT INTO Job_Positions VALUES (127, 19, 'Lab Technician');
+INSERT INTO Job_Positions VALUES (128, 19, 'Quality Control Analyst');
+INSERT INTO Job_Positions VALUES (129, 19, 'Biotech Engineer');
+INSERT INTO Job_Positions VALUES (130, 19, 'Clinical Research Associate');
+-- Hospitality (Industry_ID = 20)
+INSERT INTO Job_Positions VALUES (131, 20, 'Hotel Manager');
+INSERT INTO Job_Positions VALUES (132, 20, 'Front Office Manager');
+INSERT INTO Job_Positions VALUES (133, 20, 'Event Planner');
+INSERT INTO Job_Positions VALUES (134, 20, 'Food & Beverage Manager');
+INSERT INTO Job_Positions VALUES (135, 20, 'Guest Relations Officer');
+
+
 
 INSERT INTO Employees VALUES ('E0001', 'Robert Zhang', 32, 'M', '60199887766', 'robert@techsolutions.com', 'E001', 1);
 INSERT INTO Employees VALUES ('E0002', 'Amanda Lim', 28, 'F', '60288776655', 'amanda@nationaluni.edu', 'U001', 2);
@@ -392,7 +496,6 @@ INSERT INTO Employees VALUES ('E0037', 'Henry Goh', 32, 'M', '60123456806', 'hen
 INSERT INTO Employees VALUES ('E0038', 'Samantha Khoo', 30, 'F', '60123456807', 'samantha@digitalpromo.com', 'M002', 4);
 INSERT INTO Employees VALUES ('E0039', 'Mohd Faiz', 29, 'M', '60123456808', 'faiz@quickbites.com', 'F002', 6);
 INSERT INTO Employees VALUES ('E0040', 'Jessica Tan', 31, 'F', '60123456809', 'jessica@careeradvisors.com', 'CA002', 7);
-
 INSERT INTO Employees VALUES ('E0041', 'Lebron James', 30, 'M', '60161592134', 'james@techsolutions.com', 'E001', 3);
 INSERT INTO Employees VALUES ('E0042', 'Chong Wei', 29, 'M', '60123456701', 'chong@techsolutions.com', 'E001', 2);
 INSERT INTO Employees VALUES ('E0043', 'Hannah Tan', 26, 'F', '60123456702', 'hannah@nationaluni.edu', 'U001', 4);
@@ -424,6 +527,19 @@ INSERT INTO Employees VALUES ('E0068', 'Derrick Ho', 30, 'M', '60123456727', 'de
 INSERT INTO Employees VALUES ('E0069', 'Michelle Wong', 28, 'F', '60123456728', 'michelle@digitalpromo.com', 'M002', 21);
 INSERT INTO Employees VALUES ('E0070', 'Aaron Lee', 31, 'M', '60123456729', 'aaron@quickbites.com', 'F002', 22);
 INSERT INTO Employees VALUES ('E0071', 'Samantha Ng', 29, 'F', '60123456730', 'samantha@careeradvisors.com', 'CA002', 17);
+-- Add more employees
+INSERT INTO Employees VALUES ('E0072', 'Dr. Lim Wei Hong', 45, 'M', '60322848801', 'lim@google.com.my', 'G001', 13);
+INSERT INTO Employees VALUES ('E0073', 'Nurul Hassan', 32, 'F', '60321628802', 'nurul@grab.com', 'M003', 111);
+INSERT INTO Employees VALUES ('E0074', 'Dr. Sarah Menon', 38, 'F', '60326808803', 'sarah@ihhhealthcare.com', 'H001', 55);
+INSERT INTO Employees VALUES ('E0075', 'Jason Tan', 29, 'M', '60322867804', 'jason@shopee.com', 'S001', 121);
+INSERT INTO Employees VALUES ('E0076', 'Ir. Mohd Farid', 42, 'M', '60320515505', 'farid@petronas.com', 'P001', 116);
+INSERT INTO Employees VALUES ('E0077', 'Captain Aziz', 47, 'M', '60378469006', 'aziz@airasia.com', 'A001', 111);
+INSERT INTO Employees VALUES ('E0078', 'Lisa Wong', 34, 'F', '60323318807', 'lisa@maxis.com.my', 'M004', 76);
+INSERT INTO Employees VALUES ('E0079', 'Ahmad Zaki', 39, 'M', '60320747308', 'zaki@maybank.com', 'M005', 48);
+INSERT INTO Employees VALUES ('E0080', 'Puan Sri Aishah', 41, 'F', '60327748809', 'aishah@tngdigital.com.my', 'T001', 91);
+INSERT INTO Employees VALUES ('E0081', 'David Chen', 31, 'M', '60327238810', 'david@lazada.com', 'L001', 121);
+
+
 
 INSERT INTO AdCampaign VALUES ('C001', 'M001', 'Summer Career Fair', TO_DATE('01/05/2024', 'DD/MM/YYYY'), TO_DATE('30/06/2024', 'DD/MM/YYYY'), 'Social media marketing', 5000, 'Students');
 INSERT INTO AdCampaign VALUES ('C002', 'M002', 'Tech Jobs Campaign', TO_DATE('15/05/2024', 'DD/MM/YYYY'), TO_DATE('15/07/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 8000, 'IT Graduates');
@@ -435,6 +551,19 @@ INSERT INTO AdCampaign VALUES ('C007', 'M001', 'Marketing Careers', TO_DATE('05/
 INSERT INTO AdCampaign VALUES ('C008', 'M002', 'Tech Networking', TO_DATE('30/05/2024', 'DD/MM/YYYY'), TO_DATE('25/07/2024', 'DD/MM/YYYY'), 'Social media marketing', 4800, 'IT Professionals');
 INSERT INTO AdCampaign VALUES ('C009', 'M001', 'Career Development', TO_DATE('15/06/2024', 'DD/MM/YYYY'), TO_DATE('15/08/2024', 'DD/MM/YYYY'), 'Event branding on e-hailing vehicles', 5200, 'All Students');
 INSERT INTO AdCampaign VALUES ('C010', 'M002', 'Industry Insights', TO_DATE('20/06/2024', 'DD/MM/YYYY'), TO_DATE('20/08/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 6500, 'Professionals');
+-- Add more ad campaigns
+INSERT INTO AdCampaign VALUES ('C011', 'M001', 'Tech Talent Hunt', TO_DATE('25/06/2024', 'DD/MM/YYYY'), TO_DATE('25/08/2024', 'DD/MM/YYYY'), 'Social media marketing', 7500, 'Tech Graduates');
+INSERT INTO AdCampaign VALUES ('C012', 'M002', 'Healthcare Careers', TO_DATE('30/06/2024', 'DD/MM/YYYY'), TO_DATE('30/08/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 5500, 'Medical Students');
+INSERT INTO AdCampaign VALUES ('C013', 'M001', 'E-commerce Opportunities', TO_DATE('05/07/2024', 'DD/MM/YYYY'), TO_DATE('05/09/2024', 'DD/MM/YYYY'), 'Broadcast ads', 6800, 'Business Students');
+INSERT INTO AdCampaign VALUES ('C014', 'M002', 'Energy Sector Jobs', TO_DATE('10/07/2024', 'DD/MM/YYYY'), TO_DATE('10/09/2024', 'DD/MM/YYYY'), 'Event branding on e-hailing vehicles', 5200, 'Engineering Students');
+INSERT INTO AdCampaign VALUES ('C015', 'M001', 'Aviation Careers Fair', TO_DATE('15/07/2024', 'DD/MM/YYYY'), TO_DATE('15/09/2024', 'DD/MM/YYYY'), 'Social media marketing', 6100, 'Aviation Students');
+INSERT INTO AdCampaign VALUES ('C016', 'M002', 'Telecom Innovation Day', TO_DATE('20/07/2024', 'DD/MM/YYYY'), TO_DATE('20/09/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 4900, 'IT Professionals');
+INSERT INTO AdCampaign VALUES ('C017', 'M001', 'Banking Careers', TO_DATE('25/07/2024', 'DD/MM/YYYY'), TO_DATE('25/09/2024', 'DD/MM/YYYY'), 'Broadcast ads', 7200, 'Finance Students');
+INSERT INTO AdCampaign VALUES ('C018', 'M002', 'Fintech Revolution', TO_DATE('30/07/2024', 'DD/MM/YYYY'), TO_DATE('30/09/2024', 'DD/MM/YYYY'), 'Social media marketing', 5800, 'Tech Graduates');
+INSERT INTO AdCampaign VALUES ('C019', 'M001', 'Digital Economy Summit', TO_DATE('05/08/2024', 'DD/MM/YYYY'), TO_DATE('05/10/2024', 'DD/MM/YYYY'), 'Event branding on e-hailing vehicles', 6500, 'All Students');
+INSERT INTO AdCampaign VALUES ('C020', 'M002', 'Future Skills Workshop', TO_DATE('10/08/2024', 'DD/MM/YYYY'), TO_DATE('10/10/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 5300, 'Young Professionals');
+
+
 
 INSERT INTO Participations VALUES (1, 1, 'E001', 'Invited', TO_DATE('01/05/2024', 'DD/MM/YYYY'), TO_DATE('05/05/2024', 'DD/MM/YYYY'), 'Accepted');
 INSERT INTO Participations VALUES (2, 2, 'M001', 'Applying', TO_DATE('02/05/2024', 'DD/MM/YYYY'), TO_DATE('06/05/2024', 'DD/MM/YYYY'), 'Applied');
@@ -456,6 +585,19 @@ INSERT INTO Participations VALUES (17, NULL, 'U008', 'Applying', DATE '2025-08-1
 INSERT INTO Participations VALUES (18, NULL, 'U009', 'Applying', DATE '2025-08-13', DATE '2025-08-15', 'Applied');
 INSERT INTO Participations VALUES (19, NULL, 'U010', 'Applying', DATE '2025-08-14', DATE '2025-08-16', 'Applied');
 INSERT INTO Participations VALUES (20, NULL, 'U011', 'Applying', DATE '2025-08-15', DATE '2025-08-17', 'Applied');
+-- Add more participations
+INSERT INTO Participations VALUES (21, 11, 'A001', 'Invited', TO_DATE('15/06/2024', 'DD/MM/YYYY'), TO_DATE('20/06/2024', 'DD/MM/YYYY'), 'Accepted');
+INSERT INTO Participations VALUES (22, 12, 'H001', 'Applying', TO_DATE('16/06/2024', 'DD/MM/YYYY'), TO_DATE('21/06/2024', 'DD/MM/YYYY'), 'Applied');
+INSERT INTO Participations VALUES (23, 13, 'G001', 'Invited', TO_DATE('17/06/2024', 'DD/MM/YYYY'), TO_DATE('22/06/2024', 'DD/MM/YYYY'), 'Accepted');
+INSERT INTO Participations VALUES (24, 14, 'M003', 'Applying', TO_DATE('18/06/2024', 'DD/MM/YYYY'), TO_DATE('23/06/2024', 'DD/MM/YYYY'), 'Applied');
+INSERT INTO Participations VALUES (25, 15, 'S001', 'Invited', TO_DATE('19/06/2024', 'DD/MM/YYYY'), NULL, 'Invited');
+INSERT INTO Participations VALUES (26, 16, 'P001', 'Applying', TO_DATE('20/06/2024', 'DD/MM/YYYY'), TO_DATE('25/06/2024', 'DD/MM/YYYY'), 'Accepted');
+INSERT INTO Participations VALUES (27, 17, 'M004', 'Invited', TO_DATE('21/06/2024', 'DD/MM/YYYY'), NULL, 'Invited');
+INSERT INTO Participations VALUES (28, 18, 'M005', 'Applying', TO_DATE('22/06/2024', 'DD/MM/YYYY'), TO_DATE('27/06/2024', 'DD/MM/YYYY'), 'Applied');
+INSERT INTO Participations VALUES (29, 19, 'T001', 'Invited', TO_DATE('23/06/2024', 'DD/MM/YYYY'), TO_DATE('28/06/2024', 'DD/MM/YYYY'), 'Accepted');
+INSERT INTO Participations VALUES (30, 20, 'L001', 'Applying', TO_DATE('24/06/2024', 'DD/MM/YYYY'), NULL, 'Applied');
+
+
 
 INSERT INTO Applications VALUES ('E001', 'A0001', 1, 'Full time', 'Applied', TO_DATE('01/05/2024', 'DD/MM/YYYY'));
 INSERT INTO Applications VALUES ('E001', 'A0002', 2, 'Internships', 'Resume Submitted', TO_DATE('02/05/2024', 'DD/MM/YYYY'));
@@ -487,6 +629,19 @@ INSERT INTO Applications VALUES ('F002', 'A0007', 27, 'Part time', 'Resume Submi
 INSERT INTO Applications VALUES ('CA002', 'A0008', 28, 'Full time', 'Interview scheduled', TO_DATE('28/05/2024', 'DD/MM/YYYY'));
 INSERT INTO Applications VALUES ('CA002', 'A0009', 29, 'Internships', 'Rejected', TO_DATE('29/05/2024', 'DD/MM/YYYY'));
 INSERT INTO Applications VALUES ('CA002', 'A0010', 30, 'Part time', 'Interview done', TO_DATE('30/05/2024', 'DD/MM/YYYY'));
+-- Add more applications
+INSERT INTO Applications VALUES ('G001', 'A0011', 13, 'Full time', 'Interview scheduled', TO_DATE('01/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('M003', 'A0012', 111, 'Internships', 'Resume Submitted', TO_DATE('02/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('H001', 'A0013', 55, 'Part time', 'Applied', TO_DATE('03/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('S001', 'A0014', 121, 'Full time', 'Interview done', TO_DATE('04/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('P001', 'A0015', 116, 'Internships', 'Rejected', TO_DATE('05/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('A001', 'A0016', 111, 'Part time', 'Resume Submitted', TO_DATE('06/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('M004', 'A0017', 76, 'Full time', 'Interview scheduled', TO_DATE('07/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('M005', 'A0018', 48, 'Internships', 'Applied', TO_DATE('08/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('T001', 'A0019', 91, 'Part time', 'Interview done', TO_DATE('09/06/2024', 'DD/MM/YYYY'));
+INSERT INTO Applications VALUES ('L001', 'A0020', 121, 'Full time', 'Rejected', TO_DATE('10/06/2024', 'DD/MM/YYYY'));
+
+
 
 INSERT INTO Events_Participation VALUES (1, 1, 'E001');
 INSERT INTO Events_Participation VALUES (1, 2, 'M001');
@@ -528,3 +683,24 @@ INSERT INTO Events_Participation VALUES (12, 8, 'U002');
 INSERT INTO Events_Participation VALUES (11, 3, 'U001');
 INSERT INTO Events_Participation VALUES (13, 10, 'F002');
 INSERT INTO Events_Participation VALUES (11, 4, 'F001');
+-- Add more events participation
+INSERT INTO Events_Participation VALUES (14, 13, 'G001');
+INSERT INTO Events_Participation VALUES (15, 14, 'M003');
+INSERT INTO Events_Participation VALUES (16, 12, 'H001');
+INSERT INTO Events_Participation VALUES (17, 15, 'S001');
+INSERT INTO Events_Participation VALUES (18, 16, 'P001');
+INSERT INTO Events_Participation VALUES (19, 11, 'A001');
+INSERT INTO Events_Participation VALUES (20, 17, 'M004');
+INSERT INTO Events_Participation VALUES (21, 18, 'M005');
+INSERT INTO Events_Participation VALUES (22, 19, 'T001');
+INSERT INTO Events_Participation VALUES (23, 20, 'L001');
+INSERT INTO Events_Participation VALUES (14, 1, 'E001');
+INSERT INTO Events_Participation VALUES (15, 2, 'M001');
+INSERT INTO Events_Participation VALUES (16, 3, 'U001');
+INSERT INTO Events_Participation VALUES (17, 4, 'F001');
+INSERT INTO Events_Participation VALUES (18, 5, 'CA001');
+INSERT INTO Events_Participation VALUES (19, 6, 'E002');
+INSERT INTO Events_Participation VALUES (20, 7, 'U002');
+INSERT INTO Events_Participation VALUES (21, 8, 'M002');
+INSERT INTO Events_Participation VALUES (22, 9, 'CA002');
+INSERT INTO Events_Participation VALUES (23, 10, 'F002');

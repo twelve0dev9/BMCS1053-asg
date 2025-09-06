@@ -1,0 +1,7 @@
+PROMPT Please enter participation type (Invited or Applying)
+ACCEPT p_type CHAR PROMPT 'Enter participation type: '
+
+SELECT DISTINCT o.OrgID, o.Org_Name, o.Roles, p.ParticipateBy, p.Status
+FROM Organizations o
+JOIN Participations p ON o.OrgID = p.OrgID
+WHERE UPPER(p.ParticipateBy) = UPPER('&p_type');

@@ -1,0 +1,56 @@
+-- Suppress variable substitution messages
+SET VERIFY OFF
+
+-- Set output formatting for A4 landscape
+SET linesize 300
+SET pagesize 35
+
+-- Set Malaysia date format
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Set title format
+TTITLE CENTER 'Total Universities' SKIP 2
+
+-- Show the options
+PROMPT 
+PROMPT Participation Type : 
+PROMPT 1 = Invited (participcate by invited by us)
+PROMPT 2 = Applying (participate by applying for it)
+PROMPT 
+-- Then accept the input
+ACCEPT p_type NUMBER PROMPT 'Enter particpation type (1 or 2): '
+
+-- Show options for 2nd prompt
+PROMPT
+PROMPT Status : 
+PROMPT 1 = Accepted
+PROMPT 2 = Declined
+PROMPT
+-- Prompt the input
+ACCEPT P_status NUMBER PROMPT 'Enter participation status (1 or 2): '
+
+-- Define column formatting
+COL Org_Name HEADING "Universities"
+COL ParticipateBy FORMAT A10 HEADING "Particpated BY"
+COL Status FORMAT A10 HEADING "Status"
+
+-- Query to display the total number of univerisities based-on invited or applying
+SELECT DISTINCT 
+    o.OrgID, 
+    o.Org_Name, 
+    p.ParticipateBy, 
+    p.Status
+    p.
+FROM Organizations o
+JOIN Participations p 
+    ON p.OrgID = o.OrgID
+WHERE 
+    ('&p_type' = 1 AND p.ParticipateBy = 'Invited')
+    OR ('&p_type' = 2 AND p.ParticipateBy = 'Applying')
+    AND REGEXP_LIKE(o.OrgID, '^U');
+
+-- Reset settings at end of script
+CLEAR BREAKS
+CLEAR COMPUTES
+CLEAR COLUMNS
+TTITLE OFF

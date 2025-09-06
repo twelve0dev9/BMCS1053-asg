@@ -1,0 +1,6 @@
+SELECT j.position, o.org_name, COUNT(e.employeeID) AS Total_Employees
+FROM employees e
+JOIN job_positions j ON e.jobpost_id = j.jobpost_id
+JOIN organizations o ON e.orgid = o.orgid
+GROUP BY j.position, o.org_name
+ORDER BY j.position, o.org_name;

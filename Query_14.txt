@@ -1,0 +1,66 @@
+-- Suppress variable substitution messages
+SET VERIFY OFF
+
+-- Set output formatting for A4 landscape
+SET linesize 300
+SET pagesize 35
+
+-- Set Malaysia date format
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Accept status filter prompt with numbers
+ACCEPT v_status NUMBER PROMPT 'Enter status (1=Invited, 2=Applied, 3=Declined, 4=Accepted, 0=ALL): '
+
+-- Define column formatting
+COL OrgID FORMAT A6 HEADING "Org ID"
+COL Org_Name FORMAT A30 HEADING "Organization Name"
+COL Industry FORMAT A20 HEADING "Industry"
+COL Status FORMAT A15 HEADING "Status"
+COL "Invite Date" FORMAT A11 HEADING "Invite Date"
+COL "Confirm Date" FORMAT A12 HEADING "Confirm Date"
+COL Participation_Type FORMAT A20 HEADING "Participation Type"
+
+-- Set title format
+TTITLE LEFT 'Organizations Participation Status' -
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Clear any previous break/compute settings
+CLEAR BREAKS
+CLEAR COMPUTES
+
+-- Only set breaks and computes if NOT showing ALL statuses
+BREAK ON REPORT
+COMPUTE COUNT LABEL 'Total Organizations: ' OF OrgID ON REPORT
+
+-- Query to list organizations grouped by status (BOTH Invited and Applying)
+SELECT 
+    p.Status,
+    o.OrgID,
+    o.Org_Name,
+    i.Title AS Industry,
+    TO_CHAR(p.Date_IA, 'dd/mm/yyyy') AS "Invite Date",
+    TO_CHAR(p.Date_Confirmed, 'dd/mm/yyyy') AS "Confirm Date",
+    p.ParticipateBy AS Participation_Type
+FROM 
+    Participations p
+    INNER JOIN Organizations o ON p.OrgID = o.OrgID
+    INNER JOIN Industries i ON o.Industry_ID = i.Industry_ID
+WHERE 
+    p.ParticipateBy IN ('Invited', 'Applying')
+    AND (
+        (&v_status = 0 AND p.Status IN ('Invited', 'Applied', 'Declined', 'Accepted'))
+        OR (&v_status = 1 AND p.Status = 'Invited')
+        OR (&v_status = 2 AND p.Status = 'Applied')
+        OR (&v_status = 3 AND p.Status = 'Declined')
+        OR (&v_status = 4 AND p.Status = 'Accepted')
+    )
+ORDER BY 
+    CASE WHEN &v_status = 0 THEN p.ParticipateBy END,  
+    p.Status,
+    o.Org_Name;
+
+-- Reset settings at end of script
+CLEAR BREAKS
+CLEAR COMPUTES
+CLEAR COLUMNS
+TTITLE OFF

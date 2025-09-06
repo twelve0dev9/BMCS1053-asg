@@ -1,0 +1,31 @@
+SELECT e.employeeID, e.name, j.position, o.org_name
+FROM employees e
+JOIN job_positions j ON e.jobpost_id = j.jobpost_id
+JOIN organizations o ON e.orgid = o.orgid
+ORDER BY j.position, e.employeeID, o.org_name, e.name;
+
+-- query 2
+SELECT j.position, o.org_name, COUNT(e.employeeID) AS Total_Employees
+FROM employees e
+JOIN job_positions j ON e.jobpost_id = j.jobpost_id
+JOIN organizations o ON e.orgid = o.orgid
+GROUP BY j.position, o.org_name
+ORDER BY j.position, o.org_name;
+
+-- query 3
+PROMPT Please enter participation type (Invited or Applying)
+ACCEPT p_type CHAR PROMPT 'Enter participation type: '
+
+SELECT DISTINCT o.OrgID, o.Org_Name, o.Roles, p.ParticipateBy, p.Status
+FROM Organizations o
+JOIN Participations p ON o.OrgID = p.OrgID
+WHERE UPPER(p.ParticipateBy) = UPPER('&p_type');
+
+-- query 4
+PROMPT Please enter a role (Exhibitor, Sponsor, Speech provider, Consultancy provider)
+ACCEPT p_role CHAR PROMPT 'Enter role: '
+
+SELECT OrgID, Org_Name, Roles
+FROM Organizations
+WHERE UPPER(Roles) = UPPER('&p_role');
+
