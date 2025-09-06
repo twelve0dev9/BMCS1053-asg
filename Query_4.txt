@@ -1,6 +1,0 @@
-PROMPT Please enter a role (Exhibitor, Sponsor, Speech provider, Consultancy provider)
-ACCEPT p_role CHAR PROMPT 'Enter role: '
-
-SELECT OrgID, Org_Name, Roles
-FROM Organizations
-WHERE UPPER(Roles) = UPPER('&p_role');
