@@ -1,37 +1,51 @@
--- Suppress variable substitution messages
+-- Suppress some unwanted SQL Plus behavior
 SET VERIFY OFF
 
 -- Set output formatting for A4 landscape
-SET linesize 300
-SET pagesize 35
+SET linesize 100
+SET pagesize 1000
 
 -- Set Malaysia date format
 ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
 -- Set title format
-TTITLE CENTER 'Total Universities' SKIP 2
+TTITLE CENTER 'Total Organizations' SKIP 2
 
--- Show the options
+-- Show participation types
 PROMPT 
 PROMPT Participation Type : 
 PROMPT 1 = Invited (participcate by invited by us)
 PROMPT 2 = Applying (participate by applying for it)
-PROMPT 
--- Then accept the input
-ACCEPT p_type NUMBER PROMPT 'Enter particpation type (1 or 2): '
-
--- Show options for 2nd prompt
+PROMPT 0 = All
+-- prompting the input
+ACCEPT p_type NUMBER PROMPT 'Enter particpation type ( 0 -- 2 ) : '
+-- Show statuses' options
 PROMPT
 PROMPT Status : 
 PROMPT 1 = Accepted
 PROMPT 2 = Declined
-PROMPT
--- Prompt the input
-ACCEPT P_status NUMBER PROMPT 'Enter participation status (1 or 2): '
+PROMPT 3 = Pending
+PROMPT 0 = All
+-- prompting the input
+ACCEPT P_status NUMBER PROMPT 'Enter participation status (0 -- 3) : '
+-- Show types of organization to choose
+PROMPT 
+PROMPT Which types of organization would you like to view?
+PROMPT 1 = Exhibitor
+PROMPT 2 = Sponsor
+PROMPT 3 = Universities
+PROMPT 4 = Marketing Firm
+PROMPT 5 = Consultancy Agency
+SET DEFINE OFF
+PROMPT 6 = F&B Provider
+SET DEFINE ON
+PROMPT 0 = All
+-- input prompt
+ACCEPT O_orgtype NUMBER PROMPT 'Enter choice (0--6) : '
 
 -- Define column formatting
 COL Org_Name HEADING "Universities"
-COL ParticipateBy FORMAT A10 HEADING "Particpated BY"
+COL ParticipateBy FORMAT A20 HEADING "Particpated BY"
 COL Status FORMAT A10 HEADING "Status"
 
 -- Query to display the total number of univerisities based-on invited or applying
@@ -45,14 +59,28 @@ JOIN Participations p
     ON p.OrgID = o.OrgID
 WHERE 
     (
-        ('&p_type' = 1 AND p.ParticipateBy = 'Invited') AND 
-        ('&P_status' = 1 AND p.Status = 'Accepted')
-    ) OR 
+        (&p_type = 0) OR
+        (&p_type = 1 AND p.ParticipateBy = 'Invited') OR
+        (&p_type = 2 AND p.ParticipateBy = 'Applying')
+    ) 
+    AND
     (
-        ('&p_type' = 2 AND p.ParticipateBy = 'Applying') AND
-        ('&P_status' = 2 AND p.Status = 'Declined')
+        (&P_status = 0) OR
+        (&P_status = 1 AND p.Status = 'Accepted') OR
+        (&P_status = 2 AND p.Status = 'Declined') OR 
+        (&P_status = 3 AND p.Status = 'Pending')
     )
-    AND REGEXP_LIKE(o.OrgID, '^U');
+    AND 
+    (
+        (&O_orgtype = 0) OR 
+        (&O_orgtype = 1 AND REGEXP_LIKE(o.OrgID, '^E')) OR
+        (&O_orgtype = 2 AND REGEXP_LIKE(o.OrgID, '^S')) OR
+        (&O_orgtype = 3 AND REGEXP_LIKE(o.OrgID, '^U')) OR
+        (&O_orgtype = 4 AND REGEXP_LIKE(o.OrgID, '^M')) OR
+        (&O_orgtype = 5 AND REGEXP_LIKE(o.OrgID, '^CA')) OR
+        (&O_orgtype = 6 AND REGEXP_LIKE(o.OrgID, '^F'))
+    )
+ORDER BY p.status, p.ParticipateBy, o.orgid;
 
 -- Reset settings at end of script
 CLEAR BREAKS

@@ -33,6 +33,7 @@ CREATE TABLE Location (
     CONSTRAINT chk_location_not_null CHECK (Location_ID IS NOT NULL AND Location_Name IS NOT NULL AND Location_Type IS NOT NULL)
 );
 
+
 CREATE TABLE Events ( 
     Event_ID NUMBER PRIMARY KEY,
     Title VARCHAR2(35) NOT NULL,
@@ -124,7 +125,7 @@ CREATE TABLE Participations (
     ParticipateBy VARCHAR2(8) CHECK (ParticipateBy IN ('Applying', 'Invited')),
     Date_IA DATE,
     Date_Confirmed DATE,
-    Status VARCHAR2(10) CHECK (Status IN ('Invited', 'Applied', 'Declined', 'Accepted')),
+    Status VARCHAR2(10) CHECK (Status IN ('Pending', 'Declined', 'Accepted')),
     CONSTRAINT fk_participation_speaker FOREIGN KEY (Speaker_ID) REFERENCES Speakers(Speaker_ID),
     CONSTRAINT fk_participation_org FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
     CONSTRAINT chk_participation_not_null CHECK (PartID IS NOT NULL AND OrgID IS NOT NULL)
@@ -437,25 +438,25 @@ INSERT INTO AdCampaign VALUES ('C009', 'M001', 'Career Development', TO_DATE('15
 INSERT INTO AdCampaign VALUES ('C010', 'M002', 'Industry Insights', TO_DATE('20/06/2024', 'DD/MM/YYYY'), TO_DATE('20/08/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 6500, 'Professionals');
 
 INSERT INTO Participations VALUES (1, 1, 'E001', 'Invited', TO_DATE('01/05/2024', 'DD/MM/YYYY'), TO_DATE('05/05/2024', 'DD/MM/YYYY'), 'Accepted');
-INSERT INTO Participations VALUES (2, 2, 'M001', 'Applying', TO_DATE('02/05/2024', 'DD/MM/YYYY'), TO_DATE('06/05/2024', 'DD/MM/YYYY'), 'Applied');
+INSERT INTO Participations VALUES (2, 2, 'M001', 'Applying', TO_DATE('02/05/2024', 'DD/MM/YYYY'), TO_DATE('06/05/2024', 'DD/MM/YYYY'), 'Pending');
 INSERT INTO Participations VALUES (3, 3, 'U001', 'Invited', TO_DATE('03/05/2024', 'DD/MM/YYYY'), TO_DATE('07/05/2024', 'DD/MM/YYYY'), 'Declined');
 INSERT INTO Participations VALUES (4, 4, 'F001', 'Applying', TO_DATE('04/05/2024', 'DD/MM/YYYY'), TO_DATE('08/05/2024', 'DD/MM/YYYY'), 'Accepted');
-INSERT INTO Participations VALUES (5, 5, 'CA001', 'Invited', TO_DATE('05/05/2024', 'DD/MM/YYYY'), NULL, 'Invited');
+INSERT INTO Participations VALUES (5, 5, 'CA001', 'Invited', TO_DATE('05/05/2024', 'DD/MM/YYYY'), NULL, 'Accepted');
 INSERT INTO Participations VALUES (6, 6, 'E002', 'Applying', TO_DATE('06/05/2024', 'DD/MM/YYYY'), TO_DATE('10/05/2024', 'DD/MM/YYYY'), 'Declined');
-INSERT INTO Participations VALUES (7, 7, 'U002', 'Invited', TO_DATE('07/05/2024', 'DD/MM/YYYY'), NULL, 'Invited');
-INSERT INTO Participations VALUES (8, 8, 'M002', 'Applying', TO_DATE('08/05/2024', 'DD/MM/YYYY'), TO_DATE('12/05/2024', 'DD/MM/YYYY'), 'Applied');
+INSERT INTO Participations VALUES (7, 7, 'U002', 'Invited', TO_DATE('07/05/2024', 'DD/MM/YYYY'), NULL, 'Accepted');
+INSERT INTO Participations VALUES (8, 8, 'M002', 'Applying', TO_DATE('08/05/2024', 'DD/MM/YYYY'), TO_DATE('12/05/2024', 'DD/MM/YYYY'), 'Pending');
 INSERT INTO Participations VALUES (9, 9, 'CA002', 'Invited', TO_DATE('09/05/2024', 'DD/MM/YYYY'), TO_DATE('13/05/2024', 'DD/MM/YYYY'), 'Accepted');
-INSERT INTO Participations VALUES (10, 10, 'F002', 'Applying', TO_DATE('10/05/2024', 'DD/MM/YYYY'), NULL, 'Applied');
-INSERT INTO Participations VALUES (11, NULL, 'U003', 'Invited', DATE '2025-07-15', DATE '2025-07-20', 'Invited');
-INSERT INTO Participations VALUES (12, NULL, 'U005', 'Invited', DATE '2025-07-18', DATE '2025-07-23', 'Invited');
-INSERT INTO Participations VALUES (13, NULL, 'U004', 'Invited', DATE '2025-07-22', DATE '2025-07-26', 'Invited');
-INSERT INTO Participations VALUES (14, NULL, 'U006', 'Invited', DATE '2025-07-25', DATE '2025-07-30', 'Invited');
-INSERT INTO Participations VALUES (15, NULL, 'U006', 'Applying', DATE '2025-08-10', DATE '2025-08-12', 'Applied');
-INSERT INTO Participations VALUES (16, NULL, 'U007', 'Applying', DATE '2025-08-11', DATE '2025-08-13', 'Applied');
-INSERT INTO Participations VALUES (17, NULL, 'U008', 'Applying', DATE '2025-08-12', DATE '2025-08-14', 'Applied');
-INSERT INTO Participations VALUES (18, NULL, 'U009', 'Applying', DATE '2025-08-13', DATE '2025-08-15', 'Applied');
-INSERT INTO Participations VALUES (19, NULL, 'U010', 'Applying', DATE '2025-08-14', DATE '2025-08-16', 'Applied');
-INSERT INTO Participations VALUES (20, NULL, 'U011', 'Applying', DATE '2025-08-15', DATE '2025-08-17', 'Applied');
+INSERT INTO Participations VALUES (10, 10, 'F002', 'Applying', TO_DATE('10/05/2024', 'DD/MM/YYYY'), NULL, 'Declined');
+INSERT INTO Participations VALUES (11, NULL, 'U003', 'Invited', DATE '2025-07-15', DATE '2025-07-20', 'Accepted');
+INSERT INTO Participations VALUES (12, NULL, 'U005', 'Invited', DATE '2025-07-18', DATE '2025-07-23', 'Accepted');
+INSERT INTO Participations VALUES (13, NULL, 'U004', 'Invited', DATE '2025-07-22', DATE '2025-07-26', 'Accepted');
+INSERT INTO Participations VALUES (14, NULL, 'U006', 'Invited', DATE '2025-07-25', DATE '2025-07-30', 'Accepted');
+INSERT INTO Participations VALUES (15, NULL, 'U006', 'Applying', DATE '2025-08-10', DATE '2025-08-12', 'Declined');
+INSERT INTO Participations VALUES (16, NULL, 'U007', 'Applying', DATE '2025-08-11', DATE '2025-08-13', 'Pending');
+INSERT INTO Participations VALUES (17, NULL, 'U008', 'Applying', DATE '2025-08-12', DATE '2025-08-14', 'Declined');
+INSERT INTO Participations VALUES (18, NULL, 'U009', 'Applying', DATE '2025-08-13', DATE '2025-08-15', 'Declined');
+INSERT INTO Participations VALUES (19, NULL, 'U010', 'Applying', DATE '2025-08-14', DATE '2025-08-16', 'Declined');
+INSERT INTO Participations VALUES (20, NULL, 'U011', 'Applying', DATE '2025-08-15', DATE '2025-08-17', 'Pending');
 
 INSERT INTO Applications VALUES ('E001', 'A0001', 1, 'Full time', 'Applied', TO_DATE('01/05/2024', 'DD/MM/YYYY'));
 INSERT INTO Applications VALUES ('E001', 'A0002', 2, 'Internships', 'Resume Submitted', TO_DATE('02/05/2024', 'DD/MM/YYYY'));

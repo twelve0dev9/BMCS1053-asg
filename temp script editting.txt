@@ -1,57 +1,12 @@
-SELECT Event_ID, Title, Event_Type
-FROM Events
-WHERE Event_Type = 'Panels'
+SELECT 
+    o.orgid, 
+    o.org_name, 
+    p.status, 
+    p.ParticipateBy
+FROM Organizations o
+JOIN Participations p
+ON p.orgid = o.orgid
+WHERE p.status = 'Pending';
 
-SELECT ep.Speaker_ID, s.Name
-
-SELECT COUNT(*) AS total_ep, ep.Speaker_ID, s.Name
-FROM Events_Participation ep
-JOIN Speakers s ON ep.Speaker_ID = s.Speaker_ID
-WHERE ep.Event_ID IN (
-    SELECT Event_ID
-    FROM Events
-)
-GROUP BY s.Speaker_ID, s.name
-ORDER BY s.Speaker_ID;
-
-SELECT s.Speaker_ID, 
-       s.Name, 
-       (SELECT COUNT(*) 
-        FROM Events_Participation ep 
-        WHERE ep.Speaker_ID = s.Speaker_ID) AS total_events
-FROM Speakers s
-ORDER BY s.Speaker_ID;
-
-SELECT s.Speaker_ID, 
-       s.Name, 
-       (SELECT COUNT(*)
-        FROM Events_Participation ep
-        JOIN Events e ON ep.Event_ID = e.Event_ID
-        WHERE ep.Speaker_ID = s.Speaker_ID
-          AND e.Event_Type = 'Panels') AS total_panels
-FROM Speakers s
-ORDER BY s.Speaker_ID;
-
-SELECT e.Title, (
-    SELECT COUNT(*) from Events_Participation ep
-    WHERE Speaker_ID IS NOT NULL ) AS N_speakers
-FROM Events e
-JOIN Speakers s ON ep.Speaker_ID = s.Speaker_ID
-GROUP BY total;
-
---display each speakers name & the events they participated in
-SELECT s.name, e.title
-from speakers s 
-join events e on e.Event_ID = (
-    SELECT ep.Event_ID
-    from Events_Participation ep
-    WHERE s.Speaker_ID = ep.Speaker_ID
-)
-SELECT ep.Event_ID
-    , (
-    SELECT e.title
-    from Events e
-    join Events_Participation ep on e.Event_ID = ep.Event_ID) as Events
-    , s.name
-from Speakers s
-join Events_Participation ep on ep.Speaker_ID = s.Speaker_ID;
+SELECT table_name, constraint_name, search_condition
+FROM user_constraints
