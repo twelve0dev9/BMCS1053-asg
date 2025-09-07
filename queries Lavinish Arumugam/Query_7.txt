@@ -1,26 +1,24 @@
--- Marketing Firms by Campaign Type
--- Clear previous settings
 CLEAR COLUMNS
 CLEAR BREAKS
 CLEAR COMPUTES
 
--- Set page and line size
+
 SET PAGESIZE 50
 SET LINESIZE 120
 SET VERIFY OFF
 
--- Set the report title with a variable for the campaign channel
+
 TTITLE CENTER 'Marketing Firms for &v_channel_type Campaigns' SKIP 2
 
--- Prompt the user to enter the advertising channel
+
 ACCEPT v_channel_type CHAR PROMPT 'Enter the Ad Campaign Channel (e.g., Broadcast ads): '
 
--- Format columns for a clean look
+
 COLUMN "Marketing Firm Name" FORMAT A40 HEADING "Marketing Firm Name"
 COLUMN "Contact Email" FORMAT A35 HEADING "Contact Email"
 COLUMN "Contact Number" FORMAT A20 HEADING "Contact Number"
 
--- The main SELECT statement with a subquery
+
 SELECT
     Org_Name AS "Marketing Firm Name",
     Email AS "Contact Email",
@@ -35,6 +33,6 @@ ORDER BY
     Org_Name;
 /
 
--- Clear all settings after the report
+
 CLEAR ALL
 TTITLE OFF

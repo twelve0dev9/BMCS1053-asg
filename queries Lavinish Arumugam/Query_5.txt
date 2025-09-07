@@ -1,27 +1,25 @@
--- list of students by university
--- Clear previous settings
 CLEAR COLUMNS
 CLEAR BREAKS
 CLEAR COMPUTES
 
--- Set page and line size for the report
+
 SET PAGESIZE 50
 SET LINESIZE 120
 SET VERIFY OFF
 
--- Set the report title with a variable for the university name
+
 TTITLE CENTER 'List of Applicants from &v_university_name' SKIP 2
 
--- Prompt the user to enter a university name
+
 ACCEPT v_university_name CHAR PROMPT 'Enter the University Name (e.g., National University): '
 
--- Format columns for readability
+
 COLUMN "Applicant Name" FORMAT A25 HEADING "Applicant Name"
 COLUMN "Major" FORMAT A30 HEADING "Major"
 COLUMN "Education Level" FORMAT A20 HEADING "Education Level"
 COLUMN "Email" FORMAT A30 HEADING "Email Contact"
 
--- The main SELECT statement
+
 SELECT
     app.Name AS "Applicant Name",
     app.Major,
@@ -37,6 +35,6 @@ ORDER BY
     app.Name;
 /
 
--- Clear all settings after the report is generated
+
 CLEAR ALL
 TTITLE OFF

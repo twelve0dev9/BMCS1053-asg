@@ -1,0 +1,37 @@
+﻿CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+
+SET PAGESIZE 50
+SET LINESIZE 120
+SET VERIFY OFF
+
+
+TTITLE CENTER 'List of Official Event Panelists' SKIP 2
+
+
+COLUMN "Panelist Name" FORMAT A25 HEADING "Panelist Name"
+COLUMN "Organization" FORMAT A35 HEADING "Organization"
+COLUMN "Contact Email" FORMAT A30 HEADING "Contact Email"
+
+
+SELECT
+    emp.Name AS "Panelist Name",
+    org.Org_Name AS "Organization",
+    emp.Email AS "Contact Email"
+FROM
+    Employees emp
+JOIN
+    Organizations org ON emp.OrgID = org.OrgID
+JOIN
+    Job_Positions jp ON emp.JobPost_ID = jp.JobPost_ID
+WHERE
+    jp.Position = 'Panelist'
+ORDER BY
+    org.Org_Name, emp.Name;
+/
+
+
+CLEAR ALL
+TTITLE OFF

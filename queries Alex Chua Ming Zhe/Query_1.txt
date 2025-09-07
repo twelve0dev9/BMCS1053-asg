@@ -1,0 +1,17 @@
+SET linesize 120
+SET pagesize 35
+
+PROMPT Please enter a role (Exhibitor, Sponsor, Speech provider, Consultancy provider)
+ACCEPT p_role CHAR PROMPT 'Enter role: '
+
+TTITLE CENTER 'Organizations by Role' SKIP 2
+
+COLUMN OrgID    HEADING 'Org ID'            FORMAT A10
+COLUMN Org_Name HEADING 'Organization Name' FORMAT A30
+COLUMN Roles    HEADING 'Role'              FORMAT A25
+
+SELECT OrgID, Org_Name, Roles
+FROM Organizations
+WHERE UPPER(Roles) = UPPER('&p_role');
+
+TTITLE OFF;

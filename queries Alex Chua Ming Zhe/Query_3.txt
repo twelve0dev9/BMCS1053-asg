@@ -1,0 +1,20 @@
+SET linesize 120
+SET pagesize 35
+
+PROMPT Please enter participation type (Invited or Applying)
+ACCEPT p_type CHAR PROMPT 'Enter participation type: '
+
+TTITLE CENTER 'Organizations by Participation Type' SKIP 2
+
+COLUMN OrgID         HEADING 'Org ID'            FORMAT A10
+COLUMN Org_Name      HEADING 'Organization Name' FORMAT A30
+COLUMN Roles         HEADING 'Roles'             FORMAT A20
+COLUMN ParticipateBy HEADING 'Participation Type' FORMAT A15
+COLUMN Status        HEADING 'Status'            FORMAT A15
+
+SELECT DISTINCT o.OrgID, o.Org_Name, o.Roles, p.ParticipateBy, p.Status
+FROM Organizations o
+JOIN Participations p ON o.OrgID = p.OrgID
+WHERE UPPER(p.ParticipateBy) = UPPER('&p_type');
+
+TTITLE OFF;
