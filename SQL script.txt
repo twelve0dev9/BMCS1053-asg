@@ -81,6 +81,15 @@ CREATE TABLE Job_Positions (
     CONSTRAINT fk_jobpos_industry FOREIGN KEY (Industry_ID) REFERENCES Industries(Industry_ID)
 );
 
+CREATE TABLE Specializations (
+    Speaker_ID NUMBER, 
+    JobPost_ID NUMBER, 
+    Years_of_Experience NUMBER, 
+    CONSTRAINT pk_specializations PRIMARY KEY (Speaker_ID, JobPost_ID), 
+    CONSTRAINT fk_speakers FOREIGN KEY (Speaker_ID) REFERENCES Speakers(Speaker_ID), 
+    CONSTRAINT fk_jobs FOREIGN KEY (JobPost_ID) REFERENCES Job_Positions(JobPost_ID)
+);
+
 CREATE TABLE Employees (
     EmployeeID CHAR(5) PRIMARY KEY,
     Name VARCHAR2(20) NOT NULL,
