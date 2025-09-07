@@ -6,8 +6,6 @@ SET VERIFY OFF
 SET LINESIZE 100
 SET PAGESIZE 1000
 
--- Set Malaysia date format
-ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
 TTITLE CENTER 'Total Organizations' SKIP 2
 
