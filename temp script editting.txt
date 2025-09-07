@@ -1,12 +1,16 @@
 SELECT 
-    o.orgid, 
-    o.org_name, 
-    p.status, 
-    p.ParticipateBy
-FROM Organizations o
-JOIN Participations p
-ON p.orgid = o.orgid
-WHERE p.status = 'Pending';
-
-SELECT table_name, constraint_name, search_condition
-FROM user_constraints
+    e.employeeID, 
+    e.name,
+    e.age,
+    e.gender,
+    e.PhoneNumber,
+    e.email,
+    j.position, 
+    (SELECT i.title
+    FROM Industries i
+    JOIN Job_Positions j
+    on j.Industry_ID = i.Industry_ID
+    WHERE j.Industry_ID = i.Industry_ID) AS Industry
+from employees e
+join job_positions j
+on e.jobpost_id = j.jobpost_id

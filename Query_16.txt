@@ -1,14 +1,14 @@
 -- Suppress some unwanted SQL Plus behavior
+SET DEFINE ON
 SET VERIFY OFF
 
 -- Set output formatting for A4 landscape
-SET linesize 100
-SET pagesize 1000
+SET LINESIZE 100
+SET PAGESIZE 1000
 
 -- Set Malaysia date format
 ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
--- Set title format
 TTITLE CENTER 'Total Organizations' SKIP 2
 
 -- Show participation types
@@ -17,8 +17,8 @@ PROMPT Participation Type :
 PROMPT 1 = Invited (participcate by invited by us)
 PROMPT 2 = Applying (participate by applying for it)
 PROMPT 0 = All
--- prompting the input
-ACCEPT p_type NUMBER PROMPT 'Enter particpation type ( 0 -- 2 ) : '
+ACCEPT p_type NUMBER PROMPT 'Enter particpation type (0 -- 2) : '
+
 -- Show statuses' options
 PROMPT
 PROMPT Status : 
@@ -26,8 +26,8 @@ PROMPT 1 = Accepted
 PROMPT 2 = Declined
 PROMPT 3 = Pending
 PROMPT 0 = All
--- prompting the input
 ACCEPT P_status NUMBER PROMPT 'Enter participation status (0 -- 3) : '
+
 -- Show types of organization to choose
 PROMPT 
 PROMPT Which types of organization would you like to view?
@@ -40,15 +40,14 @@ SET DEFINE OFF
 PROMPT 6 = F&B Provider
 SET DEFINE ON
 PROMPT 0 = All
--- input prompt
 ACCEPT O_orgtype NUMBER PROMPT 'Enter choice (0--6) : '
 
 -- Define column formatting
 COL Org_Name HEADING "Universities"
-COL ParticipateBy FORMAT A20 HEADING "Particpated BY"
+COL ParticipateBy FORMAT A20 HEADING "Participated BY"
 COL Status FORMAT A10 HEADING "Status"
 
--- Query to display the total number of univerisities based-on invited or applying
+-- Query
 SELECT DISTINCT 
     o.OrgID, 
     o.Org_Name, 
@@ -87,3 +86,4 @@ CLEAR BREAKS
 CLEAR COMPUTES
 CLEAR COLUMNS
 TTITLE OFF
+SET DEFINE OFF

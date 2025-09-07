@@ -10,7 +10,7 @@ CREATE TABLE Industries (
 
 CREATE TABLE Organizations (
     OrgID CHAR(6) PRIMARY KEY,
-    Org_Name VARCHAR2(35) NOT NULL,
+    Org_Name VARCHAR2(70) NOT NULL,
     Email VARCHAR2(45) CHECK (REGEXP_LIKE(Email, '^[a-zA-Z]\w+@(\S+)$')),
     Contact_Number VARCHAR2(15) CHECK (REGEXP_LIKE(Contact_Number, '^60[0-9]+$')),
     Industry_ID NUMBER,
@@ -77,7 +77,7 @@ CREATE TABLE Applicants (
 CREATE TABLE Job_Positions (
     JobPost_ID NUMBER PRIMARY KEY,
     Industry_ID NUMBER,
-    Position CHAR(25) NOT NULL,
+    Position CHAR(40) NOT NULL,
     CONSTRAINT fk_jobpos_industry FOREIGN KEY (Industry_ID) REFERENCES Industries(Industry_ID)
 );
 
@@ -183,13 +183,24 @@ INSERT INTO Organizations VALUES ('U003', 'Universiti Teknologi Malaysia (UTM)',
 INSERT INTO Organizations VALUES ('U004', 'Taylor''s University', 'enquiry@taylors.edu.my', '6034444555', 4, NULL, 7);
 INSERT INTO Organizations VALUES ('U005', 'Sunway University', 'info@sunway.edu.my', '6035555666', 4, NULL, 9);
 INSERT INTO Organizations VALUES ('U006', 'Universiti Malaya (UM)', 'info@um.edu.my', '6031111222', 4, NULL, 10);
-INSERT INTO Organizations VALUES ('U007', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 4, NULL, 8);
-INSERT INTO Organizations VALUES ('U006', 'Universiti Kebangsaan Malaysia (UKM KL Campus)', 'enquiry@ukm.edu.my', '60389215555', 4, 'Speech provider', 100);
 INSERT INTO Organizations VALUES ('U007', 'Universiti Kuala Lumpur (UniKL)', 'admin@unikl.edu.my', '60321754444', 4, 'Sponsor', 120);
 INSERT INTO Organizations VALUES ('U008', 'International Islamic University Malaysia (IIUM KL)', 'admissions@iium.edu.my', '60364214444', 4, 'Speech provider', 90);
 INSERT INTO Organizations VALUES ('U009', 'SEGi University (KL Campus)', 'contact@segi.edu.my', '60361458777', 4, NULL, 60);
 INSERT INTO Organizations VALUES ('U010', 'HELP University (KL)', 'admissions@help.edu.my', '60327162000', 4, NULL, 50);
 INSERT INTO Organizations VALUES ('U011', 'Asia Pacific University of Technology & Innovation (APU KL)', 'info@apu.edu.my', '60389961000', 4, 'Sponsor', 95);
+INSERT INTO Organizations VALUES ('U012', 'Universiti Putra Malaysia (UPM)', 'admin@upm.edu.my', '6032222333', 4, NULL, 8);
+INSERT INTO Organizations VALUES ('U013', 'Universiti Kebangsaan Malaysia (UKM KL Campus)', 'enquiry@ukm.edu.my', '60389215555', 4, 'Speech provider', 100);
+INSERT INTO Organizations VALUES ('M003', 'BrightReach Marketing', 'brightreach@marketing.com', '60123456789', 2, 'Exhibitor', 25);
+INSERT INTO Organizations VALUES ('S001', 'Petronas Malaysia', 'petronas@corp.com', '60123456780', 3, 'Sponsor', 50);
+INSERT INTO Organizations VALUES ('S002', 'Maybank Berhad', 'maybank@corp.com', '60123456781', 3, 'Sponsor', 45);
+INSERT INTO Organizations VALUES ('S003', 'CIMB Group', 'cimbgroup@corp.com', '60123456782', 3, 'Sponsor', 40);
+INSERT INTO Organizations VALUES ('S004', 'Telekom Malaysia', 'telekom@corp.com', '60123456783', 4, 'Sponsor', 30);
+INSERT INTO Organizations VALUES ('S005', 'Tenaga Nasional', 'tenaga@corp.com', '60123456784', 4, 'Sponsor', 35);
+INSERT INTO Organizations VALUES ('S006', 'AirAsia Group', 'airasia@corp.com', '60123456785', 5, 'Sponsor', 25);
+INSERT INTO Organizations VALUES ('S007', 'Maxis Telecom', 'maxis@corp.com', '60123456786', 4, 'Sponsor', 20);
+INSERT INTO Organizations VALUES ('S008', 'Axiata Group', 'axiata@corp.com', '60123456787', 4, 'Sponsor', 28);
+INSERT INTO Organizations VALUES ('S009', 'RHB Bank', 'rhbbank@corp.com', '60123456788', 3, 'Sponsor', 33);
+INSERT INTO Organizations VALUES ('S010', 'UEM Group', 'uemgroup@corp.com', '60123456789', 6, 'Sponsor', 22);
 
 
 
@@ -232,28 +243,6 @@ INSERT INTO Speakers VALUES (7, 'Prof. Ahmad', 50, 'M', '60789012345', 'ahmad@te
 INSERT INTO Speakers VALUES (8, 'Emma Davis', 31, 'F', '60890123456', 'emma@digitalpromo.com', 'Digital Promoters', 2);
 INSERT INTO Speakers VALUES (9, 'James Wilson', 38, 'M', '60901234567', 'james@careeradvisors.com', 'Career Advisors', 5);
 INSERT INTO Speakers VALUES (10, 'Sophia Kim', 27, 'F', '60111223344', 'sophia@quickbites.com', 'Quick Bites Cafe', 9);
-
-
-
-INSERT INTO Specializations VALUES (1, 1, 13);
-INSERT INTO Specializations VALUES (1, 3, 12);
-INSERT INTO Specializations VALUES (2, 2, 23);
-INSERT INTO Specializations VALUES (2, 5, 22);
-INSERT INTO Specializations VALUES (2, 10, 24);
-INSERT INTO Specializations VALUES (2, 12, 23);
-INSERT INTO Specializations VALUES (3, 4, 6);
-INSERT INTO Specializations VALUES (4, 6, 11);
-INSERT INTO Specializations VALUES (4, 7, 10);
-INSERT INTO Specializations VALUES (4, 15, 12);
-INSERT INTO Specializations VALUES (5, 8, 17);
-INSERT INTO Specializations VALUES (5, 20, 16);
-INSERT INTO Specializations VALUES (6, 9, 20);
-INSERT INTO Specializations VALUES (6, 18, 19);
-INSERT INTO Specializations VALUES (7, 11, 30);
-INSERT INTO Specializations VALUES (7, 13, 29);
-INSERT INTO Specializations VALUES (7, 16, 28);
-INSERT INTO Specializations VALUES (7, 22, 31);
-INSERT INTO Specializations VALUES (7, 25, 30);
 
 
 
@@ -472,6 +461,128 @@ INSERT INTO Employees VALUES ('E0069', 'Michelle Wong', 28, 'F', '60123456728', 
 INSERT INTO Employees VALUES ('E0070', 'Aaron Lee', 31, 'M', '60123456729', 'aaron@quickbites.com', 'F002', 22);
 INSERT INTO Employees VALUES ('E0071', 'Samantha Ng', 29, 'F', '60123456730', 'samantha@careeradvisors.com', 'CA002', 17);
 
+INSERT INTO Employees VALUES ('E0072', 'Daniel Tan', 27, 'M', '60123456731', 'daniel@techsolutions.com', 'E001', 14);
+INSERT INTO Employees VALUES ('E0073', 'Melissa Wong', 30, 'F', '60123456732', 'melissa@techsolutions.com', 'E001', 15);
+INSERT INTO Employees VALUES ('E0074', 'Jonathan Lee', 34, 'M', '60123456733', 'jonathan@financecorp.com', 'E002', 48);
+INSERT INTO Employees VALUES ('E0075', 'Irene Lim', 29, 'F', '60123456734', 'irene@bizconsult.com', 'CA001', 36);
+INSERT INTO Employees VALUES ('E0076', 'Michael Ong', 31, 'M', '60123456735', 'michael@creativeads.com', 'M001', 28);
+INSERT INTO Employees VALUES ('E0077', 'Sharon Goh', 26, 'F', '60123456736', 'sharon@utm.edu.my', 'U003', 21);
+INSERT INTO Employees VALUES ('E0078', 'Richard Ho', 33, 'M', '60123456737', 'richard@maxis.com', 'S007', 77);
+INSERT INTO Employees VALUES ('E0079', 'Cynthia Chua', 27, 'F', '60123456738', 'cynthia@maybank.com', 'S002', 49);
+INSERT INTO Employees VALUES ('E0080', 'Adrian Tan', 35, 'M', '60123456739', 'adrian@petronas.com', 'S001', 30);
+INSERT INTO Employees VALUES ('E0081', 'Grace Lee', 28, 'F', '60123456740', 'grace@sunway.edu.my', 'U005', 22);
+INSERT INTO Employees VALUES ('E0082', 'Kelvin Lim', 29, 'M', '60123456741', 'kelvin@techsolutions.com', 'E001', 16);
+INSERT INTO Employees VALUES ('E0083', 'Rachel Ng', 25, 'F', '60123456742', 'rachel@techsolutions.com', 'E001', 17);
+INSERT INTO Employees VALUES ('E0084', 'Bryan Tan', 32, 'M', '60123456743', 'bryan@financecorp.com', 'E002', 50);
+INSERT INTO Employees VALUES ('E0085', 'Sophia Goh', 30, 'F', '60123456744', 'sophia@bizconsult.com', 'CA001', 37);
+INSERT INTO Employees VALUES ('E0086', 'Nicholas Teo', 33, 'M', '60123456745', 'nicholas@creativeads.com', 'M001', 29);
+INSERT INTO Employees VALUES ('E0087', 'Amanda Lee', 27, 'F', '60123456746', 'amanda@um.edu.my', 'U004', 23);
+INSERT INTO Employees VALUES ('E0088', 'Vincent Chan', 31, 'M', '60123456747', 'vincent@telekom.com', 'S004', 75);
+INSERT INTO Employees VALUES ('E0089', 'Elaine Yeo', 28, 'F', '60123456748', 'elaine@maybank.com', 'S002', 51);
+INSERT INTO Employees VALUES ('E0090', 'Thomas Lim', 34, 'M', '60123456749', 'thomas@petronas.com', 'S001', 31);
+INSERT INTO Employees VALUES ('E0091', 'Michelle Tan', 26, 'F', '60123456750', 'michelle@sunway.edu.my', 'U005', 24);
+INSERT INTO Employees VALUES ('E0092', 'Jason Ho', 30, 'M', '60123456751', 'jason@techsolutions.com', 'E001', 18);
+INSERT INTO Employees VALUES ('E0093', 'Cheryl Ong', 29, 'F', '60123456752', 'cheryl@techsolutions.com', 'E001', 19);
+INSERT INTO Employees VALUES ('E0094', 'Benjamin Lee', 33, 'M', '60123456753', 'benjamin@financecorp.com', 'E002', 52);
+INSERT INTO Employees VALUES ('E0095', 'Joanne Chua', 27, 'F', '60123456754', 'joanne@bizconsult.com', 'CA001', 38);
+INSERT INTO Employees VALUES ('E0096', 'Terence Ng', 31, 'M', '60123456755', 'terence@creativeads.com', 'M001', 30);
+INSERT INTO Employees VALUES ('E0097', 'Natalie Tan', 28, 'F', '60123456756', 'natalie@um.edu.my', 'U004', 25);
+INSERT INTO Employees VALUES ('E0098', 'Patrick Lim', 35, 'M', '60123456757', 'patrick@telekom.com', 'S004', 76);
+INSERT INTO Employees VALUES ('E0099', 'Vanessa Wong', 26, 'F', '60123456758', 'vanessa@maxis.com', 'S007', 78);
+INSERT INTO Employees VALUES ('E0100', 'Edward Goh', 32, 'M', '60123456759', 'edward@maybank.com', 'S002', 53);
+INSERT INTO Employees VALUES ('E0101', 'Stephanie Low', 29, 'F', '60123456760', 'stephanie@petronas.com', 'S001', 32);
+INSERT INTO Employees VALUES ('E0102', 'Leonard Tan', 30, 'M', '60123456761', 'leonard@sunway.edu.my', 'U005', 26);
+INSERT INTO Employees VALUES ('E0103', 'Fiona Ng', 27, 'F', '60123456762', 'fiona@techsolutions.com', 'E001', 20);
+INSERT INTO Employees VALUES ('E0104', 'Raymond Lee', 34, 'M', '60123456763', 'raymond@financecorp.com', 'E002', 54);
+INSERT INTO Employees VALUES ('E0105', 'Clara Lim', 28, 'F', '60123456764', 'clara@bizconsult.com', 'CA001', 39);
+INSERT INTO Employees VALUES ('E0106', 'Victor Chan', 31, 'M', '60123456765', 'victor@creativeads.com', 'M001', 31);
+INSERT INTO Employees VALUES ('E0107', 'Angela Tan', 26, 'F', '60123456766', 'angela@um.edu.my', 'U004', 27);
+INSERT INTO Employees VALUES ('E0108', 'Marcus Ong', 33, 'M', '60123456767', 'marcus@telekom.com', 'S004', 77);
+INSERT INTO Employees VALUES ('E0109', 'Debbie Wong', 29, 'F', '60123456768', 'debbie@maxis.com', 'S007', 79);
+INSERT INTO Employees VALUES ('E0110', 'Aaron Lim', 32, 'M', '60123456769', 'aaron@maybank.com', 'S002', 55);
+INSERT INTO Employees VALUES ('E0111', 'Vivian Teo', 30, 'F', '60123456770', 'vivian@petronas.com', 'S001', 33);
+INSERT INTO Employees VALUES ('E0112', 'Darren Tan', 28, 'M', '60123456771', 'darren@sunway.edu.my', 'U005', 28);
+INSERT INTO Employees VALUES ('E0113', 'Carmen Lee', 27, 'F', '60123456772', 'carmen@techsolutions.com', 'E001', 13);
+INSERT INTO Employees VALUES ('E0114', 'Justin Ng', 35, 'M', '60123456773', 'justin@financecorp.com', 'E002', 48);
+INSERT INTO Employees VALUES ('E0115', 'Priscilla Yeo', 29, 'F', '60123456774', 'priscilla@bizconsult.com', 'CA001', 40);
+INSERT INTO Employees VALUES ('E0116', 'Alex Lim', 30, 'M', '60123456775', 'alex@creativeads.com', 'M001', 32);
+INSERT INTO Employees VALUES ('E0117', 'Joey Tan', 26, 'F', '60123456776', 'joey@um.edu.my', 'U004', 29);
+INSERT INTO Employees VALUES ('E0118', 'Frankie Wong', 34, 'M', '60123456777', 'frankie@telekom.com', 'S004', 78);
+INSERT INTO Employees VALUES ('E0119', 'Evelyn Goh', 28, 'F', '60123456778', 'evelyn@maxis.com', 'S007', 80);
+INSERT INTO Employees VALUES ('E0120', 'Lucas Lee', 33, 'M', '60123456779', 'lucas@maybank.com', 'S002', 56);
+INSERT INTO Employees VALUES ('E0121', 'Stephanie Lim', 27, 'F', '60123456780', 'stephanie@petronas.com', 'S001', 34);
+INSERT INTO Employees VALUES ('E0122', 'Andrew Tan', 29, 'M', '60123456781', 'andrew@sunway.edu.my', 'U005', 30);
+INSERT INTO Employees VALUES ('E0123', 'Christina Ng', 28, 'F', '60123456782', 'christina@techsolutions.com', 'E001', 14);
+INSERT INTO Employees VALUES ('E0124', 'Gabriel Lee', 32, 'M', '60123456783', 'gabriel@financecorp.com', 'E002', 49);
+INSERT INTO Employees VALUES ('E0125', 'Daphne Wong', 30, 'F', '60123456784', 'daphne@bizconsult.com', 'CA001', 36);
+INSERT INTO Employees VALUES ('E0126', 'Kelvin Chua', 33, 'M', '60123456785', 'kelvin@creativeads.com', 'M001', 33);
+INSERT INTO Employees VALUES ('E0127', 'May Tan', 26, 'F', '60123456786', 'may@um.edu.my', 'U004', 21);
+INSERT INTO Employees VALUES ('E0128', 'Nigel Ong', 34, 'M', '60123456787', 'nigel@telekom.com', 'S004', 79);
+INSERT INTO Employees VALUES ('E0129', 'Elaine Lim', 29, 'F', '60123456788', 'elaine@maxis.com', 'S007', 81);
+INSERT INTO Employees VALUES ('E0130', 'Bryan Goh', 31, 'M', '60123456789', 'bryan@maybank.com', 'S002', 57);
+INSERT INTO Employees VALUES ('E0131', 'Melissa Tan', 27, 'F', '60123456790', 'melissa@petronas.com', 'S001', 35);
+INSERT INTO Employees VALUES ('E0132', 'Aaron Lee', 30, 'M', '60123456791', 'aaron@sunway.edu.my', 'U005', 31);
+INSERT INTO Employees VALUES ('E0133', 'Valerie Yeo', 28, 'F', '60123456792', 'valerie@techsolutions.com', 'E001', 15);
+INSERT INTO Employees VALUES ('E0134', 'Oscar Ho', 34, 'M', '60123456793', 'oscar@financecorp.com', 'E002', 50);
+INSERT INTO Employees VALUES ('E0135', 'Nicole Chua', 29, 'F', '60123456794', 'nicole@bizconsult.com', 'CA001', 37);
+INSERT INTO Employees VALUES ('E0136', 'Sean Lim', 31, 'M', '60123456795', 'sean@creativeads.com', 'M001', 34);
+INSERT INTO Employees VALUES ('E0137', 'Claudia Tan', 26, 'F', '60123456796', 'claudia@um.edu.my', 'U004', 22);
+INSERT INTO Employees VALUES ('E0138', 'Ethan Wong', 33, 'M', '60123456797', 'ethan@telekom.com', 'S004', 80);
+INSERT INTO Employees VALUES ('E0139', 'Ivy Goh', 28, 'F', '60123456798', 'ivy@maxis.com', 'S007', 82);
+INSERT INTO Employees VALUES ('E0140', 'Zachary Lee', 35, 'M', '60123456799', 'zachary@maybank.com', 'S002', 58);
+INSERT INTO Employees VALUES ('E0141', 'Samantha Lim', 29, 'F', '60123456800', 'samantha@petronas.com', 'S001', 36);
+INSERT INTO Employees VALUES ('E0142', 'Joel Tan', 30, 'M', '60123456801', 'joel@sunway.edu.my', 'U005', 32);
+INSERT INTO Employees VALUES ('E0143', 'Naomi Ng', 27, 'F', '60123456802', 'naomi@techsolutions.com', 'E001', 16);
+INSERT INTO Employees VALUES ('E0144', 'Adrian Lee', 34, 'M', '60123456803', 'adrian@financecorp.com', 'E002', 51);
+INSERT INTO Employees VALUES ('E0145', 'Phoebe Wong', 28, 'F', '60123456804', 'phoebe@bizconsult.com', 'CA001', 38);
+INSERT INTO Employees VALUES ('E0146', 'Gordon Chia', 32, 'M', '60123456805', 'gordon@creativeads.com', 'M001', 35);
+INSERT INTO Employees VALUES ('E0147', 'Isabel Tan', 26, 'F', '60123456806', 'isabel@um.edu.my', 'U004', 23);
+INSERT INTO Employees VALUES ('E0148', 'Marcus Ho', 33, 'M', '60123456807', 'marcus@telekom.com', 'S004', 81);
+INSERT INTO Employees VALUES ('E0149', 'Celine Goh', 29, 'F', '60123456808', 'celine@maxis.com', 'S007', 83);
+INSERT INTO Employees VALUES ('E0150', 'Dominic Lim', 31, 'M', '60123456809', 'dominic@maybank.com', 'S002', 59);
+INSERT INTO Employees VALUES ('E0151', 'Gloria Tan', 28, 'F', '60123456810', 'gloria@petronas.com', 'S001', 37);
+INSERT INTO Employees VALUES ('E0152', 'Ray Ng', 30, 'M', '60123456811', 'ray@sunway.edu.my', 'U005', 33);
+INSERT INTO Employees VALUES ('E0153', 'Patricia Lee', 27, 'F', '60123456812', 'patricia@techsolutions.com', 'E001', 17);
+INSERT INTO Employees VALUES ('E0154', 'Jeremy Wong', 35, 'M', '60123456813', 'jeremy@financecorp.com', 'E002', 52);
+INSERT INTO Employees VALUES ('E0155', 'Denise Chua', 29, 'F', '60123456814', 'denise@bizconsult.com', 'CA001', 39);
+INSERT INTO Employees VALUES ('E0156', 'Howard Lim', 32, 'M', '60123456815', 'howard@creativeads.com', 'M001', 36);
+INSERT INTO Employees VALUES ('E0157', 'Sabrina Tan', 26, 'F', '60123456816', 'sabrina@um.edu.my', 'U004', 24);
+INSERT INTO Employees VALUES ('E0158', 'Anthony Ho', 34, 'M', '60123456817', 'anthony@telekom.com', 'S004', 82);
+INSERT INTO Employees VALUES ('E0159', 'Belinda Goh', 28, 'F', '60123456818', 'belinda@maxis.com', 'S007', 84);
+INSERT INTO Employees VALUES ('E0160', 'Clifford Lee', 33, 'M', '60123456819', 'clifford@maybank.com', 'S002', 60);
+INSERT INTO Employees VALUES ('E0161', 'Natalie Lim', 27, 'F', '60123456820', 'natalie@petronas.com', 'S001', 38);
+INSERT INTO Employees VALUES ('E0162', 'Desmond Tan', 29, 'M', '60123456821', 'desmond@sunway.edu.my', 'U005', 34);
+INSERT INTO Employees VALUES ('E0163', 'Janet Ng', 28, 'F', '60123456822', 'janet@techsolutions.com', 'E001', 18);
+INSERT INTO Employees VALUES ('E0164', 'Kelvin Lee', 34, 'M', '60123456823', 'kelvin@financecorp.com', 'E002', 53);
+INSERT INTO Employees VALUES ('E0165', 'Monica Wong', 30, 'F', '60123456824', 'monica@bizconsult.com', 'CA001', 40);
+INSERT INTO Employees VALUES ('E0166', 'Terrence Lim', 33, 'M', '60123456825', 'terrence@creativeads.com', 'M001', 37);
+INSERT INTO Employees VALUES ('E0167', 'Olivia Tan', 26, 'F', '60123456826', 'olivia@um.edu.my', 'U004', 25);
+INSERT INTO Employees VALUES ('E0168', 'Samuel Ho', 35, 'M', '60123456827', 'samuel@telekom.com', 'S004', 83);
+INSERT INTO Employees VALUES ('E0169', 'Justin Yap', 29, 'M', '60123456828', 'justin@utm.edu.my', 'U003', 25);
+INSERT INTO Employees VALUES ('E0170', 'Fiona Chan', 31, 'F', '60123456829', 'fiona@telekom.com', 'S004', 76);
+
+
+
+INSERT INTO Specializations VALUES (1, 1, 13);
+INSERT INTO Specializations VALUES (1, 3, 12);
+INSERT INTO Specializations VALUES (2, 2, 23);
+INSERT INTO Specializations VALUES (2, 5, 22);
+INSERT INTO Specializations VALUES (2, 10, 24);
+INSERT INTO Specializations VALUES (2, 12, 23);
+INSERT INTO Specializations VALUES (3, 4, 6);
+INSERT INTO Specializations VALUES (4, 6, 11);
+INSERT INTO Specializations VALUES (4, 7, 10);
+INSERT INTO Specializations VALUES (4, 15, 12);
+INSERT INTO Specializations VALUES (5, 8, 17);
+INSERT INTO Specializations VALUES (5, 20, 16);
+INSERT INTO Specializations VALUES (6, 9, 20);
+INSERT INTO Specializations VALUES (6, 18, 19);
+INSERT INTO Specializations VALUES (7, 11, 30);
+INSERT INTO Specializations VALUES (7, 13, 29);
+INSERT INTO Specializations VALUES (7, 16, 28);
+INSERT INTO Specializations VALUES (7, 22, 31);
+INSERT INTO Specializations VALUES (7, 25, 30);
+
 
 
 INSERT INTO AdCampaign VALUES ('C001', 'M001', 'Summer Career Fair', TO_DATE('01/05/2024', 'DD/MM/YYYY'), TO_DATE('30/06/2024', 'DD/MM/YYYY'), 'Social media marketing', 5000, 'Students');
@@ -484,6 +595,12 @@ INSERT INTO AdCampaign VALUES ('C007', 'M001', 'Marketing Careers', TO_DATE('05/
 INSERT INTO AdCampaign VALUES ('C008', 'M002', 'Tech Networking', TO_DATE('30/05/2024', 'DD/MM/YYYY'), TO_DATE('25/07/2024', 'DD/MM/YYYY'), 'Social media marketing', 4800, 'IT Professionals');
 INSERT INTO AdCampaign VALUES ('C009', 'M001', 'Career Development', TO_DATE('15/06/2024', 'DD/MM/YYYY'), TO_DATE('15/08/2024', 'DD/MM/YYYY'), 'Event branding on e-hailing vehicles', 5200, 'All Students');
 INSERT INTO AdCampaign VALUES ('C010', 'M002', 'Industry Insights', TO_DATE('20/06/2024', 'DD/MM/YYYY'), TO_DATE('20/08/2024', 'DD/MM/YYYY'), 'Outdoor advertising', 6500, 'Professionals');
+INSERT INTO AdCampaign VALUES ('C011', 'M003', 'Freshers Fair Promo', DATE '2025-01-10', DATE '2025-02-15', 'Social media marketing', 15000, 'UniversityStudents');
+INSERT INTO AdCampaign VALUES ('C012', 'M003', 'City Billboard Blast', DATE '2025-03-01', DATE '2025-04-30', 'Outdoor advertising', 25000, 'YoungAdults');
+INSERT INTO AdCampaign VALUES ('C013', 'M003', 'Radio Awareness Run', DATE '2025-05-01', DATE '2025-05-31', 'Broadcast ads', 10000, 'GeneralPublic');
+INSERT INTO AdCampaign VALUES ('C014', 'M003', 'E-Hailing Branding', DATE '2025-06-01', DATE '2025-07-15', 'Event branding on e-hailing vehicles', 18000, 'SMEs');
+
+
 
 INSERT INTO Participations VALUES (1, 1, 'E001', 'Invited', TO_DATE('01/05/2024', 'DD/MM/YYYY'), TO_DATE('05/05/2024', 'DD/MM/YYYY'), 'Accepted');
 INSERT INTO Participations VALUES (2, 2, 'M001', 'Applying', TO_DATE('02/05/2024', 'DD/MM/YYYY'), TO_DATE('06/05/2024', 'DD/MM/YYYY'), 'Pending');
@@ -494,7 +611,7 @@ INSERT INTO Participations VALUES (6, 6, 'E002', 'Applying', TO_DATE('06/05/2024
 INSERT INTO Participations VALUES (7, 7, 'U002', 'Invited', TO_DATE('07/05/2024', 'DD/MM/YYYY'), NULL, 'Accepted');
 INSERT INTO Participations VALUES (8, 8, 'M002', 'Applying', TO_DATE('08/05/2024', 'DD/MM/YYYY'), TO_DATE('12/05/2024', 'DD/MM/YYYY'), 'Pending');
 INSERT INTO Participations VALUES (9, 9, 'CA002', 'Invited', TO_DATE('09/05/2024', 'DD/MM/YYYY'), TO_DATE('13/05/2024', 'DD/MM/YYYY'), 'Accepted');
-INSERT INTO Participations VALUES (10, 10, 'F002', 'Applying', TO_DATE('10/05/2024', 'DD/MM/YYYY'), NULL, 'Declined');
+INSERT INTO Participations VALUES (10, 10, 'F002', 'Applying', TO_DATE('10/05/2024', 'DD/MM/YYYY'), NULL,'Declined');
 INSERT INTO Participations VALUES (11, NULL, 'U003', 'Invited', DATE '2025-07-15', DATE '2025-07-20', 'Accepted');
 INSERT INTO Participations VALUES (12, NULL, 'U005', 'Invited', DATE '2025-07-18', DATE '2025-07-23', 'Accepted');
 INSERT INTO Participations VALUES (13, NULL, 'U004', 'Invited', DATE '2025-07-22', DATE '2025-07-26', 'Accepted');
