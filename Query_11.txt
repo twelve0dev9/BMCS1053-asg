@@ -1,0 +1,20 @@
+SET linesize 300
+SET pagesize 100
+
+-- Define column formatting
+COL Position FORMAT A40
+COL NumEmployees FORMAT 9999
+
+-- Count how many employees are in each position
+SELECT jp.Position, COUNT(e.EmployeeID) AS NumEmployees
+FROM Employees e
+JOIN Job_Positions jp ON e.JobPost_ID = jp.JobPost_ID
+GROUP BY jp.Position
+ORDER BY NumEmployees DESC;
+
+-- Reset settings
+CLEAR BREAKS
+CLEAR COMPUTES
+CLEAR COLUMNS
+TTITLE OFF
+

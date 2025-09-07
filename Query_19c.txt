@@ -1,0 +1,53 @@
+-- Set environment formatting
+SET VERIFY OFF
+SET LINESIZE 120
+SET PAGESIZE 1000
+
+-- Set Malaysia date format
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
+
+-- Set title
+TTITLE CENTER 'Speaker Participation by Event Type' SKIP 2
+
+-- Prompt for event type
+PROMPT
+PROMPT Select Event Type:
+PROMPT 1 = Panels
+PROMPT 2 = Talks
+PROMPT 3 = Recruitment
+PROMPT 4 = Networking Sessions
+PROMPT 5 = Seminars
+PROMPT 0 = All
+
+ACCEPT e_type NUMBER PROMPT 'Enter your choice (0-3) : '
+
+-- Set columns format
+COL name HEADING "Speaker Name" FORMAT A20
+COL title   HEADING "Event Name" FORMAT A35
+COL event_type   HEADING "Event Type" FORMAT A20
+COL event_time   HEADING "Event Date" FORMAT A12
+
+-- Query to show events per speaker filtered by event type
+SELECT 
+    s.speaker_id,
+    s.name,
+    e.title,
+    e.event_type,
+    TO_CHAR(e.event_time,'DD/MM/YYYY') AS event_time
+FROM speakers s
+JOIN Events_Participation ep
+ON s.speaker_id = ep.speaker_id
+JOIN events e
+ON ep.event_id = e.event_id
+WHERE (&e_type = 0) OR
+   (&e_type = 1 AND e.event_type = 'Panels') OR
+   (&e_type = 2 AND e.event_type = 'Talks') OR
+   (&e_type = 3 AND e.event_type = 'Recruitment') OR
+   (&e_type = 4 AND e.event_type = 'Networking Sessions') OR
+   (&e_type = 5 AND e.event_type = 'Seminars')
+ORDER BY s.name, e.event_time;
+
+-- Reset formatting
+CLEAR BREAKS
+CLEAR COLUMNS
+TTITLE OFF

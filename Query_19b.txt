@@ -1,0 +1,58 @@
+-- Set environment formatting
+SET VERIFY OFF
+SET LINESIZE 120
+SET PAGESIZE 1000
+
+-- Set Malaysia date format
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
+
+-- Prompt for Age
+ACCEPT min_age NUMBER PROMPT 'Enter minimum age (0 for no minimum) : '
+ACCEPT max_age NUMBER PROMPT 'Enter maximum age (0 for no maximum) : '
+-- Prompt for years of experience
+ACCEPT min_exp NUMBER PROMPT 'Enter minimum years of experience (0 for no minimum) : '
+ACCEPT max_exp NUMBER PROMPT 'Enter maximum years of experience (0 for no maximum) : '
+
+SET FEEDBACK OFF
+SET HEADING OFF
+COLUMN exp_diff NEW_VALUE exp_diff
+SELECT MAX(&max_exp) - MIN(&min_exp) AS exp_diff
+FROM speakers
+WHERE age BETWEEN &min_age AND &max_age;
+SET FEEDBACK ON
+SET HEADING ON
+
+-- Set title
+TTITLE RIGHT 'Speakers of age between &min_age and &max_age with Years of Experience of &exp_diff' SKIP 2
+
+-- Set columns format
+COL name FORMAT A25 HEADING "Speaker Name"
+COL age          FORMAT 999 HEADING "Age"
+COL specialization FORMAT A15 HEADING "Specialization"
+COL years_exp    FORMAT 999 HEADING "Years of Exp"
+
+-- Query to filter speakers
+SELECT 
+    sp.speaker_id,
+    sp.name,
+    sp.age,
+    j.position, 
+    s.Years_of_Experience AS "EXP",
+    (SELECT COUNT(*)
+    FROM Events_Participation ep
+    WHERE ep.speaker_id = s.speaker_id) AS "Number of Events attended"
+FROM Speakers sp
+JOIN Specializations s 
+ON sp.speaker_id = s.speaker_id
+JOIN job_positions j
+ON s.jobpost_id = j.jobpost_id
+WHERE ( &min_age = 0 OR age >= &min_age ) AND
+  ( &max_age = 0 OR age <= &max_age ) AND
+  ( &min_exp = 0 OR s.Years_of_Experience >= &min_exp ) AND
+  ( &max_exp = 0 OR s.Years_of_Experience <= &max_exp )
+ORDER BY sp.name, j.position, s.Years_of_Experience;
+
+-- Reset formatting
+CLEAR BREAKS
+CLEAR COLUMNS
+TTITLE OFF

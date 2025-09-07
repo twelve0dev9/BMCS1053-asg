@@ -6,7 +6,7 @@ SET VERIFY OFF
 SET LINESIZE 100
 SET PAGESIZE 1000
 
-
+-- Set title
 TTITLE CENTER 'Total Organizations' SKIP 2
 
 -- Show participation types

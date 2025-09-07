@@ -230,6 +230,27 @@ INSERT INTO Events VALUES (10, 'Startup Networking', 'Connect with startup found
 INSERT INTO Events VALUES (11, 'Future of Tech Panel', 'Discussing emerging trends in technology careers', 'Panels', DATE '2025-09-15', 1);
 INSERT INTO Events VALUES (12, 'Entrepreneurship Insights Panel', 'Sharing experiences and advice from successful entrepreneurs', 'Panels', DATE '2025-09-16', 2);
 INSERT INTO Events VALUES (13, 'Sustainability & Careers Panel', 'Panel discussion on sustainable practices and green job opportunities', 'Panels', DATE '2025-09-17', 3);
+INSERT INTO Events VALUES (14, 'Tech Expo Opening', 'Kickoff of tech exhibitions', 'Recruitment', DATE '2025-09-15', 1);
+INSERT INTO Events VALUES (15, 'Marketing Insights', 'Latest marketing trends', 'Talks', DATE '2025-09-15', 3);
+INSERT INTO Events VALUES (16, 'Finance Networking', 'Networking with finance professionals', 'Networking Sessions', DATE '2025-09-15', 4);
+INSERT INTO Events VALUES (17, 'Auditorium Seminar', 'Professional development seminar', 'Seminars', DATE '2025-09-16', 2);
+INSERT INTO Events VALUES (18, 'Consultancy Panel', 'Career panel for consulting', 'Panels', DATE '2025-09-16', 5);
+INSERT INTO Events VALUES (19, 'Digital Skills Workshop', 'Improve your digital skills', 'Seminars', DATE '2025-09-16', 8);
+INSERT INTO Events VALUES (20, 'Networking Mixer', 'Connect with industry leaders', 'Networking Sessions', DATE '2025-09-17', 4);
+INSERT INTO Events VALUES (21, 'Career Consultation', 'One-on-one career guidance', 'Career Consultation', DATE '2025-09-17', 5);
+INSERT INTO Events VALUES (22, 'University Talk', 'University program overview', 'Talks', DATE '2025-09-17', 2);
+INSERT INTO Events VALUES (23, 'Tech Recruitment Day', 'Recruit tech talents', 'Recruitment', DATE '2025-09-18', 6);
+INSERT INTO Events VALUES (24, 'Networking Luncheon', 'Meet professionals over lunch', 'Networking Sessions', DATE '2025-09-18', 9);
+INSERT INTO Events VALUES (25, 'Entrepreneurship Seminar', 'Startup guidance and tips', 'Seminars', DATE '2025-09-18', 7);
+INSERT INTO Events VALUES (26, 'Panel on Sustainability', 'Green career opportunities', 'Panels', DATE '2025-09-19', 3);
+INSERT INTO Events VALUES (27, 'Food Industry Workshop', 'F&B sector trends', 'Talks', DATE '2025-09-19', 9);
+INSERT INTO Events VALUES (28, 'Consultation Skills', 'One-on-one consulting guidance', 'Career Consultation', DATE '2025-09-19', 10);
+INSERT INTO Events VALUES (29, 'Startup Panel', 'Panel discussion with startup founders', 'Panels', DATE '2025-09-20', 7);
+INSERT INTO Events VALUES (30, 'Tech Career Seminar', 'Emerging tech careers', 'Seminars', DATE '2025-09-20', 1);
+INSERT INTO Events VALUES (31, 'University Networking', 'Connect with students and alumni', 'Networking Sessions', DATE '2025-09-20', 2);
+INSERT INTO Events VALUES (32, 'F&B Expo', 'Food & Beverage showcase', 'Recruitment', DATE '2025-09-21', 6);
+INSERT INTO Events VALUES (33, 'Career Consultation Day', 'Guidance for job seekers', 'Career Consultation', DATE '2025-09-21', 10);
+INSERT INTO Events VALUES (34, 'Networking Wrap-up', 'Final networking session', 'Networking Sessions', DATE '2025-09-21', 4);
 
 
 
@@ -243,7 +264,17 @@ INSERT INTO Speakers VALUES (7, 'Prof. Ahmad', 50, 'M', '60789012345', 'ahmad@te
 INSERT INTO Speakers VALUES (8, 'Emma Davis', 31, 'F', '60890123456', 'emma@digitalpromo.com', 'Digital Promoters', 2);
 INSERT INTO Speakers VALUES (9, 'James Wilson', 38, 'M', '60901234567', 'james@careeradvisors.com', 'Career Advisors', 5);
 INSERT INTO Speakers VALUES (10, 'Sophia Kim', 27, 'F', '60111223344', 'sophia@quickbites.com', 'Quick Bites Cafe', 9);
-
+INSERT INTO Speakers VALUES (11, 'Alan Turner', 42, 'M', '60122334455', 'alan@marketing.com', 'BrightReach Marketing', 14);
+INSERT INTO Speakers VALUES (12, 'Nadia Rahman', 36, 'F', '60123455666', 'nadia@petronas.com', 'Petronas Malaysia', 15);
+INSERT INTO Speakers VALUES (13, 'Mohamed Ali', 33, 'M', '60123456777', 'mohamed@maybank.com', 'Maybank Berhad', 16);
+INSERT INTO Speakers VALUES (14, 'Sophia Lim', 29, 'F', '60123456888', 'sophia@cimb.com', 'CIMB Group', 17);
+INSERT INTO Speakers VALUES (15, 'Daniel Tan', 39, 'M', '60123456999', 'daniel@telekom.com', 'Telekom Malaysia', 18);
+INSERT INTO Speakers VALUES (16, 'Rachel Ong', 31, 'F', '60123456111', 'rachel@tenaga.com', 'Tenaga Nasional', 19);
+INSERT INTO Speakers VALUES (17, 'Kevin Lee', 45, 'M', '60123456222', 'kevin@airasia.com', 'AirAsia Group', 20);
+INSERT INTO Speakers VALUES (18, 'Laura Wong', 28, 'F', '60123456333', 'laura@maxis.com', 'Maxis Telecom', 21);
+INSERT INTO Speakers VALUES (19, 'Samuel Chong', 37, 'M', '60123456444', 'samuel@axiata.com', 'Axiata Group', 22);
+INSERT INTO Speakers VALUES (20, 'Clara Lim', 34, 'F', '60123456555', 'clara@rhb.com', 'RHB Bank', 23);
+INSERT INTO Speakers VALUES (21, 'Henry Ong', 41, 'M', '60123456666', 'henry@uem.com', 'UEM Group', 24);
 
 
 
@@ -698,3 +729,45 @@ INSERT INTO Events_Participation VALUES (12, 8, 'U002');
 INSERT INTO Events_Participation VALUES (11, 3, 'U001');
 INSERT INTO Events_Participation VALUES (13, 10, 'F002');
 INSERT INTO Events_Participation VALUES (11, 4, 'F001');
+INSERT INTO Events_Participation VALUES (14, 11, 'M003');
+INSERT INTO Events_Participation VALUES (14, 12, 'S001');
+INSERT INTO Events_Participation VALUES (15, 12, 'S002');
+INSERT INTO Events_Participation VALUES (15, 13, 'S003');
+INSERT INTO Events_Participation VALUES (16, 13, 'S004');
+INSERT INTO Events_Participation VALUES (16, 14, 'S005');
+INSERT INTO Events_Participation VALUES (17, 14, 'S006');
+INSERT INTO Events_Participation VALUES (17, 15, 'S007');
+INSERT INTO Events_Participation VALUES (18, 15, 'S008');
+INSERT INTO Events_Participation VALUES (18, 16, 'S009');
+INSERT INTO Events_Participation VALUES (19, 16, 'S010');
+INSERT INTO Events_Participation VALUES (19, 17, 'E001');
+INSERT INTO Events_Participation VALUES (20, 17, 'E002');
+INSERT INTO Events_Participation VALUES (20, 18, 'M002');
+INSERT INTO Events_Participation VALUES (21, 18, 'U003');
+INSERT INTO Events_Participation VALUES (21, 19, 'U004');
+INSERT INTO Events_Participation VALUES (22, 19, 'U005');
+INSERT INTO Events_Participation VALUES (22, 20, 'U006');
+INSERT INTO Events_Participation VALUES (23, 20, 'U007');
+INSERT INTO Events_Participation VALUES (23, 21, 'U008');
+INSERT INTO Events_Participation VALUES (24, 21, 'U009');
+INSERT INTO Events_Participation VALUES (24, 11, 'U010');
+INSERT INTO Events_Participation VALUES (25, 12, 'U011');
+INSERT INTO Events_Participation VALUES (25, 13, 'U012');
+INSERT INTO Events_Participation VALUES (26, 14, 'U013');
+INSERT INTO Events_Participation VALUES (26, 15, 'S001');
+INSERT INTO Events_Participation VALUES (27, 16, 'F001');
+INSERT INTO Events_Participation VALUES (27, 17, 'CA001');
+INSERT INTO Events_Participation VALUES (28, 18, 'F002');
+INSERT INTO Events_Participation VALUES (28, 19, 'CA002');
+INSERT INTO Events_Participation VALUES (29, 20, 'U003');
+INSERT INTO Events_Participation VALUES (29, 21, 'U004');
+INSERT INTO Events_Participation VALUES (30, 11, 'E001');
+INSERT INTO Events_Participation VALUES (30, 12, 'M003');
+INSERT INTO Events_Participation VALUES (31, 13, 'U005');
+INSERT INTO Events_Participation VALUES (31, 14, 'U006');
+INSERT INTO Events_Participation VALUES (32, 15, 'E002');
+INSERT INTO Events_Participation VALUES (32, 16, 'F001');
+INSERT INTO Events_Participation VALUES (33, 17, 'CA001');
+INSERT INTO Events_Participation VALUES (33, 18, 'U007');
+INSERT INTO Events_Participation VALUES (34, 19, 'U008');
+INSERT INTO Events_Participation VALUES (34, 20, 'F002');

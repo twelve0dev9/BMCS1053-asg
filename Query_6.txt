@@ -1,0 +1,41 @@
+-- AdCampaigns grouped by medium
+-- Clear previous settings
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+-- Set page and line size
+SET PAGESIZE 50
+SET LINESIZE 130
+SET VERIFY OFF
+
+-- Set the main title for the report
+TTITLE CENTER 'Summary of Advertising Campaigns by Medium' SKIP 2
+
+-- Format the output columns
+COLUMN "Channel" FORMAT A40 HEADING "Advertising Channel"
+COLUMN "Campaign Title" FORMAT A30 HEADING "Campaign Title"
+COLUMN "Budget" FORMAT $999,999.00 HEADING "Budget"
+COLUMN "TargetAud" FORMAT A20 HEADING "Target Audience"
+
+-- Group the results by the advertising channel
+BREAK ON "Channel" SKIP 1
+
+-- Calculate the total number of campaigns for each channel
+COMPUTE COUNT LABEL 'Total Campaigns:' OF "Campaign Title" ON "Channel"
+
+-- The main SELECT statement
+SELECT
+    Channel AS "Channel",
+    Title AS "Campaign Title",
+    Budget,
+    TargetAud
+FROM
+    AdCampaign
+ORDER BY
+    Channel, Budget DESC;
+/
+
+-- Clear all settings after running the report
+CLEAR ALL
+TTITLE OFF

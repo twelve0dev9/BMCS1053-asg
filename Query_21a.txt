@@ -1,0 +1,45 @@
+SET VERIFY OFF
+SET LINESIZE 200
+SET PAGESIZE 1000
+
+-- Show available universities
+TTITLE CENTER 'Employees of Universities' SKIP 2
+COLUMN OrgName NEW_VALUE org_name
+SELECT DISTINCT o.Org_Name AS OrgName
+FROM Organizations o
+WHERE o.OrgID LIKE 'U%';
+
+-- Display job positions in Education (Industry_ID = 2)
+TTITLE CENTER 'Available Job Positions for Universities' SKIP 2
+PROMPT 0 = All Jobs
+COLUMN JobTitle NEW_VALUE job_title
+SELECT JobPost_ID || ' = ' || Position AS JobTitle
+FROM Job_Positions
+WHERE Industry_ID = 2
+ORDER BY JobPost_ID;
+
+-- Prompt user to select job
+ACCEPT selected_job NUMBER PROMPT 'Enter JobPost_ID from above list (0 = All Jobs): '
+
+-- Dynamic title
+TTITLE CENTER 'Employees from Universities for JobPost_ID: &selected_job' SKIP 2
+
+-- Column formatting
+COL UnivName FORMAT A25 HEADING "University"
+COL Name FORMAT A20 HEADING "Employee Name"
+COL Position FORMAT A25 HEADING "Job Title"
+COL Age FORMAT 999 HEADING "Age"
+COL Gender FORMAT A1 HEADING "G"
+
+-- Query employees grouped by university
+SELECT o.Org_Name AS UnivName,
+       e.Name,
+       j.Position AS Position,
+       e.Age,
+       e.Gender
+FROM Employees e
+JOIN Organizations o ON e.OrgID = o.OrgID
+JOIN Job_Positions j ON e.JobPost_ID = j.JobPost_ID
+WHERE o.OrgID LIKE 'U%'
+  AND ( &selected_job = 0 OR e.JobPost_ID = &selected_job )
+ORDER BY o.Org_Name, j.Position, e.Name;

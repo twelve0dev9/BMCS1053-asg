@@ -1,0 +1,59 @@
+-- Suppress unnecessary output
+SET VERIFY OFF
+SET LINESIZE 120
+SET PAGESIZE 1000
+
+-- Prompt user for location types
+PROMPT
+PROMPT Enter the Location Types you want to see:
+PROMPT 1 = Main Exhibition Halls
+PROMPT 2 = Auditoriums
+PROMPT 3 = Meeting Rooms
+PROMPT 4 = Networking Lounge
+PROMPT 5 = Conference Rooms
+ACCEPT loc_type_list CHAR PROMPT 'Enter choice(s) separated by commas (e.g., 1,3,5) : '
+
+-- Build a dynamic title based on user input
+COLUMN loc_title NEW_VALUE loc_title
+SET FEEDBACK OFF
+SET HEADING OFF
+SELECT 
+    RTRIM(
+        CASE WHEN INSTR(',' || '&loc_type_list' || ',', ',1,') > 0 THEN 'Main Exhibition Halls, ' ELSE '' END ||
+        CASE WHEN INSTR(',' || '&loc_type_list' || ',', ',2,') > 0 THEN 'Auditoriums, ' ELSE '' END ||
+        CASE WHEN INSTR(',' || '&loc_type_list' || ',', ',3,') > 0 THEN 'Meeting Rooms, ' ELSE '' END ||
+        CASE WHEN INSTR(',' || '&loc_type_list' || ',', ',4,') > 0 THEN 'Networking Lounge, ' ELSE '' END ||
+        CASE WHEN INSTR(',' || '&loc_type_list' || ',', ',5,') > 0 THEN 'Conference Rooms, ' ELSE '' END
+    , ', ') AS loc_title
+FROM dual;
+SET FEEDBACK ON
+SET HEADING ON
+
+-- Set the title dynamically
+TTITLE CENTER 'Events by Location Type: &loc_title' SKIP 2
+
+-- Format columns
+COLUMN Location_Name FORMAT A25 HEADING "Location Name"
+COLUMN Location_Type FORMAT A20 HEADING "Location Type"
+COLUMN OrgID FORMAT A8 HEADING "Organization"
+COLUMN Floor FORMAT 99 HEADING "Floor"
+COLUMN Section FORMAT 99 HEADING "Section"
+
+-- Query events grouped by location type
+SELECT Location_Type, COUNT(*) AS Number_of_Events
+FROM Location l
+JOIN Events e
+    ON e.Location_ID = l.Location_ID
+WHERE 
+    (INSTR(',' || '&loc_type_list' || ',', ',1,') > 0 AND Location_Type = 'Main Exhibition Halls') OR
+    (INSTR(',' || '&loc_type_list' || ',', ',2,') > 0 AND Location_Type = 'Auditoriums') OR
+    (INSTR(',' || '&loc_type_list' || ',', ',3,') > 0 AND Location_Type = 'Meeting Rooms') OR
+    (INSTR(',' || '&loc_type_list' || ',', ',4,') > 0 AND Location_Type = 'Networking Lounge') OR
+    (INSTR(',' || '&loc_type_list' || ',', ',5,') > 0 AND Location_Type = 'Conference Rooms')
+GROUP BY Location_Type
+ORDER BY Location_Type;
+
+-- Reset formatting
+CLEAR BREAKS
+CLEAR COLUMNS
+TTITLE OFF

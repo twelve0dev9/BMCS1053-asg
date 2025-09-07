@@ -1,29 +1,24 @@
+SET LINESIZE 120
+SET PAGESIZE 35
 
---query 17
-SELECT Channel, COUNT(*) 
-FROM AdCampaign
-GROUP BY Channel
---query 18
-SELECT Application_Status, COUNT(*) AS Total
-FROM Applications
-GROUP BY Application_Status;
---query 19
-title Center 'Panelists' skip 2
-title Center '---------------------------------' skip 2
-SELECT s.Speaker_ID, s.Name, 
-       (SELECT COUNT(*)
-        FROM Events_Participation ep
-        JOIN Events e ON ep.Event_ID = e.Event_ID
-        WHERE ep.Speaker_ID = s.Speaker_ID
-          AND e.Event_Type = 'Panels') AS total_panels
-FROM Speakers s
-ORDER BY s.Speaker_ID;
+TTITLE CENTER 'Employee Details with Job Position and Organization' SKIP 2
 
-SELECT s.Speaker_ID, s.Name, 
-       (SELECT COUNT(*)
-        FROM Events_Participation ep
-        JOIN Events e ON ep.Event_ID = e.Event_ID
-        WHERE ep.Speaker_ID = s.Speaker_ID
-          AND e.Event_Type = 'Panels') AS total_panels
-FROM Speakers s
-ORDER BY s.Speaker_ID;
+COLUMN EmployeeID HEADING 'Employee ID' FORMAT A10
+COLUMN EmpName HEADING 'Employee Name' FORMAT A25
+COLUMN JobPosition HEADING 'Job Position' FORMAT A25
+COLUMN Organization HEADING 'Organization' FORMAT A30
+
+PROMPT Please enter an Employee ID (e.g., E0001)
+ACCEPT emp_id CHAR PROMPT 'Enter Employee ID: '
+
+SELECT 
+    e.EmployeeID, 
+    e.Name, 
+    jp.Position AS JobPosition, 
+    o.Org_Name AS Organization
+FROM Employees e
+JOIN Job_Positions jp ON e.JobPost_ID = jp.JobPost_ID
+JOIN Organizations o ON e.OrgID = o.OrgID
+WHERE TRIM(e.EmployeeID) = UPPER('&emp_id');
+
+TTITLE OFF;

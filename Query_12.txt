@@ -1,0 +1,20 @@
+SET linesize 300
+SET pagesize 50
+
+-- Define column formatting
+COL Org_Name FORMAT A40 HEADING 'Organization'
+COL NumEmployees FORMAT 9999 HEADING 'Total Employees'
+
+-- Count how many employees each company has
+SELECT o.Org_Name, COUNT(e.EmployeeID) AS NumEmployees
+FROM Employees e
+JOIN Organizations o ON e.OrgID = o.OrgID
+GROUP BY o.Org_Name
+ORDER BY NumEmployees DESC;
+
+-- Reset settings
+CLEAR BREAKS
+CLEAR COMPUTES
+CLEAR COLUMNS
+TTITLE OFF
+

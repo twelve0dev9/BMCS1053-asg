@@ -1,0 +1,60 @@
+-- Set environment formatting
+SET LINESIZE 120
+SET PAGESIZE 1000
+SET VERIFY OFF
+SET FEEDBACK ON
+SET HEADING ON
+SET TRIMSPOOL ON
+
+-- Show numbered menu for event types
+PROMPT
+PROMPT Select Event Type to filter:
+PROMPT 0 = All Events
+PROMPT 1 = Recruitment
+PROMPT 2 = Networking Sessions
+PROMPT 3 = Talks
+PROMPT 4 = Seminars
+PROMPT 5 = Career Consultation
+PROMPT 6 = Panels
+ACCEPT ev_choice NUMBER PROMPT 'Enter choice (0-6): '
+
+-- Map numeric choice to actual event type using CASE in a subquery
+COLUMN ev_type NEW_VALUE ev_type_val
+SET FEEDBACK OFF
+SET HEADING OFF
+SELECT CASE &ev_choice
+         WHEN 0 THEN 'All Events'
+         WHEN 1 THEN 'Recruitment'
+         WHEN 2 THEN 'Networking Sessions'
+         WHEN 3 THEN 'Talks'
+         WHEN 4 THEN 'Seminars'
+         WHEN 5 THEN 'Career Consultation'
+         WHEN 6 THEN 'Panels'
+       END AS ev_type
+FROM dual;
+SET FEEDBACK ON
+SET HEADING ON
+
+-- Set dynamic title
+TTITLE CENTER 'Speakers Participation Count for Event Type: &ev_type_val' SKIP 2
+
+-- Set column formatting
+COLUMN Speaker_ID FORMAT 999 HEADING 'ID'
+COLUMN Name FORMAT A25 HEADING 'Speaker Name'
+COLUMN total_count FORMAT 999 HEADING 'Total Participations'
+
+-- Query
+SELECT 
+    s.Speaker_ID, 
+    s.Name, 
+    (SELECT COUNT(*)
+     FROM Events_Participation ep
+     JOIN Events e ON ep.Event_ID = e.Event_ID
+     WHERE ep.Speaker_ID = s.Speaker_ID
+       AND (&ev_choice = 0 OR e.Event_Type = '&ev_type_val')) AS total_count
+FROM Speakers s
+ORDER BY s.Speaker_ID;
+
+-- Reset formatting
+CLEAR COLUMNS
+TTITLE OFF
