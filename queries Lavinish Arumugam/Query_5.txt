@@ -1,40 +1,48 @@
-CLEAR COLUMNS
-CLEAR BREAKS
-CLEAR COMPUTES
-
-
-SET PAGESIZE 50
-SET LINESIZE 120
+-- Basic page setup
+SET LINESIZE 110
+SET PAGESIZE 500
 SET VERIFY OFF
 
+-- Step 1: Show universities with consistent numbering
+TTITLE CENTER 'List of Participating Universities' SKIP 2
+COLUMN "No." FORMAT 99 HEADING "No."
+COLUMN "University Name" FORMAT A40 HEADING "University Name"
 
-TTITLE CENTER 'List of Applicants from &v_university_name' SKIP 2
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY Org_Name) AS "No.",
+    Org_Name AS "University Name"
+FROM Organizations
+WHERE OrgID LIKE 'U%';
 
+-- Step 2: Prompt user for a choice
+TTITLE OFF
+CLEAR COLUMNS
 
-ACCEPT v_university_name CHAR PROMPT 'Enter the University Name (e.g., National University): '
+ACCEPT v_choice NUMBER PROMPT 'Enter the number for the university you want to see: '
 
-
+-- Step 3: Get applicants for the chosen university
+TTITLE CENTER 'List of Applicants from Your Selected University' SKIP 2
 COLUMN "Applicant Name" FORMAT A25 HEADING "Applicant Name"
 COLUMN "Major" FORMAT A30 HEADING "Major"
 COLUMN "Education Level" FORMAT A20 HEADING "Education Level"
 COLUMN "Email" FORMAT A30 HEADING "Email Contact"
 
-
-SELECT
+SELECT 
     app.Name AS "Applicant Name",
     app.Major,
     app.Education_Level AS "Education Level",
     app.Email
-FROM
-    Applicants app
-JOIN
-    Organizations o ON app.University = o.OrgID
-WHERE
-    o.Org_Name = '&v_university_name'
-ORDER BY
-    app.Name;
-/
+FROM Applicants app
+WHERE app.University = (
+    SELECT OrgID
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY Org_Name) AS rn, OrgID
+        FROM Organizations
+        WHERE OrgID LIKE 'U%'
+    )
+    WHERE rn = &v_choice
+)
+ORDER BY app.Name;
 
-
-CLEAR ALL
+SET VERIFY ON
 TTITLE OFF

@@ -1,5 +1,6 @@
 -- Suppress variable substitution messages
 SET VERIFY OFF
+SET DEFINE ON;
 
 -- Set output formatting for A4 landscape
 SET linesize 300
@@ -10,7 +11,7 @@ ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
 
 -- Accept multiple filters
 ACCEPT v_role NUMBER PROMPT 'Enter role (1=Sponsor, 2=Exhibitor, 3=Speech, 4=Consultancy, 0=ALL): '
-ACCEPT v_industry NUMBER PROMPT 'Enter industry (0=ALL, 1=Software, 2=Cybersecurity, 3=Finance, 4=Education): '
+ACCEPT v_industry NUMBER PROMPT 'Enter industry (0=ALL, 1=Consulting, 2=FandB, 3=Finance, 4=Education, 5=Technology, 6=Marketing): '
 ACCEPT v_sort NUMBER PROMPT 'Sort by (1=Role, 2=Name, 3=Industry): '
 
 -- Define column formatting
@@ -58,10 +59,12 @@ WHERE
     -- Industry filter
     AND (
         (&v_industry = 0)
-        OR (&v_industry = 1 AND i.Title = 'Software development')
-        OR (&v_industry = 2 AND i.Title = 'Cybersecurity')
+        OR (&v_industry = 1 AND i.Title = 'Consulting')
+        OR (&v_industry = 2 AND i.Title = 'Food ' || CHR(38) || ' Beverage')
         OR (&v_industry = 3 AND i.Title = 'Finance')
         OR (&v_industry = 4 AND i.Title = 'Education')
+	OR (&v_industry = 5 AND i.Title = 'Technology')
+	OR (&v_industry = 6 AND i.Title = 'Marketing')
     )
 ORDER BY 
     CASE &v_sort

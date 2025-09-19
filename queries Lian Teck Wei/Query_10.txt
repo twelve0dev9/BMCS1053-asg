@@ -1,39 +1,40 @@
 SET DEFINE ON
--- Set output formatting
-SET linesize 300
-SET pagesize 100
+SET LINESIZE 300
+SET PAGESIZE 100
+SET VERIFY OFF
 
--- Show the options
 PROMPT Choose Speaker:
-PROMPT  1. John Smith
-PROMPT  2. Sarah Chen
-PROMPT  3. Dr. Robert Lee
-PROMPT  4. Maria Garcia
-PROMPT  5. David Wong
-PROMPT  6. Lisa Tan
-PROMPT  7. Prof. Ahmad
-PROMPT  8. Emma Davis
-PROMPT  9. James Wilson
-PROMPT 10. Sophia Kim
+
+-- list all speakers
+SELECT Speaker_ID || '. ' || Name AS "Speakers List"
+FROM Speakers
+ORDER BY Speaker_ID;
 
 -- Accept user input
-ACCEPT CHOICE NUMBER PROMPT 'Choose (1-10): '
+ACCEPT CHOICE NUMBER PROMPT 'Choose (0 for All speaker) : '
 
 -- Define column formatting
 COLUMN Speaker_Name FORMAT A25 HEADING 'Speaker Name'
+COLUMN Phone_Number FORMAT A15 HEADING 'Phone Number'
+COLUMN Email        FORMAT A30 HEADING 'Email'
 COLUMN Total_Events FORMAT 9999 HEADING 'Total Events'
 
--- Query to show the number of events per selected speaker
+-- Query to display events count for a single speaker,
+-- or for all speakers if option 0 is selected
 SELECT s.Name AS Speaker_Name,
+       s.Phone_Number,
+       s.Email,
        COUNT(e.Event_ID) AS Total_Events
 FROM Speakers s
 JOIN Events_Participation ep ON s.Speaker_ID = ep.Speaker_ID
 JOIN Events e ON ep.Event_ID = e.Event_ID
-WHERE s.Speaker_ID = &CHOICE
-GROUP BY s.Name;
+WHERE &CHOICE = 0 OR s.Speaker_ID = &CHOICE
+GROUP BY s.Speaker_ID, s.Name, s.Phone_Number, s.Email
+ORDER BY s.Speaker_ID;
 
 -- Reset settings
 CLEAR BREAKS
 CLEAR COMPUTES
 CLEAR COLUMNS
+SET VERIFY ON
 TTITLE OFF
